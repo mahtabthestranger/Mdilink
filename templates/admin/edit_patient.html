@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Patient - Medilink{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h2><i class="fas fa-user-edit me-2"></i>Edit Patient</h2>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{{ url_for('admin_patients') }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-1"></i> Back to List
+        </a>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form method="POST" action="{{ url_for('admin_edit_patient', patient_id=patient.patient_id) }}">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="full_name" class="form-label fw-bold">Full Name <span
+                            class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="full_name" name="full_name" required
+                        value="{{ patient.full_name }}">
+                </div>
+                <div class="col-md-6">
+                    <label for="email" class="form-label fw-bold">Email Address <span
+                            class="text-danger">*</span></label>
+                    <input type="email" class="form-control" id="email" name="email" required
+                        value="{{ patient.email }}">
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="phone" class="form-label fw-bold">Phone Number <span
+                            class="text-danger">*</span></label>
+                    <input type="tel" class="form-control" id="phone" name="phone" required value="{{ patient.phone }}">
+                </div>
+                <div class="col-md-3">
+                    <label for="age" class="form-label fw-bold">Age <span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" id="age" name="age" required min="1" max="150"
+                        value="{{ patient.age }}">
+                </div>
+                <div class="col-md-3">
+                    <label for="gender" class="form-label fw-bold">Gender <span class="text-danger">*</span></label>
+                    <select class="form-select" id="gender" name="gender" required>
+                        <option value="Male" {% if patient.gender=='Male' %}selected{% endif %}>Male</option>
+                        <option value="Female" {% if patient.gender=='Female' %}selected{% endif %}>Female</option>
+                        <option value="Other" {% if patient.gender=='Other' %}selected{% endif %}>Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="blood_group" class="form-label fw-bold">Blood Group</label>
+                    <select class="form-select" id="blood_group" name="blood_group">
+                        <option value="" {% if not patient.blood_group %}selected{% endif %}>Select Blood Group</option>
+                        <option value="A+" {% if patient.blood_group=='A+' %}selected{% endif %}>A+</option>
+                        <option value="A-" {% if patient.blood_group=='A-' %}selected{% endif %}>A-</option>
+                        <option value="B+" {% if patient.blood_group=='B+' %}selected{% endif %}>B+</option>
+                        <option value="B-" {% if patient.blood_group=='B-' %}selected{% endif %}>B-</option>
+                        <option value="AB+" {% if patient.blood_group=='AB+' %}selected{% endif %}>AB+</option>
+                        <option value="AB-" {% if patient.blood_group=='AB-' %}selected{% endif %}>AB-</option>
+                        <option value="O+" {% if patient.blood_group=='O+' %}selected{% endif %}>O+</option>
+                        <option value="O-" {% if patient.blood_group=='O-' %}selected{% endif %}>O-</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="emergency_contact" class="form-label fw-bold">Emergency Contact</label>
+                    <input type="text" class="form-control" id="emergency_contact" name="emergency_contact"
+                        value="{{ patient.emergency_contact or '' }}">
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <label for="address" class="form-label fw-bold">Address</label>
+                    <textarea class="form-control" id="address" name="address"
+                        rows="2">{{ patient.address or '' }}</textarea>
+                </div>
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <a href="{{ url_for('admin_patients') }}" class="btn btn-light me-md-2">Cancel</a>
+                <button type="submit" class="btn btn-primary px-4">Update Patient</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

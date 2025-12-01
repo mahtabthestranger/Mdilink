@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block title %}Patient Registration - Medilink{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center px-4 py-12">
+    <div class="max-w-2xl w-full">
+        <!-- Back Button -->
+        <div class="mb-6">
+            <a href="{{ url_for('index') }}" class="text-white opacity-75 hover:opacity-100 flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Back to Home
+            </a>
+        </div>
+
+        <!-- Registration Card -->
+        <div class="glass rounded-2xl p-8 shadow-2xl">
+            <div class="text-center mb-8">
+                <div
+                    class="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z">
+                        </path>
+                    </svg>
+                </div>
+                <h2 class="text-3xl font-bold text-white mb-2">Patient Registration</h2>
+                <p class="text-white opacity-75">Create your account to book appointments</p>
+            </div>
+
+            <form method="POST" action="{{ url_for('patient_register') }}" class="space-y-6">
+                <!-- Personal Information -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Full Name -->
+                    <div>
+                        <label for="full_name" class="block text-white font-medium mb-2">Full Name *</label>
+                        <input type="text" id="full_name" name="full_name" required
+                            class="input-field w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 text-white placeholder-white placeholder-opacity-50 border border-white border-opacity-30 focus:outline-none focus:border-opacity-50"
+                            placeholder="Enter your full name">
+                    </div>
+
+                    <!-- Age -->
+                    <div>
+                        <label for="age" class="block text-white font-medium mb-2">Age *</label>
+                        <input type="number" id="age" name="age" min="1" max="150" required
+                            class="input-field w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 text-white placeholder-white placeholder-opacity-50 border border-white border-opacity-30 focus:outline-none focus:border-opacity-50"
+                            placeholder="Enter your age">
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Gender -->
+                    <div>
+                        <label for="gender" class="block text-white font-medium mb-2">Gender *</label>
+                        <select id="gender" name="gender" required
+                            class="input-field w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 text-white border border-white border-opacity-30 focus:outline-none focus:border-opacity-50">
+                            <option value="" class="text-gray-800">Select gender</option>
+                            <option value="Male" class="text-gray-800">Male</option>
+                            <option value="Female" class="text-gray-800">Female</option>
+                            <option value="Other" class="text-gray-800">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Blood Group -->
+                    <div>
+                        <label for="blood_group" class="block text-white font-medium mb-2">Blood Group</label>
+                        <select id="blood_group" name="blood_group"
+                            class="input-field w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 text-white border border-white border-opacity-30 focus:outline-none focus:border-opacity-50">
+                            <option value="" class="text-gray-800">Select blood group</option>
+                            <option value="A+" class="text-gray-800">A+</option>
+                            <option value="A-" class="text-gray-800">A-</option>
+                            <option value="B+" class="text-gray-800">B+</option>
+                            <option value="B-" class="text-gray-800">B-</option>
+                            <option value="AB+" class="text-gray-800">AB+</option>
+                            <option value="AB-" class="text-gray-800">AB-</option>
+                            <option value="O+" class="text-gray-800">O+</option>
+                            <option value="O-" class="text-gray-800">O-</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Phone -->
+                    <div>
+                        <label for="phone" class="block text-white font-medium mb-2">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" required pattern="[0-9]{11}"
+                            class="input-field w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 text-white placeholder-white placeholder-opacity-50 border border-white border-opacity-30 focus:outline-none focus:border-opacity-50"
+                            placeholder="01XXXXXXXXX">
+                    </div>
+
+                    <!-- Emergency Contact -->
+                    <div>
+                        <label for="emergency_contact" class="block text-white font-medium mb-2">Emergency
+                            Contact</label>
+                        <input type="tel" id="emergency_contact" name="emergency_contact" pattern="[0-9]{11}"
+                            class="input-field w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 text-white placeholder-white placeholder-opacity-50 border border-white border-opacity-30 focus:outline-none focus:border-opacity-50"
+                            placeholder="01XXXXXXXXX">
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label for="email" class="block text-white font-medium mb-2">Email Address *</label>
+                    <input type="email" id="email" name="email" required
+                        class="input-field w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 text-white placeholder-white placeholder-opacity-50 border border-white border-opacity-30 focus:outline-none focus:border-opacity-50"
+                        placeholder="your.email@example.com">
+                </div>
+
+                <!-- Address -->
+                <div>
+                    <label for="address" class="block text-white font-medium mb-2">Address</label>
+                    <textarea id="address" name="address" rows="3"
+                        class="input-field w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 text-white placeholder-white placeholder-opacity-50 border border-white border-opacity-30 focus:outline-none focus:border-opacity-50"
+                        placeholder="Enter your address"></textarea>
+                </div>
+
+                <!-- Password -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="password" class="block text-white font-medium mb-2">Password *</label>
+                        <input type="password" id="password" name="password" required minlength="6"
+                            class="input-field w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 text-white placeholder-white placeholder-opacity-50 border border-white border-opacity-30 focus:outline-none focus:border-opacity-50"
+                            placeholder="Create a password">
+                    </div>
+
+                    <div>
+                        <label for="confirm_password" class="block text-white font-medium mb-2">Confirm Password
+                            *</label>
+                        <input type="password" id="confirm_password" name="confirm_password" required minlength="6"
+                            class="input-field w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 text-white placeholder-white placeholder-opacity-50 border border-white border-opacity-30 focus:outline-none focus:border-opacity-50"
+                            placeholder="Confirm your password">
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn-primary w-full py-3 px-6 rounded-lg text-white font-semibold text-lg">
+                    Register
+                </button>
+            </form>
+
+            <div class="mt-6 text-center">
+                <p class="text-white text-sm opacity-75">
+                    Already have an account?
+                    <a href="{{ url_for('patient_login') }}" class="font-semibold hover:underline">Login here</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Password confirmation validation
+    document.querySelector('form').addEventListener('submit', function (e) {
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirm_password').value;
+
+        if (password !== confirmPassword) {
+            e.preventDefault();
+            alert('Passwords do not match!');
+        }
+    });
+</script>
+{% endblock %}

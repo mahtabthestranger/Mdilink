@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block title %}My Appointments - Medilink{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-8">
+        <h2 class="text-3xl font-bold text-white">My Appointments</h2>
+        <div class="glass px-4 py-2 rounded-lg text-white text-sm">
+            Total: {{ appointments|length }}
+        </div>
+    </div>
+
+    <!-- Filter Form -->
+    <div class="glass rounded-xl p-6 mb-8">
+        <form method="GET" action="{{ url_for('doctor_appointments') }}" class="flex flex-wrap gap-4 items-end">
+            <div class="flex-1 min-w-[200px]">
+                <label for="date" class="block text-white text-sm font-medium mb-2">Filter by Date</label>
+                <input type="date" name="date" id="date" value="{{ current_date or '' }}"
+                    class="w-full px-4 py-2 rounded-lg bg-white bg-opacity-20 text-white placeholder-white placeholder-opacity-70 border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50">
+            </div>
+            <div class="flex-1 min-w-[200px]">
+                <label for="status" class="block text-white text-sm font-medium mb-2">Filter by Status</label>
+                <select name="status" id="status"
+                    class="w-full px-4 py-2 rounded-lg bg-white bg-opacity-20 text-white border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50">
+                    <option value="" class="text-gray-800">All Statuses</option>
+                    <option value="Scheduled" class="text-gray-800" {% if current_status=='Scheduled' %}selected{% endif
+                        %}>Scheduled</option>
+                    <option value="Completed" class="text-gray-800" {% if current_status=='Completed' %}selected{% endif
+                        %}>Completed</option>
+                    <option value="Cancelled" class="text-gray-800" {% if current_status=='Cancelled' %}selected{% endif
+                        %}>Cancelled</option>
+                </select>
+            </div>
+            <div>
+                <button type="submit"
+                    class="px-6 py-2 bg-white text-indigo-600 font-bold rounded-lg hover:bg-opacity-90 transition duration-200">
+                    Filter
+                </button>
+                {% if current_date or current_status %}
+                <a href="{{ url_for('doctor_appointments') }}"
+                    class="ml-2 px-4 py-2 text-white hover:underline">Clear</a>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+
+    {% if appointments %}
+    <div class="grid gap-6">
+        {% for appointment in appointments %}
+        <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition duration-200">
+            <div class="p-6">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-1">{{ appointment.patient_name }}</h3>
+                        <p class="text-gray-600">
+                            <span class="font-medium">Age:</span> {{ appointment.age }} |
+                            <span class="font-medium">Gender:</span> {{ appointment.gender }}
+                        </p>
+                        <p class="text-gray-600">
+                            <span class="font-medium">Phone:</span> {{ appointment.phone }}
+                        </p>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-lg font-bold text-gray-800">
+                            {{ appointment.appointment_date.strftime('%B %d, %Y') }}
+                        </div>
+                        <div class="text-gray-600">
+                            {{ appointment.appointment_time }}
+                        </div>
+                        <div class="mt-2">
+                            {% if appointment.status == 'Scheduled' %}
+                            <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+                                {{ appointment.status }}
+                            </span>
+                            {% elif appointment.status == 'Completed' %}
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                                {{ appointment.status }}
+                            </span>
+                            {% elif appointment.status == 'Cancelled' %}
+                            <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-medium">
+                                {{ appointment.status }}
+                            </span>
+                            {% else %}
+                            <span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm font-medium">
+                                {{ appointment.status }}
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                {% if appointment.reason %}
+                <div class="mt-4 pt-4 border-t border-gray-100">
+                    <p class="text-gray-600 text-sm">
+                        <span class="font-medium text-gray-800">Reason for Visit:</span> {{ appointment.reason }}
+                    </p>
+                </div>
+                {% endif %}
+
+                {% if appointment.notes %}
+                <div class="mt-2">
+                    <p class="text-gray-600 text-sm">
+                        <span class="font-medium text-gray-800">Your Notes:</span> {{ appointment.notes }}
+                    </p>
+                </div>
+                {% endif %}
+
+                <!-- Action Buttons -->
+                {% if appointment.status == 'Scheduled' %}
+                <div class="mt-6 pt-4 border-t border-gray-100 flex justify-end space-x-3">
+                    <form
+                        action="{{ url_for('doctor_update_appointment_status', appointment_id=appointment.appointment_id) }}"
+                        method="POST" class="inline">
+                        <input type="hidden" name="status" value="Completed">
+                        <button type="submit"
+                            class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition duration-200">
+                            Mark Completed
+                        </button>
+                    </form>
+                    <form
+                        action="{{ url_for('doctor_update_appointment_status', appointment_id=appointment.appointment_id) }}"
+                        method="POST" class="inline"
+                        onsubmit="return confirm('Are you sure you want to cancel this appointment?');">
+                        <input type="hidden" name="status" value="Cancelled">
+                        <button type="submit"
+                            class="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition duration-200">
+                            Cancel
+                        </button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="glass rounded-2xl p-12 text-center">
+        <div class="text-6xl mb-4 opacity-50">📅</div>
+        <h3 class="text-2xl font-bold text-white mb-2">No Appointments Found</h3>
+        <p class="text-white opacity-75">Try adjusting your filters or check back later.</p>
+        {% if current_date or current_status %}
+        <a href="{{ url_for('doctor_appointments') }}"
+            class="inline-block mt-4 px-6 py-2 bg-white text-indigo-600 font-bold rounded-lg hover:bg-opacity-90 transition duration-200">
+            Clear Filters
+        </a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

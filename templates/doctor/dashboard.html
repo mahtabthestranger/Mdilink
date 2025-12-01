@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Doctor Dashboard - Medilink{% endblock %}
+
+{% block navigation %}
+<nav class="bg-white bg-opacity-10 backdrop-blur-md border-b border-white border-opacity-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+            <div class="flex items-center">
+                <h1 class="text-2xl font-bold text-white">🏥 Medilink</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="text-white opacity-90">Dr. {{ session.user_name }}</span>
+                <a href="{{ url_for('logout') }}" class="glass px-4 py-2 rounded-lg text-white hover-lift text-sm">
+                    Logout
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen py-12 px-4">
+    <div class="max-w-7xl mx-auto">
+        <!-- Welcome Section -->
+        <div class="glass rounded-2xl p-8 mb-8">
+            <h2 class="text-3xl font-bold text-white mb-2">Welcome, Dr. {{ session.user_name }}!</h2>
+            <p class="text-white opacity-75">Manage your appointments and patient records</p>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="grid md:grid-cols-2 gap-6 mb-8">
+            <a href="{{ url_for('doctor_appointments') }}" class="glass rounded-xl p-6 hover-lift card">
+                <div class="text-center">
+                    <div class="text-5xl mb-4">📅</div>
+                    <h3 class="text-xl font-bold text-white mb-2">My Appointments</h3>
+                    <p class="text-white opacity-75 text-sm">View scheduled appointments</p>
+                </div>
+            </a>
+
+            <a href="{{ url_for('doctor_patients') }}" class="glass rounded-xl p-6 hover-lift card">
+                <div class="text-center">
+                    <div class="text-5xl mb-4">📋</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Patients & Records</h3>
+                    <p class="text-white opacity-75 text-sm">View patients and medical history</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Today's Appointments -->
+        <div class="glass rounded-2xl p-8 mb-8">
+            <h3 class="text-2xl font-bold text-white mb-6">Today's Appointments</h3>
+            <div class="text-center py-12">
+                <div class="text-6xl mb-4 opacity-50">📅</div>
+                <p class="text-white opacity-75">No appointments for today</p>
+                <p class="text-white opacity-50 text-sm mt-2">Your schedule is clear!</p>
+            </div>
+        </div>
+
+        <!-- Upcoming Appointments -->
+        <div class="glass rounded-2xl p-8">
+            <h3 class="text-2xl font-bold text-white mb-6">Upcoming Appointments</h3>
+            <div class="text-center py-12">
+                <div class="text-6xl mb-4 opacity-50">📊</div>
+                <p class="text-white opacity-75">No upcoming appointments</p>
+                <p class="text-white opacity-50 text-sm mt-2">Appointments will appear here</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
