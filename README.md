@@ -1,15 +1,16 @@
+
 # Medilink Hospital Management System
 
 A comprehensive hospital management system built with Flask and MySQL.
 
-## 🏥 Project Overview
+## Project Overview
 
 This system manages hospital operations including:
 - Admin management of doctors and patients
 - Doctor appointment scheduling and medical records
 - Patient registration, appointment booking, and medical history
 
-## 👥 Team Members & Features
+## Team Members & Features
 
 ### Mahtab - Patient Authentication (F6, F7)
 **Branch:** `feature/mahtab-patient-auth`
@@ -34,7 +35,7 @@ This system manages hospital operations including:
 
 ---
 
-### Prottoy - Admin Features (F1, F2)
+### Tahrim Siddiqui - Admin Features (F1, F2)
 **Branch:** `feature/prottoy-admin-features`
 
 **Features:**
@@ -56,7 +57,7 @@ This system manages hospital operations including:
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Python 3.8+
@@ -103,7 +104,7 @@ python app.py
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 medilink4/
@@ -145,7 +146,7 @@ medilink4/
 
 ---
 
-## 🔐 User Roles & Access
+## User Roles & Access
 
 ### Admin
 - **Login:** Username and password
@@ -164,7 +165,7 @@ medilink4/
 
 ---
 
-## 🧪 Testing
+## Testing
 
 ### Run All Tests
 ```bash
@@ -179,7 +180,7 @@ python -m pytest tests/test_Mahtab_features.py -v
 # Oualid's features
 python -m pytest tests/test_Oualid_features.py -v
 
-# Prottoy's features
+# Tahrim Siddiqui's features
 python -m pytest tests/test_Prottoy_features.py -v
 
 # Mahieer's features
@@ -193,7 +194,7 @@ python -m pytest tests/test_Mahieer_features.py -v
 
 ---
 
-## 🌿 Git Workflow
+## Git Workflow
 
 ### For Team Members
 
@@ -230,7 +231,7 @@ git push -u origin feature/your-name-features
 
 ---
 
-## 📊 Database Schema
+## Database Schema
 
 ### Tables
 - `admins` - Admin user accounts
@@ -246,7 +247,7 @@ git push -u origin feature/your-name-features
 
 ---
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 - **Backend:** Flask (Python)
 - **Database:** MySQL
@@ -256,65 +257,65 @@ git push -u origin feature/your-name-features
 
 ---
 
-## 📝 Feature Requirements
+## Feature Requirements
 
-### F1: Admin Login ✅
+### F1: Admin Login
 - Secure authentication with username/password
 - Redirect to dashboard on success
 - Error handling for invalid credentials
 
-### F2: Admin Manage Doctors ✅
+### F2: Admin Manage Doctors
 - Add new doctors with all required fields
 - Edit existing doctor information
 - Delete/deactivate doctor accounts
 - Validation and confirmation messages
 
-### F3: Doctor Login ✅
+### F3: Doctor Login
 - Authentication with doctor ID and password
 - Account status verification
 - Error handling for invalid/inactive accounts
 
-### F4: Doctor View Appointments ✅
+### F4: Doctor View Appointments
 - Display all scheduled appointments
 - Filter by date and patient name
 - Show appointment details
 
-### F5: Doctor Medical Records ✅
+### F5: Doctor Medical Records
 - Add new medical records with diagnosis
 - Update existing records
 - Required field validation
 
-### F6: Patient Registration ✅
+### F6: Patient Registration
 - Self-registration form
 - Duplicate email detection
 - Password validation
 - Immediate login after registration
 
-### F7: Patient Login ✅
+### F7: Patient Login
 - Email and password authentication
 - Error handling for invalid credentials
 - User not found detection
 
-### F8: Patient Book Appointment ✅
+### F8: Patient Book Appointment
 - Select doctor and time slot
 - Availability checking
 - Booking confirmation
 - Error handling for unavailable slots
 
-### F9: Patient View Medical History ✅
+### F9: Patient View Medical History
 - Display past appointments
 - Show medical records with diagnosis
 - Filter and search capabilities
 
 ---
 
-## 🐛 Known Issues
+## Known Issues
 
 [Team members: Add any known issues here]
 
 ---
 
-## 🔮 Future Enhancements
+## Future Enhancements
 
 - Email notifications for appointments
 - SMS reminders
@@ -325,7 +326,7 @@ git push -u origin feature/your-name-features
 
 ---
 
-## 📞 Support
+## Support
 
 For issues or questions:
 - Check feature documentation in `docs/` folder
@@ -334,19 +335,8 @@ For issues or questions:
 
 ---
 
-## 📄 License
 
-[Your License Here]
 
----
 
-## 🙏 Acknowledgments
 
-- Course Professor: [Professor Name]
-- Team Members: Mahtab, Al Mamun Oualid, Prottoy, Mahieer Haai
-- Institution: [Your University]
 
----
-
-**Last Updated:** December 2025  
-**Version:** 1.0.0
