@@ -10,7 +10,6 @@ including database connection, session management, and security settings.
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
 load_dotenv()
 
 
@@ -22,21 +21,18 @@ class Config:
     overridden by environment-specific configurations.
     """
 
-    # Security key for session encryption
     SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key-change-in-production')
 
-    # MySQL Database Configuration
     MYSQL_HOST = os.getenv('MYSQL_HOST', 'localhost')
     MYSQL_USER = os.getenv('MYSQL_USER', 'root')
     MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD', '')
     MYSQL_DB = os.getenv('MYSQL_DB', 'medilink_db')
     MYSQL_CURSORCLASS = 'DictCursor'
 
-    # Session Cookie Configuration
     SESSION_COOKIE_SECURE = False
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_SAMESITE = 'Lax'
-    PERMANENT_SESSION_LIFETIME = 3600  # 1 hour in seconds
+    PERMANENT_SESSION_LIFETIME = 3600
 
 
 class DevelopmentConfig(Config):
@@ -62,7 +58,6 @@ class ProductionConfig(Config):
     SESSION_COOKIE_SECURE = True
 
 
-# Configuration dictionary for easy access
 config = {
     'development': DevelopmentConfig,
     'production': ProductionConfig,

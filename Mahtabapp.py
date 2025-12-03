@@ -57,27 +57,22 @@ def patient_register():
         blood_group = request.form.get('blood_group', '').strip()
         emergency_contact = request.form.get('emergency_contact', '').strip()
 
-        # Validate required fields
         if not all([full_name, age, gender, phone, email, password]):
             flash('Please fill all required fields', 'error')
             return redirect(url_for('patient_register'))
 
-        # Validate password confirmation
         if password != confirm_password:
             flash('Passwords do not match', 'error')
             return redirect(url_for('patient_register'))
 
-        # Validate password length
         if len(password) < 6:
             flash('Password must be at least 6 characters', 'error')
             return redirect(url_for('patient_register'))
 
-        # Check double email
         if Patient.email_exists(mysql, email):
             flash('User already registered with this email', 'error')
             return redirect(url_for('patient_register'))
 
-        # create patient account
         try:
             patient_id = Patient.create(
                 mysql=mysql,
@@ -107,20 +102,16 @@ def patient_register():
 def patient_login():
     """Handle patient login with session management."""
     if request.method == 'POST':
-        # Get login info from form
         email = request.form.get('email', '').strip().lower()
         password = request.form.get('password', '')
 
-        # Validate 
         if not email or not password:
             flash('Please enter email and password', 'error')
             return redirect(url_for('patient_login'))
 
-        # Verify 
         patient = Patient.verify_password(mysql, email, password)
 
         if patient:
-            #  (Session Management)
             session['user_type'] = 'patient'
             session['user_id'] = patient['patient_id']
             session['user_name'] = patient['full_name']
@@ -128,7 +119,6 @@ def patient_login():
             session.permanent = True
 
             flash(f'Welcome back, {patient["full_name"]}!', 'success')
-            # Redirect to dashboard
             return redirect(url_for('patient_dashboard'))
         else:
             flash('Invalid email or password', 'error')

@@ -8,10 +8,8 @@ import sys
 import os
 import pymysql
 
-# Install PyMySQL as MySQLdb replacement
 pymysql.install_as_MySQLdb()
 
-# Add parent directory to path for config import
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import Config
 
@@ -59,7 +57,6 @@ def create_tables():
         )
         cursor = conn.cursor()
         
-        # Admins Table
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS admins (
                 admin_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -75,7 +72,6 @@ def create_tables():
         """)
         print("[OK] Table 'admins' created successfully")
         
-        # Doctors Table
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS doctors (
                 doctor_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -97,7 +93,6 @@ def create_tables():
         """)
         print("[OK] Table 'doctors' created successfully")
         
-        # Patients Table
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS patients (
                 patient_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -117,7 +112,6 @@ def create_tables():
         """)
         print("[OK] Table 'patients' created successfully")
         
-        # Appointments Table
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS appointments (
                 appointment_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -137,7 +131,6 @@ def create_tables():
         """)
         print("[OK] Table 'appointments' created successfully")
         
-        # Medical Records Table
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS medical_records (
                 record_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -160,7 +153,6 @@ def create_tables():
         """)
         print("[OK] Table 'medical_records' created successfully")
         
-        # Password Reset Tokens Table
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS password_reset_tokens (
                 token_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -174,7 +166,6 @@ def create_tables():
         """)
         print("[OK] Table 'password_reset_tokens' created successfully")
         
-        # Chat Messages Table
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS chat_messages (
                 message_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -215,16 +206,13 @@ def seed_admin_data():
         )
         cursor = conn.cursor()
 
-        # Check if admin already exists
         cursor.execute("SELECT * FROM admins WHERE username = 'admin'")
         if cursor.fetchone():
             print("[INFO] Default admin account already exists")
         else:
-            # Import password hashing utility
             from werkzeug.security import generate_password_hash
             hashed_password = generate_password_hash('admin123')
 
-            # Insert default admin account
             cursor.execute("""
                 INSERT INTO admins (username, password, full_name, email, phone)
                 VALUES (%s, %s, %s, %s, %s)
@@ -261,25 +249,21 @@ def main():
     print("Developer: Mahtab Ahmed")
     print("=" * 60 + "\n")
 
-    # Step 1: Create database
     print("Step 1: Creating database...")
     if not create_database():
         print("\n[ERROR] Database initialization failed!")
         return
 
-    # Step 2: Create tables
     print("\nStep 2: Creating tables...")
     if not create_tables():
         print("\n[ERROR] Table creation failed!")
         return
 
-    # Step 3: Seed initial data
     print("\nStep 3: Seeding initial data...")
     if not seed_admin_data():
         print("\n[ERROR] Data seeding failed!")
         return
 
-    # Success message
     print("\n" + "=" * 60)
     print("[OK] DATABASE INITIALIZATION COMPLETED SUCCESSFULLY!")
     print("=" * 60)
