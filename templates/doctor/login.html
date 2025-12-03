@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Doctor Login - Medilink{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center px-4">
+    <div class="max-w-md w-full">
+        <!-- Back Button -->
+        <div class="mb-6">
+            <a href="{{ url_for('index') }}" class="text-white opacity-75 hover:opacity-100 flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Back to Home
+            </a>
+        </div>
+
+        <!-- Login Card -->
+        <div class="glass rounded-2xl p-8 shadow-2xl">
+            <div class="text-center mb-8">
+                <div
+                    class="w-20 h-20 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                        </path>
+                    </svg>
+                </div>
+                <h2 class="text-3xl font-bold text-white mb-2">Doctor Login</h2>
+                <p class="text-white opacity-75">Access your appointments and patient records</p>
+            </div>
+
+            <form method="POST" action="{{ url_for('doctor_login') }}" class="space-y-6">
+                <!-- Doctor Code Field -->
+                <div>
+                    <label for="doctor_code" class="block text-white font-medium mb-2">Doctor ID</label>
+                    <input type="text" id="doctor_code" name="doctor_code" required
+                        class="input-field w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 text-white placeholder-white placeholder-opacity-50 border border-white border-opacity-30 focus:outline-none focus:border-opacity-50"
+                        placeholder="Enter your doctor ID">
+                </div>
+
+                <!-- Password Field -->
+                <div>
+                    <label for="password" class="block text-white font-medium mb-2">Password</label>
+                    <input type="password" id="password" name="password" required
+                        class="input-field w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 text-white placeholder-white placeholder-opacity-50 border border-white border-opacity-30 focus:outline-none focus:border-opacity-50"
+                        placeholder="Enter your password">
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn-primary w-full py-3 px-6 rounded-lg text-white font-semibold text-lg">
+                    Login
+                </button>
+            </form>
+
+            <div class="mt-6 text-center">
+                <p class="text-white text-sm opacity-75">
+                    <a href="{{ url_for('forgot_password') }}" class="font-semibold hover:underline">Forgot
+                        Password?</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

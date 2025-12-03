@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}My Appointments - Medilink{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-8">
+        <h2 class="text-3xl font-bold text-white">My Appointments</h2>
+        <a href="{{ url_for('patient_book_appointment') }}"
+            class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-200 flex items-center">
+            <span class="mr-2">+</span> Book New
+        </a>
+    </div>
+
+    {% if appointments %}
+    <div class="grid gap-6">
+        {% for appointment in appointments %}
+        <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition duration-200">
+            <div class="p-6">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-1">Dr. {{ appointment.doctor_name }}</h3>
+                        <p class="text-blue-600 font-medium">{{ appointment.specialization }}</p>
+                        <p class="text-gray-500 text-sm">{{ appointment.university }}</p>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-lg font-bold text-gray-800">
+                            {{ appointment.appointment_date.strftime('%B %d, %Y') }}
+                        </div>
+                        <div class="text-gray-600">
+                            {{ appointment.appointment_time }}
+                        </div>
+                        <div class="mt-2">
+                            {% if appointment.status == 'Scheduled' %}
+                            <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+                                {{ appointment.status }}
+                            </span>
+                            {% elif appointment.status == 'Completed' %}
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                                {{ appointment.status }}
+                            </span>
+                            {% elif appointment.status == 'Cancelled' %}
+                            <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-medium">
+                                {{ appointment.status }}
+                            </span>
+                            {% else %}
+                            <span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm font-medium">
+                                {{ appointment.status }}
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                {% if appointment.reason %}
+                <div class="mt-4 pt-4 border-t border-gray-100">
+                    <p class="text-gray-600 text-sm">
+                        <span class="font-medium text-gray-800">Reason:</span> {{ appointment.reason }}
+                    </p>
+                </div>
+                {% endif %}
+
+                {% if appointment.notes %}
+                <div class="mt-2">
+                    <p class="text-gray-600 text-sm">
+                        <span class="font-medium text-gray-800">Doctor's Notes:</span> {{ appointment.notes }}
+                    </p>
+                </div>
+                {% endif %}
+
+                <!-- Cancel Button -->
+                {% if appointment.status == 'Scheduled' %}
+                <div class="mt-6 pt-4 border-t border-gray-100 flex justify-end">
+                    <form
+                        action="{{ url_for('patient_cancel_appointment', appointment_id=appointment.appointment_id) }}"
+                        method="POST" class="inline"
+                        onsubmit="return confirm('Are you sure you want to cancel this appointment?');">
+                        <button type="submit"
+                            class="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition duration-200">
+                            Cancel Appointment
+                        </button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="glass rounded-2xl p-12 text-center">
+        <div class="text-6xl mb-4 opacity-50">📅</div>
+        <h3 class="text-2xl font-bold text-white mb-2">No Appointments Found</h3>
+        <p class="text-white opacity-75 mb-6">You haven't booked any appointments yet.</p>
+        <a href="{{ url_for('patient_book_appointment') }}"
+            class="bg-white text-blue-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition duration-200 inline-block">
+            Book Your First Appointment
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

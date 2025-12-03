@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Patients - Medilink{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h2><i class="fas fa-users me-2"></i>Patients</h2>
+    </div>
+    <div class="col-md-4">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search patients...">
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover" id="patientsTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Age/Gender</th>
+                        <th>Contact</th>
+                        <th>Blood Group</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for patient in patients %}
+                    <tr>
+                        <td>{{ patient.patient_id }}</td>
+                        <td>{{ patient.full_name }}</td>
+                        <td>{{ patient.age }} / {{ patient.gender }}</td>
+                        <td>
+                            <div><i class="fas fa-phone me-1"></i> {{ patient.phone }}</div>
+                            <div class="small text-muted"><i class="fas fa-envelope me-1"></i> {{ patient.email }}</div>
+                        </td>
+                        <td>
+                            {% if patient.blood_group %}
+                            <span class="badge bg-danger">{{ patient.blood_group }}</span>
+                            {% else %}
+                            <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ url_for('doctor_view_patient', patient_id=patient.patient_id) }}"
+                                class="btn btn-sm btn-primary">
+                                <i class="fas fa-file-medical me-1"></i> View Details
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if not patients %}
+        <div class="text-center py-4">
+            <p class="text-muted">No patients found.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    document.getElementById('searchInput').addEventListener('keyup', function () {
+        var searchText = this.value.toLowerCase();
+        var table = document.getElementById('patientsTable');
+        var rows = table.getElementsByTagName('tr');
+
+        for (var i = 1; i < rows.length; i++) {
+            var row = rows[i];
+            var text = row.textContent.toLowerCase();
+            if (text.indexOf(searchText) > -1) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        }
+    });
+</script>
+{% endblock %}
