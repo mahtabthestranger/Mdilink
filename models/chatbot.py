@@ -25,8 +25,8 @@ class Chatbot:
         # Greeting patterns
         if any(word in message_lower for word in ['hello', 'hi', 'hey', 'greetings']):
             if user_context and user_context.get('user_name'):
-                return f"Hello {user_context['user_name']}! 👋 How can I help you today?"
-            return "Hello! 👋 Welcome to Medilink Hospital. How can I assist you today?"
+                return f"Hello {user_context['user_name']}! How can I help you today?"
+            return "Hello! Welcome to Medilink Hospital. How can I assist you today?"
         
         # Appointment booking
         if any(word in message_lower for word in ['book', 'appointment', 'schedule', 'doctor']):
@@ -60,28 +60,28 @@ class Chatbot:
         
         # Contact information
         if any(word in message_lower for word in ['contact', 'phone', 'email', 'address', 'location']):
-            return "📞 Phone: +880-XXX-XXXXXX<br>📧 Email: info@medilink.com<br>📍 Address: Dhaka, Bangladesh<br>For emergencies, call our 24/7 helpline!"
+            return "Phone: +880-XXX-XXXXXX<br>Email: info@medilink.com<br>Address: Dhaka, Bangladesh<br>For emergencies, call our 24/7 helpline!"
         
         # Help/Features
         if any(word in message_lower for word in ['help', 'what can you do', 'features', 'how']):
             return """I can help you with:
             <ul>
-                <li>📅 Booking appointments</li>
-                <li>👨‍⚕️ Finding doctors</li>
-                <li>📋 Viewing medical records</li>
-                <li>❌ Cancelling appointments</li>
-                <li>🔑 Resetting passwords</li>
-                <li>ℹ️ Hospital information</li>
+                <li>Booking appointments</li>
+                <li>Finding doctors</li>
+                <li>Viewing medical records</li>
+                <li>Cancelling appointments</li>
+                <li>Resetting passwords</li>
+                <li>Hospital information</li>
             </ul>
             Just ask me anything!"""
         
         # Thank you
         if any(word in message_lower for word in ['thank', 'thanks', 'appreciate']):
-            return "You're welcome! 😊 Is there anything else I can help you with?"
+            return "You're welcome! Is there anything else I can help you with?"
         
         # Goodbye
         if any(word in message_lower for word in ['bye', 'goodbye', 'see you', 'exit']):
-            return "Goodbye! Take care and stay healthy! 👋 Feel free to chat anytime you need help."
+            return "Goodbye! Take care and stay healthy! Feel free to chat anytime you need help."
         
         # Default response
         return """I'm here to help! You can ask me about:
