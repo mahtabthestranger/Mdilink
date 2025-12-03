@@ -1,0 +1,988 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5. Patient Management - CRUD Operations &mdash; Medilink Admin Routes 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="6. API Endpoints Reference - Complete Admin Routes" href="api_endpoints.html" />
+    <link rel="prev" title="4. Doctor Management - CRUD Operations" href="doctor_management.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Medilink Admin Routes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">1. Medilink Admin Routes - Overview &amp; Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_authentication.html">2. Admin Authentication - Login &amp; Session Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_dashboard.html">3. Admin Dashboard - Statistics &amp; Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="doctor_management.html">4. Doctor Management - CRUD Operations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">5. Patient Management - CRUD Operations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#patient-management-overview">5.1. Patient Management Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#route-summary">5.2. Route Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#list-patients">5.3. List Patients</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#request">5.3.1. Request</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#response-success">5.3.2. Response - Success</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#database-query">5.3.3. Database Query</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#edit-patient">5.4. Edit Patient</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#request-get">5.4.1. Request (GET)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#response-get">5.4.1.1. Response (GET)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#request-post">5.4.2. Request (POST)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#response-post-success">5.4.3. Response (POST) - Success</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#response-post-validation-error">5.4.4. Response (POST) - Validation Error</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#response-post-server-error">5.4.5. Response (POST) - Server Error</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#delete-patient">5.5. Delete Patient</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">5.5.1. Request</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">5.5.2. Response - Success</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#response-error">5.5.3. Response - Error</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#implementation-details">5.6. Implementation Details</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#patient-database-schema">5.6.1. Patient Database Schema</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#validation-rules">5.6.2. Validation Rules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#gender">5.6.2.1. Gender</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#address">5.6.2.2. Address</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#city-state-postal-code">5.6.2.3. City, State, Postal Code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#emergency-contact">5.6.2.4. Emergency Contact</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#gender-options">5.6.3. Gender Options</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#search-and-filter">5.7. Search and Filter</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#search-functionality">5.7.1. Search Functionality</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#filter-by-status">5.7.2. Filter by Status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sort-options">5.7.3. Sort Options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pagination">5.7.4. Pagination</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#code-examples">5.8. Code Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#list-patients-python">5.8.1. List Patients (Python)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#edit-patient-javascript">5.8.2. Edit Patient (JavaScript)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#delete-patient-curl">5.8.3. Delete Patient (cURL)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#performance-optimization">5.9. Performance Optimization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#database-indexes">5.9.1. Database Indexes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#query-optimization">5.9.2. Query Optimization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#patient-relationships">5.10. Patient Relationships</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#patient-associations">5.10.1. Patient Associations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#patient-deletion-impact">5.10.2. Patient Deletion Impact</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#restoring-deleted-patient">5.10.3. Restoring Deleted Patient</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#common-issues">5.11. Common Issues</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#email-already-in-use">5.11.1. Email Already in Use</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#duplicate-phone-number">5.11.2. Duplicate Phone Number</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cannot-delete-patient">5.11.3. Cannot Delete Patient</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#invalid-date-of-birth">5.11.4. Invalid Date of Birth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#search-not-working">5.11.5. Search Not Working</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">5.12. Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_endpoints.html">6. API Endpoints Reference - Complete Admin Routes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">7. Code Examples - Admin Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">8. Troubleshooting - Common Issues &amp; Solutions</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Medilink Admin Routes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">5. </span>Patient Management - CRUD Operations</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/patient_management.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="patient-management-crud-operations">
+<h1><span class="section-number">5. </span>Patient Management - CRUD Operations<a class="headerlink" href="#patient-management-crud-operations" title="Link to this heading"></a></h1>
+<section id="patient-management-overview">
+<h2><span class="section-number">5.1. </span>Patient Management Overview<a class="headerlink" href="#patient-management-overview" title="Link to this heading"></a></h2>
+<p>The patient management module provides complete operations for managing patients
+in the Medilink system, including CRUD operations and patient record viewing.</p>
+</section>
+<section id="route-summary">
+<h2><span class="section-number">5.2. </span>Route Summary<a class="headerlink" href="#route-summary" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 15.0%" />
+<col style="width: 45.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Route</p></th>
+<th class="head"><p>Method</p></th>
+<th class="head"><p>Auth</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>/admin/patients</p></td>
+<td><p>GET</p></td>
+<td><p>Admin</p></td>
+<td><p>List all active patients</p></td>
+</tr>
+<tr class="row-odd"><td><p>/admin/patients/edit/&lt;id&gt;</p></td>
+<td><p>GET, POST</p></td>
+<td><p>Admin</p></td>
+<td><p>Edit patient information</p></td>
+</tr>
+<tr class="row-even"><td><p>/admin/patients/delete/&lt;id&gt;</p></td>
+<td><p>POST</p></td>
+<td><p>Admin</p></td>
+<td><p>Delete/deactivate patient</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="list-patients">
+<h2><span class="section-number">5.3. </span>List Patients<a class="headerlink" href="#list-patients" title="Link to this heading"></a></h2>
+<p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/admin/patients</span></code></p>
+<p><strong>Methods</strong>: GET</p>
+<p><strong>Description</strong></p>
+<p>Displays a paginated list of all active patients with search and filter options.</p>
+<section id="request">
+<h3><span class="section-number">5.3.1. </span>Request<a class="headerlink" href="#request" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>GET<span class="w"> </span>/admin/patients
+GET<span class="w"> </span>/admin/patients?search<span class="o">=</span>smith<span class="p">&amp;</span><span class="nv">page</span><span class="o">=</span><span class="m">1</span><span class="p">&amp;</span><span class="nv">status</span><span class="o">=</span>active
+</pre></div>
+</div>
+<p><strong>Query Parameters</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 15.0%" />
+<col style="width: 15.0%" />
+<col style="width: 15.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>search</p></td>
+<td><p>string</p></td>
+<td><p>(empty)</p></td>
+<td><p>Search patients by name, email, phone</p></td>
+</tr>
+<tr class="row-odd"><td><p>page</p></td>
+<td><p>integer</p></td>
+<td><p>1</p></td>
+<td><p>Page number for pagination</p></td>
+</tr>
+<tr class="row-even"><td><p>status</p></td>
+<td><p>string</p></td>
+<td><p>active</p></td>
+<td><p>Filter by status (active, inactive)</p></td>
+</tr>
+<tr class="row-odd"><td><p>sort</p></td>
+<td><p>string</p></td>
+<td><p>created_at</p></td>
+<td><p>Sort by field (created_at, name, email)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="response-success">
+<h3><span class="section-number">5.3.2. </span>Response - Success<a class="headerlink" href="#response-success" title="Link to this heading"></a></h3>
+<p><strong>Status Code</strong>: 200 (OK)</p>
+<p><strong>Content-Type</strong>: text/html</p>
+<p><strong>Rendered Template</strong>: admin/patients.html</p>
+<p><strong>Response Data</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;patients&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;patient_id&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s1">&#39;full_name&#39;</span><span class="p">:</span> <span class="s1">&#39;John Smith&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="s1">&#39;john.smith@email.com&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;phone&#39;</span><span class="p">:</span> <span class="s1">&#39;555-0100&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;date_of_birth&#39;</span><span class="p">:</span> <span class="s1">&#39;1985-03-15&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;M&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;address&#39;</span><span class="p">:</span> <span class="s1">&#39;123 Main St, City, State&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;is_active&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s1">&#39;created_at&#39;</span><span class="p">:</span> <span class="s1">&#39;2023-01-20 10:30:00&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;updated_at&#39;</span><span class="p">:</span> <span class="s1">&#39;2024-01-15 14:20:00&#39;</span>
+        <span class="p">},</span>
+        <span class="c1"># ... more patients</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;total_count&#39;</span><span class="p">:</span> <span class="mi">240</span><span class="p">,</span>
+    <span class="s1">&#39;page&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s1">&#39;per_page&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="s1">&#39;total_pages&#39;</span><span class="p">:</span> <span class="mi">24</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="database-query">
+<h3><span class="section-number">5.3.3. </span>Database Query<a class="headerlink" href="#database-query" title="Link to this heading"></a></h3>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">patients</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">is_active</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="k">AND</span><span class="w"> </span><span class="p">(</span><span class="n">full_name</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="o">%</span><span class="k">search</span><span class="o">%</span>
+<span class="w">     </span><span class="k">OR</span><span class="w"> </span><span class="n">email</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="o">%</span><span class="k">search</span><span class="o">%</span>
+<span class="w">     </span><span class="k">OR</span><span class="w"> </span><span class="n">phone</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="o">%</span><span class="k">search</span><span class="o">%</span><span class="p">)</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">created_at</span><span class="w"> </span><span class="k">DESC</span>
+<span class="k">LIMIT</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="k">OFFSET</span><span class="w"> </span><span class="mi">0</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="edit-patient">
+<h2><span class="section-number">5.4. </span>Edit Patient<a class="headerlink" href="#edit-patient" title="Link to this heading"></a></h2>
+<p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/admin/patients/edit/&lt;id&gt;</span></code></p>
+<p><strong>Methods</strong>: GET, POST</p>
+<p><strong>Parameters</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 15.0%" />
+<col style="width: 15.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>integer</p></td>
+<td><p>Patient ID to edit</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Description</strong></p>
+<p>Form to edit patient’s personal information (not medical records).</p>
+<section id="request-get">
+<h3><span class="section-number">5.4.1. </span>Request (GET)<a class="headerlink" href="#request-get" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>GET<span class="w"> </span>/admin/patients/edit/42
+</pre></div>
+</div>
+<section id="response-get">
+<h4><span class="section-number">5.4.1.1. </span>Response (GET)<a class="headerlink" href="#response-get" title="Link to this heading"></a></h4>
+<p><strong>Status Code</strong>: 200 (OK)</p>
+<p><strong>Content</strong>: Pre-filled edit form with patient data</p>
+<p><strong>Form Fields</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 45.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Required</p></th>
+<th class="head"><p>Validation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>full_name</p></td>
+<td><p>text</p></td>
+<td><p>Yes</p></td>
+<td><p>2-100 characters, letters/spaces</p></td>
+</tr>
+<tr class="row-odd"><td><p>email</p></td>
+<td><p>email</p></td>
+<td><p>Yes</p></td>
+<td><p>Valid email, unique</p></td>
+</tr>
+<tr class="row-even"><td><p>phone</p></td>
+<td><p>tel</p></td>
+<td><p>Yes</p></td>
+<td><p>Valid phone format, unique</p></td>
+</tr>
+<tr class="row-odd"><td><p>date_of_birth</p></td>
+<td><p>date</p></td>
+<td><p>No</p></td>
+<td><p>Valid date, patient age 0-150</p></td>
+</tr>
+<tr class="row-even"><td><p>gender</p></td>
+<td><p>select</p></td>
+<td><p>No</p></td>
+<td><p>M, F, Other, Prefer not to say</p></td>
+</tr>
+<tr class="row-odd"><td><p>address</p></td>
+<td><p>textarea</p></td>
+<td><p>No</p></td>
+<td><p>0-200 characters</p></td>
+</tr>
+<tr class="row-even"><td><p>city</p></td>
+<td><p>text</p></td>
+<td><p>No</p></td>
+<td><p>City name</p></td>
+</tr>
+<tr class="row-odd"><td><p>state</p></td>
+<td><p>text</p></td>
+<td><p>No</p></td>
+<td><p>State/Province</p></td>
+</tr>
+<tr class="row-even"><td><p>postal_code</p></td>
+<td><p>text</p></td>
+<td><p>No</p></td>
+<td><p>Postal code</p></td>
+</tr>
+<tr class="row-odd"><td><p>emergency_contact</p></td>
+<td><p>text</p></td>
+<td><p>No</p></td>
+<td><p>Contact person name</p></td>
+</tr>
+<tr class="row-even"><td><p>emergency_phone</p></td>
+<td><p>tel</p></td>
+<td><p>No</p></td>
+<td><p>Emergency contact phone</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="request-post">
+<h3><span class="section-number">5.4.2. </span>Request (POST)<a class="headerlink" href="#request-post" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>POST<span class="w"> </span>/admin/patients/edit/42
+Content-Type:<span class="w"> </span>application/x-www-form-urlencoded
+
+<span class="nv">full_name</span><span class="o">=</span>John%20Anderson<span class="p">&amp;</span><span class="nv">email</span><span class="o">=</span>john.a@email.com<span class="p">&amp;</span><span class="nv">phone</span><span class="o">=</span><span class="m">555</span>-4321<span class="p">&amp;</span>
+<span class="nv">date_of_birth</span><span class="o">=</span><span class="m">1985</span>-03-15<span class="p">&amp;</span><span class="nv">gender</span><span class="o">=</span>M<span class="p">&amp;</span><span class="nv">address</span><span class="o">=</span><span class="m">456</span>%20Oak%20Ave<span class="p">&amp;</span>
+<span class="nv">city</span><span class="o">=</span>Springfield<span class="p">&amp;</span><span class="nv">state</span><span class="o">=</span>IL<span class="p">&amp;</span><span class="nv">postal_code</span><span class="o">=</span><span class="m">62701</span>
+</pre></div>
+</div>
+</section>
+<section id="response-post-success">
+<h3><span class="section-number">5.4.3. </span>Response (POST) - Success<a class="headerlink" href="#response-post-success" title="Link to this heading"></a></h3>
+<p><strong>Status Code</strong>: 302 (Redirect)</p>
+<p><strong>Location Header</strong>: /admin/patients</p>
+<p><strong>Flash Message</strong>: “Patient updated successfully!”</p>
+<p><strong>Database Changes</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">UPDATE</span><span class="w"> </span><span class="n">patients</span>
+<span class="k">SET</span><span class="w"> </span><span class="n">full_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;John Anderson&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">email</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;john.a@email.com&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">phone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;555-4321&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">date_of_birth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;1985-03-15&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">gender</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;M&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;456 Oak Ave&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">city</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Springfield&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="k">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;IL&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">postal_code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;62701&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">updated_at</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">patient_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">42</span>
+</pre></div>
+</div>
+</section>
+<section id="response-post-validation-error">
+<h3><span class="section-number">5.4.4. </span>Response (POST) - Validation Error<a class="headerlink" href="#response-post-validation-error" title="Link to this heading"></a></h3>
+<p><strong>Status Code</strong>: 200 (OK)</p>
+<p><strong>Response</strong>: Re-rendered form with error messages</p>
+<p><strong>Possible Errors</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Error</p></th>
+<th class="head"><p>Cause</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>“Full name is required”</p></td>
+<td><p>Empty full_name field</p></td>
+</tr>
+<tr class="row-odd"><td><p>“Invalid email format”</p></td>
+<td><p>Malformed email address</p></td>
+</tr>
+<tr class="row-even"><td><p>“Email already in use”</p></td>
+<td><p>Email assigned to another patient</p></td>
+</tr>
+<tr class="row-odd"><td><p>“Phone already in use”</p></td>
+<td><p>Phone assigned to another patient</p></td>
+</tr>
+<tr class="row-even"><td><p>“Invalid date of birth”</p></td>
+<td><p>Date format or age validation failed</p></td>
+</tr>
+<tr class="row-odd"><td><p>“Invalid gender selection”</p></td>
+<td><p>Gender not from predefined list</p></td>
+</tr>
+<tr class="row-even"><td><p>“Address too long”</p></td>
+<td><p>Address exceeds 200 characters</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="response-post-server-error">
+<h3><span class="section-number">5.4.5. </span>Response (POST) - Server Error<a class="headerlink" href="#response-post-server-error" title="Link to this heading"></a></h3>
+<p><strong>Status Code</strong>: 302 (Redirect)</p>
+<p><strong>Location Header</strong>: /admin/patients/edit/42</p>
+<p><strong>Flash Message</strong>: “Error updating patient”</p>
+</section>
+</section>
+<section id="delete-patient">
+<h2><span class="section-number">5.5. </span>Delete Patient<a class="headerlink" href="#delete-patient" title="Link to this heading"></a></h2>
+<p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/admin/patients/delete/&lt;id&gt;</span></code></p>
+<p><strong>Methods</strong>: POST</p>
+<p><strong>Description</strong></p>
+<p>Soft-delete (deactivate) a patient. Data preserved in database.</p>
+<section id="id1">
+<h3><span class="section-number">5.5.1. </span>Request<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>POST<span class="w"> </span>/admin/patients/delete/42
+</pre></div>
+</div>
+<p><strong>Optional Parameters</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 65.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>confirm</p></td>
+<td><p>string</p></td>
+<td><p>“yes” to confirm deletion</p></td>
+</tr>
+<tr class="row-odd"><td><p>reason</p></td>
+<td><p>string</p></td>
+<td><p>Reason for deletion (optional)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id2">
+<h3><span class="section-number">5.5.2. </span>Response - Success<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<p><strong>Status Code</strong>: 302 (Redirect)</p>
+<p><strong>Location Header</strong>: /admin/patients</p>
+<p><strong>Flash Message</strong>: “Patient deleted successfully”</p>
+<p><strong>Database Changes</strong></p>
+<p>Soft delete (mark inactive):</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">UPDATE</span><span class="w"> </span><span class="n">patients</span>
+<span class="k">SET</span><span class="w"> </span><span class="n">is_active</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="n">deleted_at</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">patient_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">42</span>
+</pre></div>
+</div>
+</section>
+<section id="response-error">
+<h3><span class="section-number">5.5.3. </span>Response - Error<a class="headerlink" href="#response-error" title="Link to this heading"></a></h3>
+<p><strong>Status Code</strong>: 302 (Redirect)</p>
+<p><strong>Location Header</strong>: /admin/patients</p>
+<p><strong>Flash Message</strong>: “Patient not found”</p>
+<p><strong>Possible Errors</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Error</p></th>
+<th class="head"><p>Cause</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>“Patient not found”</p></td>
+<td><p>Invalid patient ID</p></td>
+</tr>
+<tr class="row-odd"><td><p>“Cannot delete - active appointments”</p></td>
+<td><p>Patient has scheduled appointments</p></td>
+</tr>
+<tr class="row-even"><td><p>“Error deleting patient”</p></td>
+<td><p>Database error</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="implementation-details">
+<h2><span class="section-number">5.6. </span>Implementation Details<a class="headerlink" href="#implementation-details" title="Link to this heading"></a></h2>
+<section id="patient-database-schema">
+<h3><span class="section-number">5.6.1. </span>Patient Database Schema<a class="headerlink" href="#patient-database-schema" title="Link to this heading"></a></h3>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">patients</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">patient_id</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">full_name</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">email</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">phone</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">UNIQUE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">password</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span>
+<span class="w">    </span><span class="n">date_of_birth</span><span class="w"> </span><span class="nb">DATE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">gender</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">address</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">city</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
+<span class="w">    </span><span class="k">state</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
+<span class="w">    </span><span class="n">postal_code</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">emergency_contact</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">emergency_phone</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">is_active</span><span class="w"> </span><span class="n">TINYINT</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="n">created_at</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="p">,</span>
+<span class="w">    </span><span class="n">updated_at</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="p">,</span>
+<span class="w">    </span><span class="n">deleted_at</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">NULL</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_email</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">patients</span><span class="p">(</span><span class="n">email</span><span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_phone</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">patients</span><span class="p">(</span><span class="n">phone</span><span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_active</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">patients</span><span class="p">(</span><span class="n">is_active</span><span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_created_at</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">patients</span><span class="p">(</span><span class="n">created_at</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="validation-rules">
+<h3><span class="section-number">5.6.2. </span>Validation Rules<a class="headerlink" href="#validation-rules" title="Link to this heading"></a></h3>
+<p><strong>Full Name</strong>
+- Required
+- 2-100 characters
+- Letters and spaces only
+- Trimmed of whitespace</p>
+<p><strong>Email</strong>
+- Required
+- Valid email format
+- Unique (no duplicates)
+- Case-insensitive</p>
+<p><strong>Phone</strong>
+- Required
+- Valid phone format
+- Unique (no duplicates)
+- Stored with formatting</p>
+<p><strong>Date of Birth</strong>
+- Optional
+- Valid date format (YYYY-MM-DD)
+- Age 0-150 years
+- Not in future</p>
+<section id="gender">
+<h4><span class="section-number">5.6.2.1. </span>Gender<a class="headerlink" href="#gender" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Optional</p></li>
+<li><p>Predefined options:
+- M (Male)
+- F (Female)
+- Other
+- Prefer not to say</p></li>
+</ul>
+</section>
+<section id="address">
+<h4><span class="section-number">5.6.2.2. </span>Address<a class="headerlink" href="#address" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Optional</p></li>
+<li><p>0-200 characters</p></li>
+<li><p>Can include street, number</p></li>
+</ul>
+</section>
+<section id="city-state-postal-code">
+<h4><span class="section-number">5.6.2.3. </span>City, State, Postal Code<a class="headerlink" href="#city-state-postal-code" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Optional</p></li>
+<li><p>City/State: 0-50 characters</p></li>
+<li><p>Postal Code: 0-20 characters</p></li>
+</ul>
+</section>
+<section id="emergency-contact">
+<h4><span class="section-number">5.6.2.4. </span>Emergency Contact<a class="headerlink" href="#emergency-contact" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Optional</p></li>
+<li><p>0-100 characters</p></li>
+<li><p>Must be person name if provided</p></li>
+<li><p>Phone: valid format if provided</p></li>
+</ul>
+</section>
+</section>
+<section id="gender-options">
+<h3><span class="section-number">5.6.3. </span>Gender Options<a class="headerlink" href="#gender-options" title="Link to this heading"></a></h3>
+<p>Supported gender values:</p>
+<ul class="simple">
+<li><p>M - Male</p></li>
+<li><p>F - Female</p></li>
+<li><p>O - Other</p></li>
+<li><p>P - Prefer not to say</p></li>
+<li><p>(empty) - Not specified</p></li>
+</ul>
+</section>
+</section>
+<section id="search-and-filter">
+<h2><span class="section-number">5.7. </span>Search and Filter<a class="headerlink" href="#search-and-filter" title="Link to this heading"></a></h2>
+<section id="search-functionality">
+<h3><span class="section-number">5.7.1. </span>Search Functionality<a class="headerlink" href="#search-functionality" title="Link to this heading"></a></h3>
+<p>Search can match on:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Query Pattern</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Full Name</p></td>
+<td><p>LIKE %search% (case-insensitive)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Email</p></td>
+<td><p>LIKE %search%</p></td>
+</tr>
+<tr class="row-even"><td><p>Phone</p></td>
+<td><p>LIKE %search% (searches numeric portion)</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example Searches</strong></p>
+<ul class="simple">
+<li><p>“john” → Matches “John Smith”, “Johnny Doe”</p></li>
+<li><p>“smith&#64;” → Matches “<a class="reference external" href="mailto:john&#46;smith&#37;&#52;&#48;email&#46;com">john<span>&#46;</span>smith<span>&#64;</span>email<span>&#46;</span>com</a>”</p></li>
+<li><p>“555-01” → Matches “555-0100”, “555-0123”</p></li>
+</ul>
+</section>
+<section id="filter-by-status">
+<h3><span class="section-number">5.7.2. </span>Filter by Status<a class="headerlink" href="#filter-by-status" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Status</p></th>
+<th class="head"><p>SQL WHERE Clause</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>active</p></td>
+<td><p>is_active = 1</p></td>
+</tr>
+<tr class="row-odd"><td><p>inactive</p></td>
+<td><p>is_active = 0</p></td>
+</tr>
+<tr class="row-even"><td><p>all</p></td>
+<td><p>(no filter)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="sort-options">
+<h3><span class="section-number">5.7.3. </span>Sort Options<a class="headerlink" href="#sort-options" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Sort Option</p></th>
+<th class="head"><p>SQL ORDER BY</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>created_at (default)</p></td>
+<td><p>ORDER BY created_at DESC</p></td>
+</tr>
+<tr class="row-odd"><td><p>name</p></td>
+<td><p>ORDER BY full_name ASC</p></td>
+</tr>
+<tr class="row-even"><td><p>email</p></td>
+<td><p>ORDER BY email ASC</p></td>
+</tr>
+<tr class="row-odd"><td><p>updated_at</p></td>
+<td><p>ORDER BY updated_at DESC</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="pagination">
+<h3><span class="section-number">5.7.4. </span>Pagination<a class="headerlink" href="#pagination" title="Link to this heading"></a></h3>
+<p>Default: 10 patients per page</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">per_page</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">page</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;page&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">offset</span> <span class="o">=</span> <span class="p">(</span><span class="n">page</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">per_page</span>
+
+<span class="c1"># In query: LIMIT per_page OFFSET offset</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="code-examples">
+<h2><span class="section-number">5.8. </span>Code Examples<a class="headerlink" href="#code-examples" title="Link to this heading"></a></h2>
+<section id="list-patients-python">
+<h3><span class="section-number">5.8.1. </span>List Patients (Python)<a class="headerlink" href="#list-patients-python" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Cookie&#39;</span><span class="p">:</span> <span class="s1">&#39;session=your_session_id&#39;</span><span class="p">}</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="s1">&#39;http://localhost:5000/admin/patients&#39;</span><span class="p">,</span>
+    <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+    <span class="n">params</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;search&#39;</span><span class="p">:</span> <span class="s1">&#39;smith&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;page&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;active&#39;</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+    <span class="c1"># Parse HTML or use JSON API</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Patient list retrieved&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="edit-patient-javascript">
+<h3><span class="section-number">5.8.2. </span>Edit Patient (JavaScript)<a class="headerlink" href="#edit-patient-javascript" title="Link to this heading"></a></h3>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">patientData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">full_name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Jane Smith&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;jane.smith@email.com&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">phone</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;555-5555&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">date_of_birth</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;1990-06-20&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">gender</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;F&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">address</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;789 Pine Road&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">city</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Portland&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">state</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;OR&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">postal_code</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;97201&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">emergency_contact</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;John Smith&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">emergency_phone</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;555-5550&#39;</span>
+<span class="p">};</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">formData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">FormData</span><span class="p">();</span>
+<span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">patientData</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">key</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">formData</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span><span class="w"> </span><span class="nx">patientData</span><span class="p">[</span><span class="nx">key</span><span class="p">]);</span>
+<span class="p">});</span>
+
+<span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;/admin/patients/edit/42&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">method</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">body</span><span class="o">:</span><span class="w"> </span><span class="nx">formData</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">credentials</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;include&#39;</span>
+<span class="p">})</span>
+<span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">response</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">redirected</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">url</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</section>
+<section id="delete-patient-curl">
+<h3><span class="section-number">5.8.3. </span>Delete Patient (cURL)<a class="headerlink" href="#delete-patient-curl" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:5000/admin/patients/delete/42<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>-b<span class="w"> </span><span class="s2">&quot;session=your_session_id&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>-d<span class="w"> </span><span class="s2">&quot;confirm=yes&amp;reason=Patient%20requested%20account%20deletion&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="performance-optimization">
+<h2><span class="section-number">5.9. </span>Performance Optimization<a class="headerlink" href="#performance-optimization" title="Link to this heading"></a></h2>
+<section id="database-indexes">
+<h3><span class="section-number">5.9.1. </span>Database Indexes<a class="headerlink" href="#database-indexes" title="Link to this heading"></a></h3>
+<p>For optimal query performance:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_email</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">patients</span><span class="p">(</span><span class="n">email</span><span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_phone</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">patients</span><span class="p">(</span><span class="n">phone</span><span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_active</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">patients</span><span class="p">(</span><span class="n">is_active</span><span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_created_at</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">patients</span><span class="p">(</span><span class="n">created_at</span><span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_full_name</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">patients</span><span class="p">(</span><span class="n">full_name</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="query-optimization">
+<h3><span class="section-number">5.9.2. </span>Query Optimization<a class="headerlink" href="#query-optimization" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Filter by is_active = 1 for list views</p></li>
+<li><p>Paginate large result sets</p></li>
+<li><p>Use LIMIT to prevent large data transfers</p></li>
+<li><p>Index frequently searched fields</p></li>
+</ul>
+</section>
+</section>
+<section id="patient-relationships">
+<h2><span class="section-number">5.10. </span>Patient Relationships<a class="headerlink" href="#patient-relationships" title="Link to this heading"></a></h2>
+<section id="patient-associations">
+<h3><span class="section-number">5.10.1. </span>Patient Associations<a class="headerlink" href="#patient-associations" title="Link to this heading"></a></h3>
+<p>Each patient can have:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Associated Data</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Appointments</p></td>
+<td><p>Multiple scheduled/completed appointments with doctors</p></td>
+</tr>
+<tr class="row-odd"><td><p>Medical Records</p></td>
+<td><p>Medical history, diagnoses, treatments, prescriptions</p></td>
+</tr>
+<tr class="row-even"><td><p>Prescriptions</p></td>
+<td><p>Current and past medications</p></td>
+</tr>
+<tr class="row-odd"><td><p>Payments</p></td>
+<td><p>Appointment fees, services charged</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="patient-deletion-impact">
+<h3><span class="section-number">5.10.2. </span>Patient Deletion Impact<a class="headerlink" href="#patient-deletion-impact" title="Link to this heading"></a></h3>
+<p>When a patient is soft-deleted:</p>
+<ul class="simple">
+<li><p>Appointments remain visible in history</p></li>
+<li><p>Medical records preserved for historical access</p></li>
+<li><p>Payment records kept for accounting</p></li>
+<li><p>Patient can be re-activated if needed</p></li>
+</ul>
+</section>
+<section id="restoring-deleted-patient">
+<h3><span class="section-number">5.10.3. </span>Restoring Deleted Patient<a class="headerlink" href="#restoring-deleted-patient" title="Link to this heading"></a></h3>
+<p>To restore a deleted patient:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">UPDATE</span><span class="w"> </span><span class="n">patients</span>
+<span class="k">SET</span><span class="w"> </span><span class="n">is_active</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="n">deleted_at</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">NULL</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">patient_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">42</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="common-issues">
+<h2><span class="section-number">5.11. </span>Common Issues<a class="headerlink" href="#common-issues" title="Link to this heading"></a></h2>
+<section id="email-already-in-use">
+<h3><span class="section-number">5.11.1. </span>Email Already in Use<a class="headerlink" href="#email-already-in-use" title="Link to this heading"></a></h3>
+<p><strong>Problem</strong>: Cannot edit - email already registered</p>
+<p><strong>Solution</strong>:
+- Use different email address
+- Check if duplicate patient exists
+- Verify email not assigned to another patient</p>
+</section>
+<section id="duplicate-phone-number">
+<h3><span class="section-number">5.11.2. </span>Duplicate Phone Number<a class="headerlink" href="#duplicate-phone-number" title="Link to this heading"></a></h3>
+<p><strong>Problem</strong>: Cannot edit - phone in use</p>
+<p><strong>Solution</strong>:
+- Verify phone number is correct
+- Use different phone number
+- Check for typos in entry</p>
+</section>
+<section id="cannot-delete-patient">
+<h3><span class="section-number">5.11.3. </span>Cannot Delete Patient<a class="headerlink" href="#cannot-delete-patient" title="Link to this heading"></a></h3>
+<p><strong>Problem</strong>: Delete fails - “active appointments”</p>
+<p><strong>Solution</strong>:
+- Complete or cancel active appointments first
+- Query: <code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">*</span> <span class="pre">FROM</span> <span class="pre">appointments</span> <span class="pre">WHERE</span> <span class="pre">patient_id=X</span> <span class="pre">AND</span> <span class="pre">status='scheduled'</span></code>
+- Reschedule appointments to other dates</p>
+</section>
+<section id="invalid-date-of-birth">
+<h3><span class="section-number">5.11.4. </span>Invalid Date of Birth<a class="headerlink" href="#invalid-date-of-birth" title="Link to this heading"></a></h3>
+<p><strong>Problem</strong>: “Invalid date of birth” error</p>
+<p><strong>Solution</strong>:
+- Use format: YYYY-MM-DD (e.g., 1985-03-15)
+- Ensure date is not in future
+- Verify patient age is realistic (0-150 years)
+- Check for typos in year/month/day</p>
+</section>
+<section id="search-not-working">
+<h3><span class="section-number">5.11.5. </span>Search Not Working<a class="headerlink" href="#search-not-working" title="Link to this heading"></a></h3>
+<p><strong>Problem</strong>: Search returns no results</p>
+<p><strong>Solution</strong>:
+- Check search term spelling
+- Try partial name (e.g., “smith” instead of full name)
+- Verify patients exist: <code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">COUNT(*)</span> <span class="pre">FROM</span> <span class="pre">patients</span> <span class="pre">WHERE</span> <span class="pre">is_active=1</span></code>
+- Clear filter to search all statuses</p>
+</section>
+</section>
+<section id="next-steps">
+<h2><span class="section-number">5.12. </span>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>View Patient Records</strong> → Medical records through doctor interface</p></li>
+<li><p><strong>Schedule Appointments</strong> → Book appointments with doctors</p></li>
+<li><p><strong>View Dashboard</strong> → See system overview (see <a class="reference internal" href="admin_dashboard.html"><span class="doc">Admin Dashboard - Statistics &amp; Overview</span></a>)</p></li>
+<li><p><strong>Manage Doctors</strong> → View doctor information (see <a class="reference internal" href="doctor_management.html"><span class="doc">Doctor Management - CRUD Operations</span></a>)</p></li>
+<li><p><strong>View API Endpoints</strong> → See complete API reference (see <a class="reference internal" href="api_endpoints.html"><span class="doc">API Endpoints Reference - Complete Admin Routes</span></a>)</p></li>
+<li><p><strong>Troubleshoot Issues</strong> → See common solutions (see <a class="reference internal" href="troubleshooting.html"><span class="doc">Troubleshooting - Common Issues &amp; Solutions</span></a>)</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="doctor_management.html" class="btn btn-neutral float-left" title="4. Doctor Management - CRUD Operations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api_endpoints.html" class="btn btn-neutral float-right" title="6. API Endpoints Reference - Complete Admin Routes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Medilink Development Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

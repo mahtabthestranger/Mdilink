@@ -1,0 +1,940 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8. Troubleshooting - Common Issues &amp; Solutions &mdash; Medilink Admin Routes 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="7. Code Examples - Admin Integration" href="examples.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Medilink Admin Routes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">1. Medilink Admin Routes - Overview &amp; Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_authentication.html">2. Admin Authentication - Login &amp; Session Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_dashboard.html">3. Admin Dashboard - Statistics &amp; Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="doctor_management.html">4. Doctor Management - CRUD Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="patient_management.html">5. Patient Management - CRUD Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_endpoints.html">6. API Endpoints Reference - Complete Admin Routes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">7. Code Examples - Admin Integration</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">8. Troubleshooting - Common Issues &amp; Solutions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting-guide">8.1. Troubleshooting Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authentication-issues">8.2. Authentication Issues</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cannot-login">8.2.1. Cannot Login</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#session-expires">8.2.2. Session Expires</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#please-login-as-admin-error">8.2.3. “Please Login As Admin” Error</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#dashboard-issues">8.3. Dashboard Issues</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dashboard-won-t-load">8.3.1. Dashboard Won’t Load</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#statistics-show-zero">8.3.2. Statistics Show Zero</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#slow-dashboard-load">8.3.3. Slow Dashboard Load</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#doctor-management-issues">8.4. Doctor Management Issues</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cannot-add-doctor">8.4.1. Cannot Add Doctor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#email-already-exists">8.4.2. Email Already Exists</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#duplicate-phone-number">8.4.3. Duplicate Phone Number</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cannot-edit-doctor">8.4.4. Cannot Edit Doctor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cannot-delete-doctor">8.4.5. Cannot Delete Doctor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#doctor-search-not-working">8.4.6. Doctor Search Not Working</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#patient-management-issues">8.5. Patient Management Issues</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cannot-edit-patient">8.5.1. Cannot Edit Patient</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#invalid-date-of-birth">8.5.2. Invalid Date of Birth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cannot-delete-patient">8.5.3. Cannot Delete Patient</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#search-not-working">8.5.4. Search Not Working</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#database-issues">8.6. Database Issues</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cannot-connect-to-database">8.6.1. Cannot Connect to Database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#table-not-found">8.6.2. Table Not Found</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#duplicate-entry-error">8.6.3. Duplicate Entry Error</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#application-issues">8.7. Application Issues</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blank-page-error">8.7.1. Blank Page Error</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#internal-server-error">8.7.2. 500 Internal Server Error</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#permission-denied">8.7.3. Permission Denied</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#performance-issues">8.8. Performance Issues</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#high-server-cpu-memory">8.8.1. High Server CPU/Memory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#timeout-errors">8.8.2. Timeout Errors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#debugging-tips">8.9. Debugging Tips</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#enable-debug-logging">8.9.1. Enable Debug Logging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#print-debug-information">8.9.2. Print Debug Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#check-request-data">8.9.3. Check Request Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#database-query-debugging">8.9.4. Database Query Debugging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#browser-console-errors">8.9.5. Browser Console Errors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-help">8.10. Getting Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">8.11. Next Steps</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Medilink Admin Routes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">8. </span>Troubleshooting - Common Issues &amp; Solutions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/troubleshooting.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="troubleshooting-common-issues-solutions">
+<h1><span class="section-number">8. </span>Troubleshooting - Common Issues &amp; Solutions<a class="headerlink" href="#troubleshooting-common-issues-solutions" title="Link to this heading"></a></h1>
+<section id="troubleshooting-guide">
+<h2><span class="section-number">8.1. </span>Troubleshooting Guide<a class="headerlink" href="#troubleshooting-guide" title="Link to this heading"></a></h2>
+<p>This guide provides solutions for common issues encountered when using the
+Medilink admin system.</p>
+</section>
+<section id="authentication-issues">
+<h2><span class="section-number">8.2. </span>Authentication Issues<a class="headerlink" href="#authentication-issues" title="Link to this heading"></a></h2>
+<section id="cannot-login">
+<h3><span class="section-number">8.2.1. </span>Cannot Login<a class="headerlink" href="#cannot-login" title="Link to this heading"></a></h3>
+<p><strong>Symptom</strong>: Login fails with “Invalid username or password”</p>
+<p><strong>Possible Causes</strong>:</p>
+<ol class="arabic simple">
+<li><p>Incorrect credentials</p></li>
+<li><p>Admin account not created</p></li>
+<li><p>Password changed/reset</p></li>
+<li><p>Database connection issue</p></li>
+<li><p>Admin account deactivated</p></li>
+</ol>
+<p><strong>Solutions</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Verify credentials</strong>
+- Confirm username and password are correct
+- Check for typos (case-sensitive)
+- Verify CAPS LOCK is off</p></li>
+<li><p><strong>Check if admin exists</strong></p>
+<p>Connect to MySQL and check:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">admins</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;admin&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>If no results, create default admin:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">admins</span><span class="w"> </span><span class="p">(</span><span class="n">username</span><span class="p">,</span><span class="w"> </span><span class="n">password</span><span class="p">,</span><span class="w"> </span><span class="n">full_name</span><span class="p">)</span>
+<span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;admin&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;hashed_password_here&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Administrator&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Verify database connection</strong></p>
+<p>In Python shell:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">flask_mysqldb</span><span class="w"> </span><span class="kn">import</span> <span class="n">MySQL</span>
+<span class="c1"># Connection test in config</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Check admin account status</strong></p>
+<p>Ensure is_active = 1:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">is_active</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">admins</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;admin&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="session-expires">
+<h3><span class="section-number">8.2.2. </span>Session Expires<a class="headerlink" href="#session-expires" title="Link to this heading"></a></h3>
+<p><strong>Symptom</strong>: Logged out unexpectedly, redirected to login page</p>
+<p><strong>Possible Causes</strong>:</p>
+<ol class="arabic simple">
+<li><p>Session timeout (default 24 hours)</p></li>
+<li><p>Server restart</p></li>
+<li><p>Browser cookies disabled</p></li>
+<li><p>Browser session cleared</p></li>
+</ol>
+<p><strong>Solutions</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Increase session timeout</strong> (app.py or config.py)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;PERMANENT_SESSION_LIFETIME&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">48</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Enable cookies</strong> in browser
+- Chrome: Settings → Privacy and security → Cookies
+- Firefox: Preferences → Privacy → Cookies</p></li>
+<li><p><strong>Check session settings</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SESSION_COOKIE_SECURE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># True in production</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SESSION_COOKIE_HTTPONLY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SESSION_COOKIE_SAMESITE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Lax&#39;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="please-login-as-admin-error">
+<h3><span class="section-number">8.2.3. </span>“Please Login As Admin” Error<a class="headerlink" href="#please-login-as-admin-error" title="Link to this heading"></a></h3>
+<p><strong>Symptom</strong>: Always redirected to login, even after login</p>
+<p><strong>Possible Causes</strong>:</p>
+<ol class="arabic simple">
+<li><p>Session variables not set</p></li>
+<li><p>Browser cookies not saved</p></li>
+<li><p>Session not marked as permanent</p></li>
+<li><p>user_type not in session</p></li>
+</ol>
+<p><strong>Solutions</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Verify session variables</strong> (in Python)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/debug/session&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">debug_session</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;user_type&#39;</span><span class="p">:</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;user_type&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;user_id&#39;</span><span class="p">:</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;permanent&#39;</span><span class="p">:</span> <span class="n">session</span><span class="o">.</span><span class="n">permanent</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Check login code</strong> sets session properly</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;user_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;admin&#39;</span>
+<span class="n">session</span><span class="o">.</span><span class="n">permanent</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Must be set</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Clear browser cookies</strong> and login again
+- Right-click → Inspect → Application → Cookies
+- Delete session cookie
+- Re-login</p></li>
+</ol>
+</section>
+</section>
+<section id="dashboard-issues">
+<h2><span class="section-number">8.3. </span>Dashboard Issues<a class="headerlink" href="#dashboard-issues" title="Link to this heading"></a></h2>
+<section id="dashboard-won-t-load">
+<h3><span class="section-number">8.3.1. </span>Dashboard Won’t Load<a class="headerlink" href="#dashboard-won-t-load" title="Link to this heading"></a></h3>
+<p><strong>Symptom</strong>: Blank page or “Error loading dashboard”</p>
+<p><strong>Possible Causes</strong>:</p>
+<ol class="arabic simple">
+<li><p>Database connection issue</p></li>
+<li><p>Tables don’t exist</p></li>
+<li><p>Query syntax error</p></li>
+<li><p>Insufficient permissions</p></li>
+</ol>
+<p><strong>Solutions</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Verify MySQL is running</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if MySQL running</span>
+mysqld<span class="w"> </span>--version
+<span class="c1"># Or check via system services</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Check tables exist</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SHOW</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%&#39;</span><span class="p">;</span>
+<span class="c1">-- Should show: admins, doctors, patients, appointments, etc.</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Verify data in tables</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">doctors</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">is_active</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">patients</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">is_active</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Check database permissions</strong></p>
+<p>Ensure user has SELECT permissions:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">medilink</span><span class="p">.</span><span class="o">*</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="s1">&#39;medilink_user&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Review error logs</strong></p>
+<p>Check app.py error output:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Dashboard error: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># See this error</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="statistics-show-zero">
+<h3><span class="section-number">8.3.2. </span>Statistics Show Zero<a class="headerlink" href="#statistics-show-zero" title="Link to this heading"></a></h3>
+<p><strong>Symptom</strong>: All counts show 0</p>
+<p><strong>Possible Causes</strong>:</p>
+<ol class="arabic simple">
+<li><p>No data in tables</p></li>
+<li><p>All records marked inactive (is_active = 0)</p></li>
+<li><p>WHERE clause filtering out all results</p></li>
+<li><p>Database query error</p></li>
+</ol>
+<p><strong>Solutions</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Check for data</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">doctors</span><span class="p">;</span>
+<span class="c1">-- If 0, no doctors created yet</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Check active flag</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">doctors</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">is_active</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="c1">-- If high number, records are inactive</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Reactivate records</strong> if needed</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">UPDATE</span><span class="w"> </span><span class="n">doctors</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">is_active</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">is_active</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Add test data</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">doctors</span><span class="w"> </span><span class="p">(</span><span class="n">full_name</span><span class="p">,</span><span class="w"> </span><span class="n">specialty</span><span class="p">,</span><span class="w"> </span><span class="n">phone</span><span class="p">,</span><span class="w"> </span><span class="n">email</span><span class="p">,</span>
+<span class="w">                    </span><span class="n">license_number</span><span class="p">,</span><span class="w"> </span><span class="n">is_active</span><span class="p">)</span>
+<span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;Dr. Test&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Cardiology&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;555-0000&#39;</span><span class="p">,</span>
+<span class="w">       </span><span class="s1">&#39;test@medilink.com&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;MD000&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="slow-dashboard-load">
+<h3><span class="section-number">8.3.3. </span>Slow Dashboard Load<a class="headerlink" href="#slow-dashboard-load" title="Link to this heading"></a></h3>
+<p><strong>Symptom</strong>: Dashboard takes 5+ seconds to load</p>
+<p><strong>Possible Causes</strong>:</p>
+<ol class="arabic simple">
+<li><p>Large number of records (thousands+)</p></li>
+<li><p>Missing database indexes</p></li>
+<li><p>Slow database server</p></li>
+<li><p>Network latency</p></li>
+</ol>
+<p><strong>Solutions</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Add database indexes</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_doctors_active</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">doctors</span><span class="p">(</span><span class="n">is_active</span><span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_patients_active</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">patients</span><span class="p">(</span><span class="n">is_active</span><span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="n">idx_appointments</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">appointments</span><span class="p">(</span><span class="n">status</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Check query performance</strong> with EXPLAIN</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">EXPLAIN</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">doctors</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">is_active</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="c1">-- Check if using index</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Monitor database</strong> during load</p>
+<p>MySQL workbench or command line:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mysqldump<span class="w"> </span>--single-transaction<span class="w"> </span>&gt;<span class="w"> </span>backup.sql
+</pre></div>
+</div>
+</li>
+<li><p><strong>Implement caching</strong> (advanced)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">flask_caching</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cache</span>
+<span class="n">cache</span> <span class="o">=</span> <span class="n">Cache</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;CACHE_TYPE&#39;</span><span class="p">:</span> <span class="s1">&#39;simple&#39;</span><span class="p">})</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/admin/dashboard&#39;</span><span class="p">)</span>
+<span class="nd">@cache</span><span class="o">.</span><span class="n">cached</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">admin_dashboard</span><span class="p">():</span>
+    <span class="c1"># Dashboard logic</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+<section id="doctor-management-issues">
+<h2><span class="section-number">8.4. </span>Doctor Management Issues<a class="headerlink" href="#doctor-management-issues" title="Link to this heading"></a></h2>
+<section id="cannot-add-doctor">
+<h3><span class="section-number">8.4.1. </span>Cannot Add Doctor<a class="headerlink" href="#cannot-add-doctor" title="Link to this heading"></a></h3>
+<p><strong>Symptom</strong>: Form submission fails or redirects to same page</p>
+<p><strong>Possible Causes</strong>:</p>
+<ol class="arabic simple">
+<li><p>Validation error</p></li>
+<li><p>Email/phone already exists</p></li>
+<li><p>Required field missing</p></li>
+<li><p>Database error</p></li>
+</ol>
+<p><strong>Solutions</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Check form fields</strong>
+- Ensure all required fields filled
+- Full Name: 2-100 characters
+- Email: valid format (<a class="reference external" href="mailto:user&#37;&#52;&#48;domain&#46;com">user<span>&#64;</span>domain<span>&#46;</span>com</a>)
+- Phone: valid format
+- Specialty: from dropdown list
+- License: unique value</p></li>
+<li><p><strong>Check for duplicates</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">doctors</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">email</span><span class="o">=</span><span class="s1">&#39;test@medilink.com&#39;</span><span class="p">;</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">doctors</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">phone</span><span class="o">=</span><span class="s1">&#39;555-0000&#39;</span><span class="p">;</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">doctors</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">license_number</span><span class="o">=</span><span class="s1">&#39;MD123&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Check database constraints</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SHOW</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">doctors</span><span class="err">\</span><span class="k">G</span>
+<span class="c1">-- Look for UNIQUE constraints</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Check error message</strong> in browser
+- Look at form for error display
+- Check browser console (F12)</p></li>
+</ol>
+</section>
+<section id="email-already-exists">
+<h3><span class="section-number">8.4.2. </span>Email Already Exists<a class="headerlink" href="#email-already-exists" title="Link to this heading"></a></h3>
+<p><strong>Symptom</strong>: “Email already in use” error</p>
+<p><strong>Possible Causes</strong>:</p>
+<ol class="arabic simple">
+<li><p>Email assigned to another doctor</p></li>
+<li><p>Soft-deleted doctor still in database</p></li>
+<li><p>Duplicate entry error</p></li>
+</ol>
+<p><strong>Solutions</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Find duplicate email</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">doctors</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">email</span><span class="o">=</span><span class="s1">&#39;test@medilink.com&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>If soft-deleted doctor</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">UPDATE</span><span class="w"> </span><span class="n">doctors</span>
+<span class="k">SET</span><span class="w"> </span><span class="n">is_active</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">email</span><span class="o">=</span><span class="s1">&#39;old@medilink.com&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Or use different email</strong>
+- Add suffix: <a class="reference external" href="mailto:test+1&#37;&#52;&#48;medilink&#46;com">test+1<span>&#64;</span>medilink<span>&#46;</span>com</a>
+- Use different domain</p></li>
+</ol>
+</section>
+<section id="duplicate-phone-number">
+<h3><span class="section-number">8.4.3. </span>Duplicate Phone Number<a class="headerlink" href="#duplicate-phone-number" title="Link to this heading"></a></h3>
+<p><strong>Symptom</strong>: “Phone already in use” error</p>
+<p><strong>Solutions</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Find duplicate phone</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">doctors</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">phone</span><span class="o">=</span><span class="s1">&#39;555-0000&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Use different phone</strong> or remove from other record</p></li>
+</ol>
+</section>
+<section id="cannot-edit-doctor">
+<h3><span class="section-number">8.4.4. </span>Cannot Edit Doctor<a class="headerlink" href="#cannot-edit-doctor" title="Link to this heading"></a></h3>
+<p><strong>Symptom</strong>: Edit form won’t submit or shows errors</p>
+<p><strong>Possible Causes</strong>:</p>
+<ol class="arabic simple">
+<li><p>Doctor ID not found</p></li>
+<li><p>Validation error on new values</p></li>
+<li><p>Email/phone conflict with another doctor</p></li>
+<li><p>Database error</p></li>
+</ol>
+<p><strong>Solutions</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Verify doctor exists</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">doctors</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">doctor_id</span><span class="o">=</span><span class="mi">5</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Check for email conflicts</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">doctors</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">email</span><span class="o">=</span><span class="s1">&#39;new@email.com&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">doctor_id</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Review error messages</strong> in form</p></li>
+</ol>
+</section>
+<section id="cannot-delete-doctor">
+<h3><span class="section-number">8.4.5. </span>Cannot Delete Doctor<a class="headerlink" href="#cannot-delete-doctor" title="Link to this heading"></a></h3>
+<p><strong>Symptom</strong>: Delete fails with error message</p>
+<p><strong>Possible Causes</strong>:</p>
+<ol class="arabic simple">
+<li><p>Doctor has active appointments</p></li>
+<li><p>Doctor ID not found</p></li>
+<li><p>Database error</p></li>
+</ol>
+<p><strong>Solutions</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Check active appointments</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">appointments</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">doctor_id</span><span class="o">=</span><span class="mi">5</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">status</span><span class="o">=</span><span class="s1">&#39;scheduled&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Complete appointments first</strong>
+- Mark as completed in appointments table
+- Or reschedule to different doctor</p></li>
+<li><p><strong>Check if doctor exists</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">doctors</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">doctor_id</span><span class="o">=</span><span class="mi">5</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="doctor-search-not-working">
+<h3><span class="section-number">8.4.6. </span>Doctor Search Not Working<a class="headerlink" href="#doctor-search-not-working" title="Link to this heading"></a></h3>
+<p><strong>Symptom</strong>: Search returns no results</p>
+<p><strong>Solutions</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Try simpler search terms</strong>
+- Instead of full name, try last name
+- Instead of specialty name, try partial</p></li>
+<li><p><strong>Check if doctors exist</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">doctors</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">is_active</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Try without filters</strong>
+- Remove specialty filter
+- Check “All” pages option</p></li>
+</ol>
+</section>
+</section>
+<section id="patient-management-issues">
+<h2><span class="section-number">8.5. </span>Patient Management Issues<a class="headerlink" href="#patient-management-issues" title="Link to this heading"></a></h2>
+<section id="cannot-edit-patient">
+<h3><span class="section-number">8.5.1. </span>Cannot Edit Patient<a class="headerlink" href="#cannot-edit-patient" title="Link to this heading"></a></h3>
+<p><strong>Symptom</strong>: Patient edit form won’t submit</p>
+<p><strong>Possible Causes</strong>:</p>
+<ol class="arabic simple">
+<li><p>Validation errors</p></li>
+<li><p>Email/phone already in use</p></li>
+<li><p>Invalid date of birth</p></li>
+<li><p>Database error</p></li>
+</ol>
+<p><strong>Solutions</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Check form validation</strong>
+- Full name: required, 2-100 chars
+- Email: required, valid format
+- Phone: required, unique
+- DOB: optional, valid date</p></li>
+<li><p><strong>Verify email unique</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">patients</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">email</span><span class="o">=</span><span class="s1">&#39;test@email.com&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Check date format</strong>
+- Use YYYY-MM-DD (e.g., 1985-03-15)
+- Cannot be future date
+- Age must be 0-150 years</p></li>
+</ol>
+</section>
+<section id="invalid-date-of-birth">
+<h3><span class="section-number">8.5.2. </span>Invalid Date of Birth<a class="headerlink" href="#invalid-date-of-birth" title="Link to this heading"></a></h3>
+<p><strong>Symptom</strong>: “Invalid date of birth” error</p>
+<p><strong>Possible Causes</strong>:</p>
+<ol class="arabic simple">
+<li><p>Wrong date format</p></li>
+<li><p>Date in future</p></li>
+<li><p>Age outside valid range</p></li>
+</ol>
+<p><strong>Solutions</strong>:</p>
+<ol class="arabic simple">
+<li><p><strong>Use correct format</strong>: YYYY-MM-DD
+- Good: 1985-03-15
+- Bad: 03/15/1985 or 15-03-1985</p></li>
+<li><p><strong>Verify not future date</strong>
+- Don’t enter dates after today</p></li>
+<li><p><strong>Ensure realistic age</strong>
+- Minimum: 0 years old
+- Maximum: 150 years old</p></li>
+</ol>
+</section>
+<section id="cannot-delete-patient">
+<h3><span class="section-number">8.5.3. </span>Cannot Delete Patient<a class="headerlink" href="#cannot-delete-patient" title="Link to this heading"></a></h3>
+<p><strong>Symptom</strong>: Delete fails with error</p>
+<p><strong>Possible Causes</strong>:</p>
+<ol class="arabic simple">
+<li><p>Active appointments exist</p></li>
+<li><p>Patient ID not found</p></li>
+</ol>
+<p><strong>Solutions</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Check appointments</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">appointments</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">patient_id</span><span class="o">=</span><span class="mi">42</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">status</span><span class="o">=</span><span class="s1">&#39;scheduled&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Complete appointments first</strong>
+- Mark as completed or cancelled
+- Then try deleting patient</p></li>
+</ol>
+</section>
+<section id="search-not-working">
+<h3><span class="section-number">8.5.4. </span>Search Not Working<a class="headerlink" href="#search-not-working" title="Link to this heading"></a></h3>
+<p><strong>Symptom</strong>: Search finds nothing</p>
+<p><strong>Solutions</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Try different search terms</strong></p></li>
+<li><p><strong>Check database has data</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">patients</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">is_active</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Search by parts</strong>
+- Search first name
+- Search last name
+- Search email separately</p></li>
+</ol>
+</section>
+</section>
+<section id="database-issues">
+<h2><span class="section-number">8.6. </span>Database Issues<a class="headerlink" href="#database-issues" title="Link to this heading"></a></h2>
+<section id="cannot-connect-to-database">
+<h3><span class="section-number">8.6.1. </span>Cannot Connect to Database<a class="headerlink" href="#cannot-connect-to-database" title="Link to this heading"></a></h3>
+<p><strong>Symptom</strong>: “Error loading dashboard” or “Database connection failed”</p>
+<p><strong>Possible Causes</strong>:</p>
+<ol class="arabic simple">
+<li><p>MySQL not running</p></li>
+<li><p>Credentials wrong</p></li>
+<li><p>Host unreachable</p></li>
+<li><p>Database doesn’t exist</p></li>
+</ol>
+<p><strong>Solutions</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Check MySQL is running</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Linux/Mac</span>
+sudo<span class="w"> </span>service<span class="w"> </span>mysql<span class="w"> </span>status
+
+<span class="c1"># Windows</span>
+net<span class="w"> </span>start<span class="w"> </span>MySQL80<span class="w">  </span><span class="c1"># or your version</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Test connection</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pymysql</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">pymysql</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+    <span class="n">host</span><span class="o">=</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
+    <span class="n">user</span><span class="o">=</span><span class="s1">&#39;root&#39;</span><span class="p">,</span>
+    <span class="n">password</span><span class="o">=</span><span class="s1">&#39;password&#39;</span><span class="p">,</span>
+    <span class="n">database</span><span class="o">=</span><span class="s1">&#39;medilink&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Verify credentials</strong> in config.py</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;MYSQL_HOST&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;localhost&#39;</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;MYSQL_USER&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;root&#39;</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;MYSQL_PASSWORD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;your_password&#39;</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;MYSQL_DB&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;medilink&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Check database exists</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SHOW</span><span class="w"> </span><span class="n">DATABASES</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;medilink&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="table-not-found">
+<h3><span class="section-number">8.6.2. </span>Table Not Found<a class="headerlink" href="#table-not-found" title="Link to this heading"></a></h3>
+<p><strong>Symptom</strong>: “Table ‘doctors’ doesn’t exist” error</p>
+<p><strong>Solution</strong>: Initialize database</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run initialization script</span>
+python<span class="w"> </span>database/init_db.py
+</pre></div>
+</div>
+<p>Or manually create tables:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">doctors</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">doctor_id</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">full_name</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">specialty</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
+<span class="w">    </span><span class="n">phone</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">UNIQUE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">email</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">UNIQUE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">experience</span><span class="w"> </span><span class="nb">INT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">license_number</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">UNIQUE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">password</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span>
+<span class="w">    </span><span class="n">is_active</span><span class="w"> </span><span class="n">TINYINT</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="n">created_at</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="duplicate-entry-error">
+<h3><span class="section-number">8.6.3. </span>Duplicate Entry Error<a class="headerlink" href="#duplicate-entry-error" title="Link to this heading"></a></h3>
+<p><strong>Symptom</strong>: “Duplicate entry ‘…’ for key ‘…’”</p>
+<p><strong>Solutions</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Identify constraint</strong> from error message</p></li>
+<li><p><strong>Find existing record</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">doctors</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">email</span><span class="o">=</span><span class="s1">&#39;duplicate@email.com&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Delete or modify</strong> existing record</p></li>
+<li><p><strong>Retry operation</strong></p></li>
+</ol>
+</section>
+</section>
+<section id="application-issues">
+<h2><span class="section-number">8.7. </span>Application Issues<a class="headerlink" href="#application-issues" title="Link to this heading"></a></h2>
+<section id="blank-page-error">
+<h3><span class="section-number">8.7.1. </span>Blank Page Error<a class="headerlink" href="#blank-page-error" title="Link to this heading"></a></h3>
+<p><strong>Symptom</strong>: Completely blank page when accessing admin panel</p>
+<p><strong>Possible Causes</strong>:</p>
+<ol class="arabic simple">
+<li><p>Python error/crash</p></li>
+<li><p>Template file missing</p></li>
+<li><p>Syntax error in code</p></li>
+</ol>
+<p><strong>Solutions</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Check console output</strong>
+- Look for Python error messages
+- Python traceback will appear</p></li>
+<li><p><strong>Verify templates exist</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>templates/admin/
+<span class="c1"># Should see: dashboard.html, doctors.html, etc.</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Check Flask debug mode</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Enable for detailed errors</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="internal-server-error">
+<h3><span class="section-number">8.7.2. </span>500 Internal Server Error<a class="headerlink" href="#internal-server-error" title="Link to this heading"></a></h3>
+<p><strong>Symptom</strong>: “Internal Server Error” page</p>
+<p><strong>Possible Causes</strong>:</p>
+<ol class="arabic simple">
+<li><p>Python exception</p></li>
+<li><p>Unhandled error</p></li>
+<li><p>Missing import</p></li>
+</ol>
+<p><strong>Solutions</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Enable debug mode</strong> in app.py</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Check error logs</strong> in terminal output</p></li>
+<li><p><strong>Review recent code changes</strong></p></li>
+</ol>
+</section>
+<section id="permission-denied">
+<h3><span class="section-number">8.7.3. </span>Permission Denied<a class="headerlink" href="#permission-denied" title="Link to this heading"></a></h3>
+<p><strong>Symptom</strong>: “Permission denied” or “Access forbidden”</p>
+<p><strong>Solutions</strong>:</p>
+<ol class="arabic simple">
+<li><p><strong>Verify you’re admin</strong>
+- Login with admin account
+- Check session user_type = ‘admin’</p></li>
+<li><p><strong>Check route permissions</strong>
+- Route should verify: <code class="docutils literal notranslate"><span class="pre">session.get('user_type')</span> <span class="pre">!=</span> <span class="pre">'admin'</span></code></p></li>
+<li><p><strong>Clear cache</strong>
+- Ctrl+F5 (hard refresh)
+- Clear browser cache</p></li>
+</ol>
+</section>
+</section>
+<section id="performance-issues">
+<h2><span class="section-number">8.8. </span>Performance Issues<a class="headerlink" href="#performance-issues" title="Link to this heading"></a></h2>
+<section id="high-server-cpu-memory">
+<h3><span class="section-number">8.8.1. </span>High Server CPU/Memory<a class="headerlink" href="#high-server-cpu-memory" title="Link to this heading"></a></h3>
+<p><strong>Symptom</strong>: Server running slow, high resource usage</p>
+<p><strong>Solutions</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Check running processes</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ps<span class="w"> </span>aux<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>python
+ps<span class="w"> </span>aux<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>mysql
+</pre></div>
+</div>
+</li>
+<li><p><strong>Monitor with Activity Monitor</strong> or Task Manager</p></li>
+<li><p><strong>Restart application</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Kill Flask app</span>
+Ctrl+C<span class="w"> </span><span class="k">in</span><span class="w"> </span>terminal
+
+<span class="c1"># Restart</span>
+python<span class="w"> </span>app.py
+</pre></div>
+</div>
+</li>
+<li><p><strong>Check for infinite loops</strong>
+- Review recent code changes
+- Check database queries</p></li>
+</ol>
+</section>
+<section id="timeout-errors">
+<h3><span class="section-number">8.8.2. </span>Timeout Errors<a class="headerlink" href="#timeout-errors" title="Link to this heading"></a></h3>
+<p><strong>Symptom</strong>: “Connection timed out” or operation takes very long</p>
+<p><strong>Solutions</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Increase timeout</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;MYSQL_CONNECT_TIMEOUT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">30</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Optimize queries</strong>
+- Add database indexes
+- Use LIMIT for pagination</p></li>
+<li><p><strong>Check network</strong> connection</p></li>
+</ol>
+</section>
+</section>
+<section id="debugging-tips">
+<h2><span class="section-number">8.9. </span>Debugging Tips<a class="headerlink" href="#debugging-tips" title="Link to this heading"></a></h2>
+<section id="enable-debug-logging">
+<h3><span class="section-number">8.9.1. </span>Enable Debug Logging<a class="headerlink" href="#enable-debug-logging" title="Link to this heading"></a></h3>
+<p>In app.py:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
+    <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span>
+    <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> - </span><span class="si">%(name)s</span><span class="s1"> - </span><span class="si">%(levelname)s</span><span class="s1"> - </span><span class="si">%(message)s</span><span class="s1">&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="print-debug-information">
+<h3><span class="section-number">8.9.2. </span>Print Debug Information<a class="headerlink" href="#print-debug-information" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/admin/doctors&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">admin_doctors</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;User: </span><span class="si">{</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Type: </span><span class="si">{</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;user_type&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="c1"># ... rest of code</span>
+</pre></div>
+</div>
+</section>
+<section id="check-request-data">
+<h3><span class="section-number">8.9.3. </span>Check Request Data<a class="headerlink" href="#check-request-data" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Method: </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Form data: </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Args: </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="database-query-debugging">
+<h3><span class="section-number">8.9.4. </span>Database Query Debugging<a class="headerlink" href="#database-query-debugging" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM doctors LIMIT 1&quot;</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Query result: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="browser-console-errors">
+<h3><span class="section-number">8.9.5. </span>Browser Console Errors<a class="headerlink" href="#browser-console-errors" title="Link to this heading"></a></h3>
+<p>In Firefox/Chrome:
+- Right-click → Inspect → Console tab
+- Look for JavaScript errors
+- Check Network tab for failed requests</p>
+</section>
+</section>
+<section id="getting-help">
+<h2><span class="section-number">8.10. </span>Getting Help<a class="headerlink" href="#getting-help" title="Link to this heading"></a></h2>
+<p>If Issue Persists:</p>
+<ol class="arabic simple">
+<li><p><strong>Check logs</strong> (terminal output, MySQL logs)</p></li>
+<li><p><strong>Review documentation</strong> for similar issues</p></li>
+<li><p><strong>Verify setup</strong> against installation guide</p></li>
+<li><p><strong>Test database</strong> connection separately</p></li>
+<li><p><strong>Review code</strong> for recent changes</p></li>
+<li><p><strong>Search documentation</strong> for solution</p></li>
+<li><p><strong>Contact support</strong> with error details</p></li>
+</ol>
+<p>Essential Debug Information to Provide:</p>
+<ul class="simple">
+<li><p>Error message (exact text)</p></li>
+<li><p>Operation attempted</p></li>
+<li><p>Browser console errors</p></li>
+<li><p>Terminal/application logs</p></li>
+<li><p>Database connection details (sanitized)</p></li>
+<li><p>Python/Flask versions</p></li>
+<li><p>MySQL version</p></li>
+</ul>
+</section>
+<section id="next-steps">
+<h2><span class="section-number">8.11. </span>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Re-read Admin Guide</strong> → See <a class="reference internal" href="overview.html"><span class="doc">Medilink Admin Routes - Overview &amp; Architecture</span></a></p></li>
+<li><p><strong>Check API Reference</strong> → See <a class="reference internal" href="api_endpoints.html"><span class="doc">API Endpoints Reference - Complete Admin Routes</span></a></p></li>
+<li><p><strong>Review Examples</strong> → See <a class="reference internal" href="examples.html"><span class="doc">Code Examples - Admin Integration</span></a></p></li>
+<li><p><strong>System Architecture</strong> → See <a class="reference internal" href="overview.html"><span class="doc">Medilink Admin Routes - Overview &amp; Architecture</span></a></p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="examples.html" class="btn btn-neutral float-left" title="7. Code Examples - Admin Integration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Medilink Development Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

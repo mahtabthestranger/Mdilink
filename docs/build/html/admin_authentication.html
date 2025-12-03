@@ -1,0 +1,561 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2. Admin Authentication - Login &amp; Session Management &mdash; Medilink Admin Routes 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="3. Admin Dashboard - Statistics &amp; Overview" href="admin_dashboard.html" />
+    <link rel="prev" title="1. Medilink Admin Routes - Overview &amp; Architecture" href="overview.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Medilink Admin Routes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">1. Medilink Admin Routes - Overview &amp; Architecture</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2. Admin Authentication - Login &amp; Session Management</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#authentication-overview">2.1. Authentication Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#admin-login-route">2.2. Admin Login Route</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#request-get">2.2.1. Request (GET)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#request-post">2.2.2. Request (POST)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#response-success-post">2.2.3. Response - Success (POST)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#response-failure-post">2.2.4. Response - Failure (POST)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#response-form-display-get">2.2.5. Response - Form Display (GET)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#implementation-details">2.3. Implementation Details</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#authentication-flow">2.3.1. Authentication Flow</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#code-example">2.3.1.1. Code Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#session-management">2.4. Session Management</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#session-variables">2.4.1. Session Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#session-timeout">2.4.2. Session Timeout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#session-validation">2.4.3. Session Validation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#security-features">2.5. Security Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#password-hashing">2.5.1. Password Hashing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#input-validation">2.5.2. Input Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#error-handling">2.5.3. Error Handling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#database-query">2.5.4. Database Query</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#best-practices">2.6. Best Practices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#for-administrators">2.6.1. For Administrators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#for-developers">2.6.2. For Developers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting">2.7. Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#login-not-working">2.7.1. Login Not Working</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#session-expires">2.7.2. Session Expires</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#please-login-as-admin-error">2.7.3. “Please login as admin” Error</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#default-credentials">2.8. Default Credentials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">2.9. Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="admin_dashboard.html">3. Admin Dashboard - Statistics &amp; Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="doctor_management.html">4. Doctor Management - CRUD Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="patient_management.html">5. Patient Management - CRUD Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_endpoints.html">6. API Endpoints Reference - Complete Admin Routes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">7. Code Examples - Admin Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">8. Troubleshooting - Common Issues &amp; Solutions</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Medilink Admin Routes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">2. </span>Admin Authentication - Login &amp; Session Management</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/admin_authentication.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="admin-authentication-login-session-management">
+<h1><span class="section-number">2. </span>Admin Authentication - Login &amp; Session Management<a class="headerlink" href="#admin-authentication-login-session-management" title="Link to this heading"></a></h1>
+<section id="authentication-overview">
+<h2><span class="section-number">2.1. </span>Authentication Overview<a class="headerlink" href="#authentication-overview" title="Link to this heading"></a></h2>
+<p>The admin authentication module provides secure login functionality and session
+management for the Medilink administration system.</p>
+</section>
+<section id="admin-login-route">
+<h2><span class="section-number">2.2. </span>Admin Login Route<a class="headerlink" href="#admin-login-route" title="Link to this heading"></a></h2>
+<p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/admin/login</span></code></p>
+<p><strong>Methods</strong>: GET, POST</p>
+<p><strong>Description</strong></p>
+<p>Handles admin authentication by validating username and password credentials.
+On successful authentication, creates a session for the admin user.</p>
+<section id="request-get">
+<h3><span class="section-number">2.2.1. </span>Request (GET)<a class="headerlink" href="#request-get" title="Link to this heading"></a></h3>
+<p>Displays the admin login form.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>GET<span class="w"> </span>/admin/login
+Response:<span class="w"> </span>HTML<span class="w"> </span>login<span class="w"> </span>form
+</pre></div>
+</div>
+</section>
+<section id="request-post">
+<h3><span class="section-number">2.2.2. </span>Request (POST)<a class="headerlink" href="#request-post" title="Link to this heading"></a></h3>
+<p>Processes admin login credentials.</p>
+<p><strong>Parameters</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 15.0%" />
+<col style="width: 15.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Required</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>username</p></td>
+<td><p>string</p></td>
+<td><p>Yes</p></td>
+<td><p>Admin username for authentication</p></td>
+</tr>
+<tr class="row-odd"><td><p>password</p></td>
+<td><p>string</p></td>
+<td><p>Yes</p></td>
+<td><p>Admin password (will be verified against hash)</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example Request</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:5000/admin/login<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>-d<span class="w"> </span><span class="s2">&quot;username=admin&amp;password=password123&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="response-success-post">
+<h3><span class="section-number">2.2.3. </span>Response - Success (POST)<a class="headerlink" href="#response-success-post" title="Link to this heading"></a></h3>
+<p><strong>Status Code</strong>: 302 (Redirect)</p>
+<p><strong>Location Header</strong>: /admin/dashboard</p>
+<p><strong>Session Variables Set</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 28.6%" />
+<col style="width: 71.4%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>user_type</p></td>
+<td><p>Set to ‘admin’</p></td>
+</tr>
+<tr class="row-odd"><td><p>user_id</p></td>
+<td><p>Admin ID from database</p></td>
+</tr>
+<tr class="row-even"><td><p>user_name</p></td>
+<td><p>Admin full name</p></td>
+</tr>
+<tr class="row-odd"><td><p>username</p></td>
+<td><p>Admin username</p></td>
+</tr>
+<tr class="row-even"><td><p>session.permanent</p></td>
+<td><p>Set to True for persistent session</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Flash Message</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Welcome, [Admin Name]!
+</pre></div>
+</div>
+</section>
+<section id="response-failure-post">
+<h3><span class="section-number">2.2.4. </span>Response - Failure (POST)<a class="headerlink" href="#response-failure-post" title="Link to this heading"></a></h3>
+<p><strong>Status Code</strong>: 302 (Redirect)</p>
+<p><strong>Location Header</strong>: /admin/login</p>
+<p><strong>Possible Error Messages</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Error</p></th>
+<th class="head"><p>Cause</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>“Please enter username and password”</p></td>
+<td><p>Missing username or password</p></td>
+</tr>
+<tr class="row-odd"><td><p>“Invalid username or password”</p></td>
+<td><p>Credentials don’t match database</p></td>
+</tr>
+<tr class="row-even"><td><p>“An error occurred during login. Please try again”</p></td>
+<td><p>Database or server error</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="response-form-display-get">
+<h3><span class="section-number">2.2.5. </span>Response - Form Display (GET)<a class="headerlink" href="#response-form-display-get" title="Link to this heading"></a></h3>
+<p><strong>Status Code</strong>: 200 (OK)</p>
+<p><strong>Content</strong>: Rendered login form (admin/login.html)</p>
+<p><strong>Form Fields</strong></p>
+<ul class="simple">
+<li><p>Username input field</p></li>
+<li><p>Password input field</p></li>
+<li><p>Submit button</p></li>
+<li><p>Remember me option (if implemented)</p></li>
+</ul>
+</section>
+</section>
+<section id="implementation-details">
+<h2><span class="section-number">2.3. </span>Implementation Details<a class="headerlink" href="#implementation-details" title="Link to this heading"></a></h2>
+<section id="authentication-flow">
+<h3><span class="section-number">2.3.1. </span>Authentication Flow<a class="headerlink" href="#authentication-flow" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>1. User submits login form (POST)
+       ↓
+2. Validate inputs not empty
+       ↓
+3. Call Admin.verify_password()
+       ↓
+4. Check credentials against database
+       ↓
+5a. If valid:
+    - Set session variables
+    - Redirect to dashboard
+       ↓
+5b. If invalid:
+    - Show error message
+    - Redirect to login
+</pre></div>
+</div>
+<section id="code-example">
+<h4><span class="section-number">2.3.1.1. </span>Code Example<a class="headerlink" href="#code-example" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/admin/login&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">admin_login</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">password</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Validate input</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">username</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">password</span><span class="p">:</span>
+            <span class="n">flash</span><span class="p">(</span><span class="s1">&#39;Please enter username and password&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;admin_login&#39;</span><span class="p">))</span>
+
+        <span class="c1"># Verify credentials</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">admin</span> <span class="o">=</span> <span class="n">Admin</span><span class="o">.</span><span class="n">verify_password</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">admin</span><span class="p">:</span>
+                <span class="c1"># Set session</span>
+                <span class="n">session</span><span class="p">[</span><span class="s1">&#39;user_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;admin&#39;</span>
+                <span class="n">session</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">admin</span><span class="p">[</span><span class="s1">&#39;admin_id&#39;</span><span class="p">]</span>
+                <span class="n">session</span><span class="p">[</span><span class="s1">&#39;user_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">admin</span><span class="p">[</span><span class="s1">&#39;full_name&#39;</span><span class="p">]</span>
+                <span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">admin</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span>
+                <span class="n">session</span><span class="o">.</span><span class="n">permanent</span> <span class="o">=</span> <span class="kc">True</span>
+
+                <span class="n">flash</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Welcome, </span><span class="si">{</span><span class="n">admin</span><span class="p">[</span><span class="s2">&quot;full_name&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">!&#39;</span><span class="p">,</span> <span class="s1">&#39;success&#39;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;admin_dashboard&#39;</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">flash</span><span class="p">(</span><span class="s1">&#39;Invalid username or password&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;admin_login&#39;</span><span class="p">))</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Admin login error: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">flash</span><span class="p">(</span><span class="s1">&#39;An error occurred during login&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;admin_login&#39;</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;admin/login.html&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="session-management">
+<h2><span class="section-number">2.4. </span>Session Management<a class="headerlink" href="#session-management" title="Link to this heading"></a></h2>
+<section id="session-variables">
+<h3><span class="section-number">2.4.1. </span>Session Variables<a class="headerlink" href="#session-variables" title="Link to this heading"></a></h3>
+<p>The following variables are stored in the Flask session after login:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 30.0%" />
+<col style="width: 50.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>user_type</p></td>
+<td><p>string</p></td>
+<td><p>Type of user (‘admin’)</p></td>
+</tr>
+<tr class="row-odd"><td><p>user_id</p></td>
+<td><p>integer</p></td>
+<td><p>Unique admin identifier</p></td>
+</tr>
+<tr class="row-even"><td><p>user_name</p></td>
+<td><p>string</p></td>
+<td><p>Display name for UI</p></td>
+</tr>
+<tr class="row-odd"><td><p>username</p></td>
+<td><p>string</p></td>
+<td><p>Login username</p></td>
+</tr>
+<tr class="row-even"><td><p>permanent</p></td>
+<td><p>boolean</p></td>
+<td><p>Session persistence flag</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="session-timeout">
+<h3><span class="section-number">2.4.2. </span>Session Timeout<a class="headerlink" href="#session-timeout" title="Link to this heading"></a></h3>
+<p><strong>Default Timeout</strong>: 24 hours</p>
+<p><strong>Configuration</strong> (in config.py)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;PERMANENT_SESSION_LIFETIME&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SESSION_COOKIE_SECURE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Set to True in production</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SESSION_COOKIE_HTTPONLY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</section>
+<section id="session-validation">
+<h3><span class="section-number">2.4.3. </span>Session Validation<a class="headerlink" href="#session-validation" title="Link to this heading"></a></h3>
+<p>All admin routes check the session before processing:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;user_type&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;admin&#39;</span><span class="p">:</span>
+    <span class="n">flash</span><span class="p">(</span><span class="s1">&#39;Please login as admin&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;admin_login&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="security-features">
+<h2><span class="section-number">2.5. </span>Security Features<a class="headerlink" href="#security-features" title="Link to this heading"></a></h2>
+<section id="password-hashing">
+<h3><span class="section-number">2.5.1. </span>Password Hashing<a class="headerlink" href="#password-hashing" title="Link to this heading"></a></h3>
+<p>Passwords are stored as hashes using werkzeug.security:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">werkzeug.security</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_password_hash</span><span class="p">,</span> <span class="n">check_password_hash</span>
+
+<span class="c1"># Hashing password</span>
+<span class="n">hashed</span> <span class="o">=</span> <span class="n">generate_password_hash</span><span class="p">(</span><span class="n">password</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;sha256&#39;</span><span class="p">)</span>
+
+<span class="c1"># Verifying password</span>
+<span class="n">is_valid</span> <span class="o">=</span> <span class="n">check_password_hash</span><span class="p">(</span><span class="n">hashed</span><span class="p">,</span> <span class="n">provided_password</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="input-validation">
+<h3><span class="section-number">2.5.2. </span>Input Validation<a class="headerlink" href="#input-validation" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Username</strong>: Required, trimmed of whitespace</p></li>
+<li><p><strong>Password</strong>: Required, checked against hash</p></li>
+<li><p><strong>Empty Fields</strong>: Rejected with error message</p></li>
+</ul>
+</section>
+<section id="error-handling">
+<h3><span class="section-number">2.5.3. </span>Error Handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h3>
+<p>All exceptions are caught and logged:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="n">admin</span> <span class="o">=</span> <span class="n">Admin</span><span class="o">.</span><span class="n">verify_password</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Admin login error: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">flash</span><span class="p">(</span><span class="s1">&#39;An error occurred during login&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="database-query">
+<h3><span class="section-number">2.5.4. </span>Database Query<a class="headerlink" href="#database-query" title="Link to this heading"></a></h3>
+<p>The login process queries the admin table:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">admin_id</span><span class="p">,</span><span class="w"> </span><span class="n">username</span><span class="p">,</span><span class="w"> </span><span class="n">password</span><span class="p">,</span><span class="w"> </span><span class="n">full_name</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">admins</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">%</span><span class="n">s</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="best-practices">
+<h2><span class="section-number">2.6. </span>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
+<section id="for-administrators">
+<h3><span class="section-number">2.6.1. </span>For Administrators<a class="headerlink" href="#for-administrators" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Strong Passwords</strong>
+- Use passwords with 12+ characters
+- Mix uppercase, lowercase, numbers, symbols
+- Avoid dictionary words</p></li>
+<li><p><strong>Session Security</strong>
+- Don’t share admin credentials
+- Logout when finished
+- Clear browser cookies regularly</p></li>
+<li><p><strong>Account Protection</strong>
+- Change default password immediately
+- Review login history
+- Monitor for suspicious activity</p></li>
+</ol>
+</section>
+<section id="for-developers">
+<h3><span class="section-number">2.6.2. </span>For Developers<a class="headerlink" href="#for-developers" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Never Log Passwords</strong>
+- Only log authentication events, not credentials
+- Log successful and failed attempts
+- Include timestamp and source IP</p></li>
+<li><p><strong>Secure Storage</strong>
+- Always hash passwords
+- Use strong hashing algorithm
+- Never store plaintext passwords</p></li>
+<li><p><strong>Session Management</strong>
+- Set session timeout appropriately
+- Implement logout functionality
+- Use secure cookies in production</p></li>
+<li><p><strong>Error Messages</strong>
+- Don’t reveal if username or password is wrong
+- Use generic “Invalid credentials” message
+- Prevent username enumeration</p></li>
+</ol>
+</section>
+</section>
+<section id="troubleshooting">
+<h2><span class="section-number">2.7. </span>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<section id="login-not-working">
+<h3><span class="section-number">2.7.1. </span>Login Not Working<a class="headerlink" href="#login-not-working" title="Link to this heading"></a></h3>
+<p><strong>Symptom</strong>: Login fails even with correct credentials</p>
+<p><strong>Solutions</strong>:</p>
+<ol class="arabic simple">
+<li><p>Check database connection</p></li>
+<li><p>Verify admin record exists: <code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">*</span> <span class="pre">FROM</span> <span class="pre">admins</span> <span class="pre">WHERE</span> <span class="pre">username='admin'</span></code></p></li>
+<li><p>Check password hash: Ensure password was hashed correctly</p></li>
+<li><p>Review error logs for database errors</p></li>
+</ol>
+</section>
+<section id="session-expires">
+<h3><span class="section-number">2.7.2. </span>Session Expires<a class="headerlink" href="#session-expires" title="Link to this heading"></a></h3>
+<p><strong>Symptom</strong>: Logged out unexpectedly</p>
+<p><strong>Solutions</strong>:</p>
+<ol class="arabic simple">
+<li><p>Check session timeout setting in config.py</p></li>
+<li><p>Verify cookies are enabled in browser</p></li>
+<li><p>Check if server was restarted (clears sessions)</p></li>
+<li><p>Increase PERMANENT_SESSION_LIFETIME if needed</p></li>
+</ol>
+</section>
+<section id="please-login-as-admin-error">
+<h3><span class="section-number">2.7.3. </span>“Please login as admin” Error<a class="headerlink" href="#please-login-as-admin-error" title="Link to this heading"></a></h3>
+<p><strong>Symptom</strong>: Always redirected to login</p>
+<p><strong>Solutions</strong>:</p>
+<ol class="arabic simple">
+<li><p>Login first</p></li>
+<li><p>Check if session.permanent = True</p></li>
+<li><p>Verify browser accepts cookies</p></li>
+<li><p>Check if session variables are being set correctly</p></li>
+</ol>
+</section>
+</section>
+<section id="default-credentials">
+<h2><span class="section-number">2.8. </span>Default Credentials<a class="headerlink" href="#default-credentials" title="Link to this heading"></a></h2>
+<p>Default admin account (if created during initialization):</p>
+<ul class="simple">
+<li><p><strong>Username</strong>: admin</p></li>
+<li><p><strong>Password</strong>: password123 (should be changed!)</p></li>
+</ul>
+<p><strong>Important</strong>: Change default password immediately in production!</p>
+</section>
+<section id="next-steps">
+<h2><span class="section-number">2.9. </span>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>After login, proceed to <a class="reference internal" href="admin_dashboard.html"><span class="doc">Admin Dashboard - Statistics &amp; Overview</span></a></p></li>
+<li><p>Manage doctors via <a class="reference internal" href="doctor_management.html"><span class="doc">Doctor Management - CRUD Operations</span></a></p></li>
+<li><p>Manage patients via <a class="reference internal" href="patient_management.html"><span class="doc">Patient Management - CRUD Operations</span></a></p></li>
+<li><p>Reference <a class="reference internal" href="api_endpoints.html"><span class="doc">API Endpoints Reference - Complete Admin Routes</span></a> for complete API</p></li>
+<li><p>Check <a class="reference internal" href="troubleshooting.html"><span class="doc">Troubleshooting - Common Issues &amp; Solutions</span></a> for common issues</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="overview.html" class="btn btn-neutral float-left" title="1. Medilink Admin Routes - Overview &amp; Architecture" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="admin_dashboard.html" class="btn btn-neutral float-right" title="3. Admin Dashboard - Statistics &amp; Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Medilink Development Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

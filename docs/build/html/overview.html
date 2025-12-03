@@ -1,0 +1,488 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1. Medilink Admin Routes - Overview &amp; Architecture &mdash; Medilink Admin Routes 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="2. Admin Authentication - Login &amp; Session Management" href="admin_authentication.html" />
+    <link rel="prev" title="Medilink Admin Routes - Complete Documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Medilink Admin Routes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. Medilink Admin Routes - Overview &amp; Architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#system-architecture">1.1. System Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#admin-routes-module-structure">1.2. Admin Routes Module Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#route-summary">1.3. Route Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#core-features">1.4. Core Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#design-patterns">1.5. Design Patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#request-response-flow">1.6. Request-Response Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#database-schema">1.7. Database Schema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#security-considerations">1.8. Security Considerations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#performance-considerations">1.9. Performance Considerations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scalability-recommendations">1.10. Scalability Recommendations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#technology-stack">1.11. Technology Stack</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-dependencies">1.12. Module Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">1.13. Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="admin_authentication.html">2. Admin Authentication - Login &amp; Session Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_dashboard.html">3. Admin Dashboard - Statistics &amp; Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="doctor_management.html">4. Doctor Management - CRUD Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="patient_management.html">5. Patient Management - CRUD Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_endpoints.html">6. API Endpoints Reference - Complete Admin Routes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">7. Code Examples - Admin Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">8. Troubleshooting - Common Issues &amp; Solutions</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Medilink Admin Routes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">1. </span>Medilink Admin Routes - Overview &amp; Architecture</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/overview.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="medilink-admin-routes-overview-architecture">
+<h1><span class="section-number">1. </span>Medilink Admin Routes - Overview &amp; Architecture<a class="headerlink" href="#medilink-admin-routes-overview-architecture" title="Link to this heading"></a></h1>
+<section id="system-architecture">
+<h2><span class="section-number">1.1. </span>System Architecture<a class="headerlink" href="#system-architecture" title="Link to this heading"></a></h2>
+<p>The Medilink Admin Routes module provides a complete administrative interface
+for managing healthcare operations, doctors, and patients.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌─────────────────────────────────────────┐
+│        Medilink Admin Routes             │
+└──────────────┬──────────────────────────┘
+               │
+    ┌──────────┼──────────┐
+    │          │          │
+    ▼          ▼          ▼
+┌────────┐ ┌─────────┐ ┌────────────┐
+│ Admin  │ │ Doctor  │ │  Patient   │
+│ Auth   │ │Management│ │Management  │
+└────────┘ └─────────┘ └────────────┘
+    │          │          │
+    └──────────┼──────────┘
+               │
+    ┌──────────▼──────────┐
+    │   MySQL Database    │
+    │  - admins          │
+    │  - doctors         │
+    │  - patients        │
+    └────────────────────┘
+</pre></div>
+</div>
+</section>
+<section id="admin-routes-module-structure">
+<h2><span class="section-number">1.2. </span>Admin Routes Module Structure<a class="headerlink" href="#admin-routes-module-structure" title="Link to this heading"></a></h2>
+<p>The module is organized into three main functional areas:</p>
+<ol class="arabic simple">
+<li><p><strong>Authentication Module</strong> (1 route)
+- Admin login and session management
+- Credential verification
+- Session tracking</p></li>
+<li><p><strong>Dashboard Module</strong> (1 route)
+- System statistics
+- Key metrics
+- Overview information</p></li>
+<li><p><strong>Management Modules</strong> (7 routes)
+- Doctor Management: List, Add, Edit, Delete
+- Patient Management: List, Edit, Delete</p></li>
+</ol>
+</section>
+<section id="route-summary">
+<h2><span class="section-number">1.3. </span>Route Summary<a class="headerlink" href="#route-summary" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 37.5%" />
+<col style="width: 50.0%" />
+<col style="width: 12.5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Route</p></th>
+<th class="head"><p>Purpose</p></th>
+<th class="head"><p>Method</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>/admin/login</p></td>
+<td><p>Admin authentication</p></td>
+<td><p>GET, POST</p></td>
+</tr>
+<tr class="row-odd"><td><p>/admin/dashboard</p></td>
+<td><p>Statistics dashboard</p></td>
+<td><p>GET</p></td>
+</tr>
+<tr class="row-even"><td><p>/admin/doctors</p></td>
+<td><p>List all doctors</p></td>
+<td><p>GET</p></td>
+</tr>
+<tr class="row-odd"><td><p>/admin/doctors/add</p></td>
+<td><p>Add new doctor</p></td>
+<td><p>GET, POST</p></td>
+</tr>
+<tr class="row-even"><td><p>/admin/doctors/edit/&lt;id&gt;</p></td>
+<td><p>Edit doctor details</p></td>
+<td><p>GET, POST</p></td>
+</tr>
+<tr class="row-odd"><td><p>/admin/doctors/delete/&lt;id&gt;</p></td>
+<td><p>Delete (deactivate) doctor</p></td>
+<td><p>POST</p></td>
+</tr>
+<tr class="row-even"><td><p>/admin/patients</p></td>
+<td><p>List all patients</p></td>
+<td><p>GET</p></td>
+</tr>
+<tr class="row-odd"><td><p>/admin/patients/edit/&lt;id&gt;</p></td>
+<td><p>Edit patient details</p></td>
+<td><p>GET, POST</p></td>
+</tr>
+<tr class="row-even"><td><p>/admin/patients/delete/&lt;id&gt;</p></td>
+<td><p>Delete (deactivate) patient</p></td>
+<td><p>POST</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="core-features">
+<h2><span class="section-number">1.4. </span>Core Features<a class="headerlink" href="#core-features" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>Authentication &amp; Authorization</strong></dt><dd><ul class="simple">
+<li><p>Secure admin login</p></li>
+<li><p>Session-based authentication</p></li>
+<li><p>Password verification using werkzeug</p></li>
+</ul>
+</dd>
+<dt><strong>Data Management</strong></dt><dd><ul class="simple">
+<li><p>Complete CRUD operations</p></li>
+<li><p>Soft delete (mark inactive instead of removing)</p></li>
+<li><p>Input validation and sanitization</p></li>
+<li><p>Error handling with user-friendly messages</p></li>
+</ul>
+</dd>
+<dt><strong>Dashboard Analytics</strong></dt><dd><ul class="simple">
+<li><p>Real-time statistics</p></li>
+<li><p>Doctor count tracking</p></li>
+<li><p>Patient count tracking</p></li>
+<li><p>Appointment metrics</p></li>
+<li><p>Medical records overview</p></li>
+</ul>
+</dd>
+<dt><strong>Doctor Management</strong></dt><dd><ul class="simple">
+<li><p>Doctor registration and profile</p></li>
+<li><p>Specialization tracking</p></li>
+<li><p>University/qualification recording</p></li>
+<li><p>Contact information management</p></li>
+<li><p>Active/inactive status tracking</p></li>
+</ul>
+</dd>
+<dt><strong>Patient Management</strong></dt><dd><ul class="simple">
+<li><p>Patient profile management</p></li>
+<li><p>Demographic information</p></li>
+<li><p>Emergency contact tracking</p></li>
+<li><p>Medical history tracking</p></li>
+<li><p>Active/inactive status tracking</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="design-patterns">
+<h2><span class="section-number">1.5. </span>Design Patterns<a class="headerlink" href="#design-patterns" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>1. Soft Delete Pattern</strong></dt><dd><p>Records are marked as inactive (is_active = FALSE) rather than
+permanently deleted, preserving data integrity and audit trails.</p>
+</dd>
+<dt><strong>2. Repository Pattern</strong></dt><dd><p>Model classes (Admin, Doctor, Patient) act as repositories,
+providing data access and business logic.</p>
+</dd>
+<dt><strong>3. Session Management Pattern</strong></dt><dd><p>Flask sessions store user context including user_type, user_id,
+and user_name for authorization checking.</p>
+</dd>
+<dt><strong>4. Error Handling Pattern</strong></dt><dd><p>Try-except blocks wrap database operations with user-friendly
+error messages displayed via flash notifications.</p>
+</dd>
+<dt><strong>5. Validation Pattern</strong></dt><dd><p>Multi-layer validation:
+- Required field checking
+- Format validation (email, phone)
+- Duplicate detection
+- Business logic validation</p>
+</dd>
+</dl>
+</section>
+<section id="request-response-flow">
+<h2><span class="section-number">1.6. </span>Request-Response Flow<a class="headerlink" href="#request-response-flow" title="Link to this heading"></a></h2>
+<p><strong>Typical Admin Operation Flow</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>1. User Action (Click, Submit)
+       ↓
+2. HTTP Request to Route
+       ↓
+3. Authentication Check
+       ↓
+4. Input Validation
+       ↓
+5. Database Operation
+       ↓
+6. Error Handling
+       ↓
+7. Flash Message
+       ↓
+8. Redirect/Render Template
+</pre></div>
+</div>
+</section>
+<section id="database-schema">
+<h2><span class="section-number">1.7. </span>Database Schema<a class="headerlink" href="#database-schema" title="Link to this heading"></a></h2>
+<p><strong>Admin Table</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">admins</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">admin_id</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">username</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">password</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">full_name</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">email</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">phone</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">created_at</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Doctor Table</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">doctors</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">doctor_id</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">doctor_code</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">full_name</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">university</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">specialization</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">qualification</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">email</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">phone</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">address</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">is_active</span><span class="w"> </span><span class="nb">BOOLEAN</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">TRUE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">created_at</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Patient Table</strong></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">patients</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">patient_id</span><span class="w"> </span><span class="nb">INT</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">full_name</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">age</span><span class="w"> </span><span class="nb">INT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">gender</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span>
+<span class="w">    </span><span class="n">phone</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">email</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">address</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">blood_group</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span>
+<span class="w">    </span><span class="n">emergency_contact</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">is_active</span><span class="w"> </span><span class="nb">BOOLEAN</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">TRUE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">created_at</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="security-considerations">
+<h2><span class="section-number">1.8. </span>Security Considerations<a class="headerlink" href="#security-considerations" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>Authentication</strong></dt><dd><ul class="simple">
+<li><p>Admin login required for all management routes</p></li>
+<li><p>Session-based access control</p></li>
+<li><p>Password stored as hash (werkzeug.security)</p></li>
+</ul>
+</dd>
+<dt><strong>Input Validation</strong></dt><dd><ul class="simple">
+<li><p>All form inputs validated on server</p></li>
+<li><p>SQL injection prevention via parameterized queries</p></li>
+<li><p>XSS prevention via template escaping</p></li>
+</ul>
+</dd>
+<dt><strong>Error Handling</strong></dt><dd><ul class="simple">
+<li><p>Sensitive error details not exposed to users</p></li>
+<li><p>User-friendly error messages</p></li>
+<li><p>Server-side logging for debugging</p></li>
+</ul>
+</dd>
+<dt><strong>Data Protection</strong></dt><dd><ul class="simple">
+<li><p>Soft delete preserves data integrity</p></li>
+<li><p>Audit trail maintained for all operations</p></li>
+<li><p>Session timeouts for security</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="performance-considerations">
+<h2><span class="section-number">1.9. </span>Performance Considerations<a class="headerlink" href="#performance-considerations" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>Database Queries</strong></dt><dd><ul class="simple">
+<li><p>Efficient SELECT queries for listing</p></li>
+<li><p>Indexed columns for fast lookups</p></li>
+<li><p>Minimal JOIN operations</p></li>
+</ul>
+</dd>
+<dt><strong>Session Management</strong></dt><dd><ul class="simple">
+<li><p>Session data stored efficiently</p></li>
+<li><p>Automatic session cleanup</p></li>
+</ul>
+</dd>
+<dt><strong>Error Handling</strong></dt><dd><ul class="simple">
+<li><p>Graceful degradation on errors</p></li>
+<li><p>User-friendly fallbacks</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="scalability-recommendations">
+<h2><span class="section-number">1.10. </span>Scalability Recommendations<a class="headerlink" href="#scalability-recommendations" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Database Optimization</strong>
+- Add indexes on frequently searched columns
+- Implement query caching for dashboards
+- Consider partitioning for large tables</p></li>
+<li><p><strong>Session Management</strong>
+- Use Redis for distributed session storage
+- Implement session cleanup routine
+- Monitor session memory usage</p></li>
+<li><p><strong>API Rate Limiting</strong>
+- Implement rate limiting on login attempts
+- Track suspicious activity
+- Implement account lockout after failed attempts</p></li>
+<li><p><strong>Logging &amp; Monitoring</strong>
+- Comprehensive logging of admin operations
+- Real-time alerting for security events
+- Performance monitoring and metrics</p></li>
+<li><p><strong>Caching Strategy</strong>
+- Cache dashboard statistics
+- Cache frequently accessed doctor/patient lists
+- Implement cache invalidation on updates</p></li>
+</ol>
+</section>
+<section id="technology-stack">
+<h2><span class="section-number">1.11. </span>Technology Stack<a class="headerlink" href="#technology-stack" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>Backend</strong></dt><dd><ul class="simple">
+<li><p>Framework: Flask 3.0+</p></li>
+<li><p>Language: Python 3.7+</p></li>
+<li><p>Database: MySQL 5.7+</p></li>
+<li><p>Database Driver: PyMySQL 1.1+</p></li>
+</ul>
+</dd>
+<dt><strong>Security</strong></dt><dd><ul class="simple">
+<li><p>Password Hashing: werkzeug.security</p></li>
+<li><p>Session Management: Flask Sessions</p></li>
+<li><p>Input Validation: Server-side validation</p></li>
+</ul>
+</dd>
+<dt><strong>Templates</strong></dt><dd><ul class="simple">
+<li><p>Templating: Jinja2</p></li>
+<li><p>Templates Location: templates/admin/</p></li>
+<li><p>CSS/JS Integration: Static assets</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="module-dependencies">
+<h2><span class="section-number">1.12. </span>Module Dependencies<a class="headerlink" href="#module-dependencies" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">flask</span><span class="w"> </span><span class="kn">import</span> <span class="n">render_template</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">url_for</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">flash</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">models.admin</span><span class="w"> </span><span class="kn">import</span> <span class="n">Admin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">models.doctor</span><span class="w"> </span><span class="kn">import</span> <span class="n">Doctor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">models.patient</span><span class="w"> </span><span class="kn">import</span> <span class="n">Patient</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><strong>External Dependencies</strong></dt><dd><ul class="simple">
+<li><p>Flask - Web framework</p></li>
+<li><p>PyMySQL - Database connection</p></li>
+<li><p>Werkzeug - Password hashing</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="next-steps">
+<h2><span class="section-number">1.13. </span>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Continue to <a class="reference internal" href="admin_authentication.html"><span class="doc">Admin Authentication - Login &amp; Session Management</span></a> for login details</p></li>
+<li><p>Review <a class="reference internal" href="admin_dashboard.html"><span class="doc">Admin Dashboard - Statistics &amp; Overview</span></a> for statistics</p></li>
+<li><p>Explore <a class="reference internal" href="doctor_management.html"><span class="doc">Doctor Management - CRUD Operations</span></a> for doctor operations</p></li>
+<li><p>Study <a class="reference internal" href="patient_management.html"><span class="doc">Patient Management - CRUD Operations</span></a> for patient operations</p></li>
+<li><p>Reference <a class="reference internal" href="api_endpoints.html"><span class="doc">API Endpoints Reference - Complete Admin Routes</span></a> for complete endpoint documentation</p></li>
+<li><p>Check <a class="reference internal" href="examples.html"><span class="doc">Code Examples - Admin Integration</span></a> for code samples</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Medilink Admin Routes - Complete Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="admin_authentication.html" class="btn btn-neutral float-right" title="2. Admin Authentication - Login &amp; Session Management" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Medilink Development Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
