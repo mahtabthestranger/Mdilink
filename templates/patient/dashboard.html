@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Patient Dashboard - Medilink{% endblock %}
+
+{% block navigation %}
+<nav class="bg-white bg-opacity-10 backdrop-blur-md border-b border-white border-opacity-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+            <div class="flex items-center">
+                <h1 class="text-2xl font-bold text-white">🏥 Medilink</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="text-white opacity-90">Welcome, {{ session.user_name }}!</span>
+                <a href="{{ url_for('logout') }}" class="glass px-4 py-2 rounded-lg text-white hover-lift text-sm">
+                    Logout
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen py-12 px-4">
+    <div class="max-w-7xl mx-auto">
+        <!-- Welcome Section -->
+        <div class="glass rounded-2xl p-8 mb-8">
+            <h2 class="text-3xl font-bold text-white mb-2">Welcome back, {{ session.user_name }}!</h2>
+            <p class="text-white opacity-75">Manage your appointments and view your medical records</p>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="grid md:grid-cols-3 gap-6 mb-8">
+            <!-- Book Appointment -->
+            <a href="{{ url_for('patient_book_appointment') }}" class="glass rounded-xl p-6 hover-lift card">
+                <div class="text-center">
+                    <div class="text-5xl mb-4">📅</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Book Appointment</h3>
+                    <p class="text-white opacity-75 text-sm">Schedule a new appointment</p>
+                </div>
+            </a>
+
+            <!-- My Appointments -->
+            <a href="{{ url_for('patient_appointments') }}" class="glass rounded-xl p-6 hover-lift card">
+                <div class="text-center">
+                    <div class="text-5xl mb-4">📋</div>
+                    <h3 class="text-xl font-bold text-white mb-2">My Appointments</h3>
+                    <p class="text-white opacity-75 text-sm">View your appointments</p>
+                </div>
+            </a>
+
+            <!-- Medical Records -->
+            <a href="{{ url_for('patient_medical_records') }}" class="glass rounded-xl p-6 hover-lift card">
+                <div class="text-center">
+                    <div class="text-5xl mb-4">🏥</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Medical Records</h3>
+                    <p class="text-white opacity-75 text-sm">View your medical history</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="glass rounded-2xl p-8">
+            <h3 class="text-2xl font-bold text-white mb-6">Recent Activity</h3>
+            <div class="text-center py-12">
+                <div class="text-6xl mb-4 opacity-50">📊</div>
+                <p class="text-white opacity-75">No recent activity</p>
+                <p class="text-white opacity-50 text-sm mt-2">Book your first appointment to get started!</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
