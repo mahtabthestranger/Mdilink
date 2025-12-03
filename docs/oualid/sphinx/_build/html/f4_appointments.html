@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>F4: View Appointments &#8212; Medilink - Doctor Features 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=f6a572b4" />
+    <script src="_static/documentation_options.js?v=8d563738"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="F5: Medical Records Management" href="f5_medical_records.html" />
+    <link rel="prev" title="F3: Doctor Login" href="f3_doctor_login.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Medilink - Doctor Features</a></h1>
+
+
+
+<p class="blurb">Documentation for Doctor Features (F3, F4, F5)</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=mahtabthestranger&repo=Medilink&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Feature Documentation:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="f3_doctor_login.html">F3: Doctor Login</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">F4: View Appointments</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#implementation">Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#features">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#database-model">Database Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#templates">Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#security">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#error-handling">Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#related-features">Related Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="f5_medical_records.html">F5: Medical Records Management</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="f3_doctor_login.html" title="previous chapter">F3: Doctor Login</a></li>
+      <li>Next: <a href="f5_medical_records.html" title="next chapter">F5: Medical Records Management</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="f4-view-appointments">
+<h1>F4: View Appointments<a class="headerlink" href="#f4-view-appointments" title="Link to this heading">¶</a></h1>
+<p><strong>Feature ID:</strong> F4
+<strong>Developer:</strong> Al Mamun Oualid
+<strong>Status:</strong> Complete</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
+<p>The View Appointments feature allows doctors to view, filter, and manage their scheduled appointments. Doctors can see patient details, appointment times, and update appointment statuses.</p>
+</section>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Display all scheduled appointments for the logged-in doctor</p></li>
+<li><p>Filter appointments by date</p></li>
+<li><p>Filter appointments by status (Scheduled, Completed, Cancelled)</p></li>
+<li><p>View patient information for each appointment</p></li>
+<li><p>Update appointment status</p></li>
+<li><p>Responsive and user-friendly interface</p></li>
+</ul>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">¶</a></h2>
+<section id="main-route">
+<h3>Main Route<a class="headerlink" href="#main-route" title="Link to this heading">¶</a></h3>
+<p><strong>Endpoint:</strong> <code class="docutils literal notranslate"><span class="pre">/doctor/appointments</span></code>
+<strong>Method:</strong> <code class="docutils literal notranslate"><span class="pre">GET</span></code>
+<strong>Location:</strong> <code class="docutils literal notranslate"><span class="pre">app.py</span></code> lines 419-437</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/doctor/appointments&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">doctor_appointments</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Display doctor&#39;s appointments with optional filters.</span>
+
+<span class="sd">    Query Parameters:</span>
+<span class="sd">        date (str): Filter by appointment date (YYYY-MM-DD)</span>
+<span class="sd">        status (str): Filter by status (Scheduled/Completed/Cancelled)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Rendered template with appointments list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;user_type&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;doctor&#39;</span><span class="p">:</span>
+        <span class="n">flash</span><span class="p">(</span><span class="s1">&#39;Please login to access doctor dashboard&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;doctor_login&#39;</span><span class="p">))</span>
+
+    <span class="c1"># Get filters from query parameters</span>
+    <span class="n">date_filter</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">)</span>
+    <span class="n">status_filter</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Fetch appointments with filters</span>
+    <span class="n">appointments</span> <span class="o">=</span> <span class="n">Appointment</span><span class="o">.</span><span class="n">get_by_doctor</span><span class="p">(</span>
+        <span class="n">mysql</span><span class="p">,</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">),</span>
+        <span class="n">date_filter</span><span class="p">,</span>
+        <span class="n">status_filter</span>
+    <span class="p">)</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">date</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;doctor/appointments.html&#39;</span><span class="p">,</span>
+                         <span class="n">appointments</span><span class="o">=</span><span class="n">appointments</span><span class="p">,</span>
+                         <span class="n">today_date</span><span class="o">=</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">),</span>
+                         <span class="n">current_date</span><span class="o">=</span><span class="n">date_filter</span><span class="p">,</span>
+                         <span class="n">current_status</span><span class="o">=</span><span class="n">status_filter</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="update-status-route">
+<h3>Update Status Route<a class="headerlink" href="#update-status-route" title="Link to this heading">¶</a></h3>
+<p><strong>Endpoint:</strong> <code class="docutils literal notranslate"><span class="pre">/doctor/appointment/&lt;int:appointment_id&gt;/status</span></code>
+<strong>Method:</strong> <code class="docutils literal notranslate"><span class="pre">POST</span></code>
+<strong>Location:</strong> <code class="docutils literal notranslate"><span class="pre">app.py</span></code> lines 439-465</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/doctor/appointment/&lt;int:appointment_id&gt;/status&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">doctor_update_appointment_status</span><span class="p">(</span><span class="n">appointment_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Update appointment status.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        appointment_id (int): ID of the appointment to update</span>
+
+<span class="sd">    Form Data:</span>
+<span class="sd">        status (str): New status (Completed or Cancelled)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Redirect to appointments page with success/error message</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;user_type&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;doctor&#39;</span><span class="p">:</span>
+        <span class="n">flash</span><span class="p">(</span><span class="s1">&#39;Please login to access doctor dashboard&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;doctor_login&#39;</span><span class="p">))</span>
+
+    <span class="n">status</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">status</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Completed&#39;</span><span class="p">,</span> <span class="s1">&#39;Cancelled&#39;</span><span class="p">]:</span>
+        <span class="n">flash</span><span class="p">(</span><span class="s1">&#39;Invalid status&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;doctor_appointments&#39;</span><span class="p">))</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Verify appointment belongs to doctor</span>
+        <span class="n">appointment</span> <span class="o">=</span> <span class="n">Appointment</span><span class="o">.</span><span class="n">find_by_id</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">appointment_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">appointment</span> <span class="ow">or</span> <span class="n">appointment</span><span class="p">[</span><span class="s1">&#39;doctor_id&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">):</span>
+            <span class="n">flash</span><span class="p">(</span><span class="s1">&#39;Appointment not found or access denied&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;doctor_appointments&#39;</span><span class="p">))</span>
+
+        <span class="n">Appointment</span><span class="o">.</span><span class="n">update_status</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">appointment_id</span><span class="p">,</span> <span class="n">status</span><span class="p">)</span>
+        <span class="n">flash</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Appointment marked as </span><span class="si">{</span><span class="n">status</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;success&#39;</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">flash</span><span class="p">(</span><span class="s1">&#39;Failed to update status&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error updating status: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;doctor_appointments&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="features">
+<h2>Features<a class="headerlink" href="#features" title="Link to this heading">¶</a></h2>
+<section id="appointment-listing">
+<h3>Appointment Listing<a class="headerlink" href="#appointment-listing" title="Link to this heading">¶</a></h3>
+<p>Displays all appointments with:</p>
+<ul class="simple">
+<li><p>Patient name</p></li>
+<li><p>Patient age and gender</p></li>
+<li><p>Patient phone number</p></li>
+<li><p>Appointment date and time</p></li>
+<li><p>Appointment reason</p></li>
+<li><p>Current status</p></li>
+<li><p>Action buttons</p></li>
+</ul>
+</section>
+<section id="filtering-options">
+<h3>Filtering Options<a class="headerlink" href="#filtering-options" title="Link to this heading">¶</a></h3>
+<section id="date-filter">
+<h4>Date Filter<a class="headerlink" href="#date-filter" title="Link to this heading">¶</a></h4>
+<p>Filter appointments by specific date:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;date&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;date&quot;</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;{{ current_date }}&quot;</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>The filter uses SQL query:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">date_filter</span><span class="p">:</span>
+    <span class="n">query</span> <span class="o">+=</span> <span class="s2">&quot; AND a.appointment_date = </span><span class="si">%s</span><span class="s2">&quot;</span>
+    <span class="n">params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">date_filter</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="status-filter">
+<h4>Status Filter<a class="headerlink" href="#status-filter" title="Link to this heading">¶</a></h4>
+<p>Filter by appointment status:</p>
+<ul class="simple">
+<li><p>Scheduled</p></li>
+<li><p>Completed</p></li>
+<li><p>Cancelled</p></li>
+</ul>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">select</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;status&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">&gt;</span>All Status<span class="p">&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;Scheduled&quot;</span><span class="p">&gt;</span>Scheduled<span class="p">&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;Completed&quot;</span><span class="p">&gt;</span>Completed<span class="p">&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;Cancelled&quot;</span><span class="p">&gt;</span>Cancelled<span class="p">&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">select</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="status-management">
+<h3>Status Management<a class="headerlink" href="#status-management" title="Link to this heading">¶</a></h3>
+<p>Doctors can update appointment status to:</p>
+<ul class="simple">
+<li><p><strong>Completed</strong>: Mark appointment as done</p></li>
+<li><p><strong>Cancelled</strong>: Cancel the appointment</p></li>
+</ul>
+<p>Only the doctor who owns the appointment can update its status.</p>
+</section>
+</section>
+<section id="database-model">
+<h2>Database Model<a class="headerlink" href="#database-model" title="Link to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">Appointment</span></code> model provides methods for appointment management:</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="models.appointment.Appointment.get_by_doctor">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">Appointment.</span></span><span class="sig-name descname"><span class="pre">get_by_doctor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mysql</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doctor_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/appointment.html#Appointment.get_by_doctor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.appointment.Appointment.get_by_doctor" title="Link to this definition">¶</a></dt>
+<dd><p>Get all appointments for a doctor with optional filters (F4: View Appointments).</p>
+<p>This method is the core of F4 feature, allowing doctors to view their
+appointments with filtering capabilities.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysql</strong> – MySQL database connection object</p></li>
+<li><p><strong>doctor_id</strong> (<em>int</em>) – ID of the doctor</p></li>
+<li><p><strong>date_filter</strong> (<em>str</em><em>, </em><em>optional</em>) – Filter by date (YYYY-MM-DD format). Defaults to None.</p></li>
+<li><p><strong>status_filter</strong> (<em>str</em><em>, </em><em>optional</em>) – Filter by status (Scheduled/Completed/Cancelled).
+Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of appointments with patient information, ordered by date (newest first)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get all appointments</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">appointments</span> <span class="o">=</span> <span class="n">Appointment</span><span class="o">.</span><span class="n">get_by_doctor</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">doctor_id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Filter by date</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">today_appointments</span> <span class="o">=</span> <span class="n">Appointment</span><span class="o">.</span><span class="n">get_by_doctor</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">mysql</span><span class="p">,</span> <span class="n">doctor_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">date_filter</span><span class="o">=</span><span class="s1">&#39;2025-12-01&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Filter by status</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scheduled</span> <span class="o">=</span> <span class="n">Appointment</span><span class="o">.</span><span class="n">get_by_doctor</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">mysql</span><span class="p">,</span> <span class="n">doctor_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">status_filter</span><span class="o">=</span><span class="s1">&#39;Scheduled&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Results include patient details through JOIN query</p></li>
+<li><p>Filters can be combined (date AND status)</p></li>
+<li><p>Used in F4: View Appointments feature</p></li>
+</ul>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="models.appointment.Appointment.find_by_id">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">Appointment.</span></span><span class="sig-name descname"><span class="pre">find_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mysql</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appointment_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/appointment.html#Appointment.find_by_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.appointment.Appointment.find_by_id" title="Link to this definition">¶</a></dt>
+<dd><p>Find an appointment by its ID with patient and doctor information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysql</strong> – MySQL database connection object</p></li>
+<li><p><strong>appointment_id</strong> (<em>int</em>) – ID of the appointment</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Appointment record with patient and doctor details, None if not found</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">appointment</span> <span class="o">=</span> <span class="n">Appointment</span><span class="o">.</span><span class="n">find_by_id</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">appointment</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Patient: </span><span class="si">{</span><span class="n">appointment</span><span class="p">[</span><span class="s1">&#39;patient_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Doctor: </span><span class="si">{</span><span class="n">appointment</span><span class="p">[</span><span class="s1">&#39;doctor_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Used in F4 to verify appointment ownership before status updates</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="models.appointment.Appointment.update_status">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">Appointment.</span></span><span class="sig-name descname"><span class="pre">update_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mysql</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appointment_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">notes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/appointment.html#Appointment.update_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.appointment.Appointment.update_status" title="Link to this definition">¶</a></dt>
+<dd><p>Update appointment status (F4: View Appointments).</p>
+<p>Allows doctors to mark appointments as Completed or Cancelled.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysql</strong> – MySQL database connection object</p></li>
+<li><p><strong>appointment_id</strong> (<em>int</em>) – ID of the appointment to update</p></li>
+<li><p><strong>status</strong> (<em>str</em>) – New status (‘Scheduled’, ‘Completed’, or ‘Cancelled’)</p></li>
+<li><p><strong>notes</strong> (<em>str</em><em>, </em><em>optional</em>) – Additional notes about the status change. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if update successful</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Mark appointment as completed</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Appointment</span><span class="o">.</span><span class="n">update_status</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">appointment_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s1">&#39;Completed&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Cancel with notes</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Appointment</span><span class="o">.</span><span class="n">update_status</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">mysql</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">appointment_id</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">status</span><span class="o">=</span><span class="s1">&#39;Cancelled&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">notes</span><span class="o">=</span><span class="s1">&#39;Patient requested cancellation&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Only Scheduled appointments should be updated</p></li>
+<li><p>Used in F4: View Appointments feature</p></li>
+<li><p>Access control is enforced in the route layer</p></li>
+</ul>
+</div>
+</dd></dl>
+
+<section id="query-details">
+<h3>Query Details<a class="headerlink" href="#query-details" title="Link to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">get_by_doctor</span></code> method uses a JOIN query to fetch patient information:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">full_name</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">patient_name</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">age</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">gender</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">phone</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">appointments</span><span class="w"> </span><span class="n">a</span>
+<span class="k">JOIN</span><span class="w"> </span><span class="n">patients</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">patient_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">patient_id</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">doctor_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">%</span><span class="n">s</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">appointment_date</span><span class="w"> </span><span class="k">DESC</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">appointment_time</span><span class="w"> </span><span class="k">DESC</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="templates">
+<h2>Templates<a class="headerlink" href="#templates" title="Link to this heading">¶</a></h2>
+<p><strong>File:</strong> <code class="docutils literal notranslate"><span class="pre">templates/doctor/appointments.html</span></code></p>
+<p>Template Features:</p>
+<ul class="simple">
+<li><p>Responsive table layout</p></li>
+<li><p>Date and status filter forms</p></li>
+<li><p>Status update buttons</p></li>
+<li><p>Empty state message when no appointments</p></li>
+<li><p>Color-coded status badges</p></li>
+</ul>
+<section id="ui-components">
+<h3>UI Components<a class="headerlink" href="#ui-components" title="Link to this heading">¶</a></h3>
+<section id="status-badges">
+<h4>Status Badges<a class="headerlink" href="#status-badges" title="Link to this heading">¶</a></h4>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span>{% if appointment.status == &#39;Scheduled&#39; %}
+    <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;badge badge-primary&quot;</span><span class="p">&gt;</span>Scheduled<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+{% elif appointment.status == &#39;Completed&#39; %}
+    <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;badge badge-success&quot;</span><span class="p">&gt;</span>Completed<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+{% elif appointment.status == &#39;Cancelled&#39; %}
+    <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;badge badge-danger&quot;</span><span class="p">&gt;</span>Cancelled<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+{% endif %}
+</pre></div>
+</div>
+</section>
+<section id="action-buttons">
+<h4>Action Buttons<a class="headerlink" href="#action-buttons" title="Link to this heading">¶</a></h4>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span>{% if appointment.status == &#39;Scheduled&#39; %}
+    <span class="p">&lt;</span><span class="nt">form</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;POST&quot;</span> <span class="na">action</span><span class="o">=</span><span class="s">&quot;{{ url_for(&#39;doctor_update_appointment_status&#39;, appointment_id=appointment.appointment_id) }}&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">button</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;submit&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;status&quot;</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;Completed&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;btn btn-sm btn-success&quot;</span><span class="p">&gt;</span>
+            Mark Complete
+        <span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">button</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;submit&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;status&quot;</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;Cancelled&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;btn btn-sm btn-danger&quot;</span><span class="p">&gt;</span>
+            Cancel
+        <span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+{% endif %}
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Link to this heading">¶</a></h2>
+<section id="manual-test-cases">
+<h3>Manual Test Cases<a class="headerlink" href="#manual-test-cases" title="Link to this heading">¶</a></h3>
+<ol class="arabic simple">
+<li><p><strong>View All Appointments</strong></p>
+<ul class="simple">
+<li><p>Navigate to <code class="docutils literal notranslate"><span class="pre">/doctor/appointments</span></code></p></li>
+<li><p>Expected: List of all appointments for logged-in doctor</p></li>
+</ul>
+</li>
+<li><p><strong>Filter by Date</strong></p>
+<ul class="simple">
+<li><p>Select a specific date</p></li>
+<li><p>Click “Filter”</p></li>
+<li><p>Expected: Only appointments on that date are shown</p></li>
+</ul>
+</li>
+<li><p><strong>Filter by Status</strong></p>
+<ul class="simple">
+<li><p>Select “Scheduled” status</p></li>
+<li><p>Click “Filter”</p></li>
+<li><p>Expected: Only scheduled appointments are shown</p></li>
+</ul>
+</li>
+<li><p><strong>Mark as Completed</strong></p>
+<ul class="simple">
+<li><p>Click “Mark Complete” on a scheduled appointment</p></li>
+<li><p>Expected: Status changes to “Completed”, success message shown</p></li>
+</ul>
+</li>
+<li><p><strong>Cancel Appointment</strong></p>
+<ul class="simple">
+<li><p>Click “Cancel” on a scheduled appointment</p></li>
+<li><p>Expected: Status changes to “Cancelled”, success message shown</p></li>
+</ul>
+</li>
+<li><p><strong>Access Control</strong></p>
+<ul class="simple">
+<li><p>Try to update another doctor’s appointment</p></li>
+<li><p>Expected: “Access denied” error message</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="security">
+<h2>Security<a class="headerlink" href="#security" title="Link to this heading">¶</a></h2>
+<section id="access-control">
+<h3>Access Control<a class="headerlink" href="#access-control" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Only logged-in doctors can access appointments</p></li>
+<li><p>Doctors can only view their own appointments</p></li>
+<li><p>Doctors can only update their own appointments</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Verify appointment belongs to doctor</span>
+<span class="k">if</span> <span class="n">appointment</span><span class="p">[</span><span class="s1">&#39;doctor_id&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">):</span>
+    <span class="n">flash</span><span class="p">(</span><span class="s1">&#39;Appointment not found or access denied&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;doctor_appointments&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="input-validation">
+<h3>Input Validation<a class="headerlink" href="#input-validation" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Status values are validated (only Completed or Cancelled allowed)</p></li>
+<li><p>Appointment ID is validated to prevent unauthorized access</p></li>
+<li><p>SQL injection prevention through parameterized queries</p></li>
+</ul>
+</section>
+</section>
+<section id="error-handling">
+<h2>Error Handling<a class="headerlink" href="#error-handling" title="Link to this heading">¶</a></h2>
+<p>The feature handles:</p>
+<ul class="simple">
+<li><p>Invalid appointment ID</p></li>
+<li><p>Unauthorized access attempts</p></li>
+<li><p>Database errors</p></li>
+<li><p>Invalid status values</p></li>
+<li><p>Missing session data</p></li>
+</ul>
+<p>All errors are logged and user-friendly messages are displayed.</p>
+</section>
+<section id="related-features">
+<h2>Related Features<a class="headerlink" href="#related-features" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>F3:</strong> Doctor Login (required to access this feature)</p></li>
+<li><p><strong>F5:</strong> Medical Records (can be accessed from patient details)</p></li>
+</ul>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="f3_doctor_login.html"><span class="doc">F3: Doctor Login</span></a></p></li>
+<li><p><a class="reference internal" href="f5_medical_records.html"><span class="doc">F5: Medical Records Management</span></a></p></li>
+<li><p><a class="reference internal" href="api_reference.html"><span class="doc">API Reference</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &#169;2025, Al Mamun Oualid.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.0.1</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/f4_appointments.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

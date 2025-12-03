@@ -1,0 +1,481 @@
+F5: Medical Records Management
+==============================
+
+**Feature ID:** F5  
+**Developer:** Al Mamun Oualid  
+**Status:** Complete
+
+Overview
+--------
+
+The Medical Records Management feature allows doctors to create, view, and update patient medical records. This includes diagnosis, symptoms, prescriptions, recommended tests, and follow-up information.
+
+Requirements
+------------
+
+* View list of all patients
+* View patient details and medical history
+* Create new medical records for patients
+* Update existing medical records (only records created by the doctor)
+* Required field validation (diagnosis is mandatory)
+* Secure access control
+
+Implementation
+--------------
+
+Patient List Route
+~~~~~~~~~~~~~~~~~~
+
+**Endpoint:** ``/doctor/patients``  
+**Method:** ``GET``  
+**Location:** ``app.py`` lines 467-477
+
+.. code-block:: python
+
+    @app.route('/doctor/patients')
+    def doctor_patients():
+        """
+        Display list of all patients.
+        
+        Returns:
+            Rendered template with patients list
+        """
+        if session.get('user_type') != 'doctor':
+            flash('Please login to access doctor dashboard', 'error')
+            return redirect(url_for('doctor_login'))
+        
+        patients = Patient.get_all(mysql)
+        return render_template('doctor/patients.html', patients=patients)
+
+Patient Details Route
+~~~~~~~~~~~~~~~~~~~~~
+
+**Endpoint:** ``/doctor/patient/<int:patient_id>``  
+**Method:** ``GET``  
+**Location:** ``app.py`` lines 479-494
+
+.. code-block:: python
+
+    @app.route('/doctor/patient/<int:patient_id>')
+    def doctor_view_patient(patient_id):
+        """
+        View patient details and medical history.
+        
+        Args:
+            patient_id (int): ID of the patient to view
+        
+        Returns:
+            Rendered template with patient details and medical records
+        """
+        if session.get('user_type') != 'doctor':
+            flash('Please login to access doctor dashboard', 'error')
+            return redirect(url_for('doctor_login'))
+        
+        patient = Patient.find_by_id(mysql, patient_id)
+        if not patient:
+            flash('Patient not found', 'error')
+            return redirect(url_for('doctor_patients'))
+        
+        # Get medical history
+        records = MedicalRecord.get_by_patient(mysql, patient_id)
+        
+        return render_template('doctor/patient_details.html', 
+                             patient=patient, 
+                             records=records)
+
+Add Record Route
+~~~~~~~~~~~~~~~~
+
+**Endpoint:** ``/doctor/patient/<int:patient_id>/add-record``  
+**Methods:** ``GET``, ``POST``  
+**Location:** ``app.py`` lines 496-543
+
+.. code-block:: python
+
+    @app.route('/doctor/patient/<int:patient_id>/add-record', methods=['GET', 'POST'])
+    def doctor_add_record(patient_id):
+        """
+        Add new medical record for a patient.
+        
+        Args:
+            patient_id (int): ID of the patient
+        
+        Form Data:
+            diagnosis (str): Required. Patient diagnosis
+            symptoms (str): Optional. Patient symptoms
+            prescription (str): Optional. Prescribed medication
+            tests_recommended (str): Optional. Recommended tests
+            notes (str): Optional. Additional notes
+            follow_up_date (date): Optional. Follow-up appointment date
+        
+        Returns:
+            On success: Redirect to patient details
+            On failure: Redirect to add record form with error
+        """
+        if session.get('user_type') != 'doctor':
+            flash('Please login to access doctor dashboard', 'error')
+            return redirect(url_for('doctor_login'))
+        
+        patient = Patient.find_by_id(mysql, patient_id)
+        if not patient:
+            flash('Patient not found', 'error')
+            return redirect(url_for('doctor_patients'))
+        
+        if request.method == 'POST':
+            diagnosis = request.form.get('diagnosis', '').strip()
+            symptoms = request.form.get('symptoms', '').strip()
+            prescription = request.form.get('prescription', '').strip()
+            tests_recommended = request.form.get('tests_recommended', '').strip()
+            notes = request.form.get('notes', '').strip()
+            follow_up_date = request.form.get('follow_up_date')
+            
+            # Validation: diagnosis is required
+            if not diagnosis:
+                flash('Diagnosis is required', 'error')
+                return redirect(url_for('doctor_add_record', patient_id=patient_id))
+            
+            try:
+                from datetime import date
+                MedicalRecord.create(
+                    mysql=mysql,
+                    patient_id=patient_id,
+                    doctor_id=session.get('user_id'),
+                    visit_date=date.today(),
+                    diagnosis=diagnosis,
+                    symptoms=symptoms if symptoms else None,
+                    prescription=prescription if prescription else None,
+                    tests_recommended=tests_recommended if tests_recommended else None,
+                    notes=notes if notes else None,
+                    follow_up_date=follow_up_date if follow_up_date else None
+                )
+                
+                flash('Medical record added successfully', 'success')
+                return redirect(url_for('doctor_view_patient', patient_id=patient_id))
+                
+            except Exception as e:
+                flash('Failed to add medical record', 'error')
+                print(f"Error adding record: {e}")
+                return redirect(url_for('doctor_add_record', patient_id=patient_id))
+        
+        return render_template('doctor/add_record.html', patient=patient)
+
+Edit Record Route
+~~~~~~~~~~~~~~~~~
+
+**Endpoint:** ``/doctor/record/<int:record_id>/edit``  
+**Methods:** ``GET``, ``POST``  
+**Location:** ``app.py`` lines 545-594
+
+.. code-block:: python
+
+    @app.route('/doctor/record/<int:record_id>/edit', methods=['GET', 'POST'])
+    def doctor_edit_record(record_id):
+        """
+        Edit existing medical record.
+        
+        Args:
+            record_id (int): ID of the record to edit
+        
+        Security:
+            Only the doctor who created the record can edit it
+        
+        Returns:
+            On success: Redirect to patient details
+            On failure: Redirect to edit form with error
+        """
+        if session.get('user_type') != 'doctor':
+            flash('Please login to access doctor dashboard', 'error')
+            return redirect(url_for('doctor_login'))
+        
+        record = MedicalRecord.find_by_id(mysql, record_id)
+        if not record:
+            flash('Record not found', 'error')
+            return redirect(url_for('doctor_patients'))
+        
+        # Check if this doctor created the record
+        if record['doctor_id'] != session.get('user_id'):
+            flash('You can only edit records created by you', 'error')
+            return redirect(url_for('doctor_view_patient', patient_id=record['patient_id']))
+        
+        if request.method == 'POST':
+            diagnosis = request.form.get('diagnosis', '').strip()
+            symptoms = request.form.get('symptoms', '').strip()
+            prescription = request.form.get('prescription', '').strip()
+            tests_recommended = request.form.get('tests_recommended', '').strip()
+            notes = request.form.get('notes', '').strip()
+            follow_up_date = request.form.get('follow_up_date')
+            
+            if not diagnosis:
+                flash('Diagnosis is required', 'error')
+                return redirect(url_for('doctor_edit_record', record_id=record_id))
+            
+            try:
+                MedicalRecord.update(
+                    mysql=mysql,
+                    record_id=record_id,
+                    diagnosis=diagnosis,
+                    symptoms=symptoms if symptoms else None,
+                    prescription=prescription if prescription else None,
+                    tests_recommended=tests_recommended if tests_recommended else None,
+                    notes=notes if notes else None,
+                    follow_up_date=follow_up_date if follow_up_date else None
+                )
+                
+                flash('Medical record updated successfully', 'success')
+                return redirect(url_for('doctor_view_patient', patient_id=record['patient_id']))
+                
+            except Exception as e:
+                flash('Failed to update medical record', 'error')
+                print(f"Error updating record: {e}")
+                return redirect(url_for('doctor_edit_record', record_id=record_id))
+                
+        return render_template('doctor/edit_record.html', record=record)
+
+Features
+--------
+
+Medical Record Fields
+~~~~~~~~~~~~~~~~~~~~~
+
+Required Fields
+^^^^^^^^^^^^^^^
+
+* **Diagnosis**: Primary diagnosis for the visit (mandatory)
+
+Optional Fields
+^^^^^^^^^^^^^^^
+
+* **Symptoms**: Patient's reported symptoms
+* **Prescription**: Prescribed medications and dosage
+* **Tests Recommended**: Laboratory or imaging tests recommended
+* **Notes**: Additional notes or observations
+* **Follow-up Date**: Date for next appointment
+
+Automatic Fields
+^^^^^^^^^^^^^^^^
+
+* **Visit Date**: Automatically set to current date
+* **Doctor ID**: Automatically set to logged-in doctor
+* **Patient ID**: Set from the patient being treated
+
+Patient Search and Selection
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Doctors can:
+
+1. View list of all patients
+2. Search for specific patients
+3. Click on a patient to view details
+4. Access patient's complete medical history
+
+Medical History View
+~~~~~~~~~~~~~~~~~~~~
+
+For each patient, doctors can see:
+
+* All previous medical records
+* Doctor who created each record
+* Visit dates
+* Diagnoses and treatments
+* Chronological order (newest first)
+
+Database Model
+--------------
+
+The ``MedicalRecord`` model provides CRUD operations:
+
+.. automethod:: models.medical_record.MedicalRecord.create
+.. automethod:: models.medical_record.MedicalRecord.find_by_id
+.. automethod:: models.medical_record.MedicalRecord.get_by_patient
+.. automethod:: models.medical_record.MedicalRecord.update
+
+Database Schema
+~~~~~~~~~~~~~~~
+
+.. code-block:: sql
+
+    CREATE TABLE medical_records (
+        record_id INT PRIMARY KEY AUTO_INCREMENT,
+        patient_id INT NOT NULL,
+        doctor_id INT NOT NULL,
+        appointment_id INT,
+        visit_date DATE NOT NULL,
+        diagnosis TEXT NOT NULL,
+        symptoms TEXT,
+        prescription TEXT,
+        tests_recommended TEXT,
+        follow_up_date DATE,
+        notes TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        FOREIGN KEY (patient_id) REFERENCES patients(patient_id),
+        FOREIGN KEY (doctor_id) REFERENCES doctors(doctor_id),
+        FOREIGN KEY (appointment_id) REFERENCES appointments(appointment_id)
+    );
+
+Templates
+---------
+
+Patients List Template
+~~~~~~~~~~~~~~~~~~~~~~
+
+**File:** ``templates/doctor/patients.html``
+
+Features:
+
+* Searchable patient list
+* Patient basic information (name, age, gender)
+* Contact information
+* "View Details" button for each patient
+
+Patient Details Template
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+**File:** ``templates/doctor/patient_details.html``
+
+Features:
+
+* Patient demographic information
+* Medical history timeline
+* "Add New Record" button
+* Edit buttons for records created by current doctor
+
+Add Record Template
+~~~~~~~~~~~~~~~~~~~
+
+**File:** ``templates/doctor/add_record.html``
+
+Features:
+
+* Form with all medical record fields
+* Required field indicators
+* Date picker for follow-up date
+* Text areas for detailed information
+* Cancel and Save buttons
+
+Edit Record Template
+~~~~~~~~~~~~~~~~~~~~
+
+**File:** ``templates/doctor/edit_record.html``
+
+Features:
+
+* Pre-filled form with existing data
+* Same validation as add form
+* Update and Cancel buttons
+* Display of original creation date
+
+Validation
+----------
+
+Client-Side Validation
+~~~~~~~~~~~~~~~~~~~~~~
+
+* Required field indicators
+* HTML5 form validation
+* Date format validation
+
+Server-Side Validation
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    # Diagnosis is required
+    if not diagnosis:
+        flash('Diagnosis is required', 'error')
+        return redirect(url_for('doctor_add_record', patient_id=patient_id))
+    
+    # Optional fields are set to None if empty
+    symptoms = symptoms if symptoms else None
+    prescription = prescription if prescription else None
+
+Security
+--------
+
+Access Control
+~~~~~~~~~~~~~~
+
+1. **Authentication Required**: Only logged-in doctors can access
+2. **Record Ownership**: Doctors can only edit their own records
+3. **Patient Privacy**: All patient data is protected
+
+.. code-block:: python
+
+    # Check if this doctor created the record
+    if record['doctor_id'] != session.get('user_id'):
+        flash('You can only edit records created by you', 'error')
+        return redirect(url_for('doctor_view_patient', patient_id=record['patient_id']))
+
+Data Protection
+~~~~~~~~~~~~~~~
+
+* SQL injection prevention through parameterized queries
+* XSS protection through template escaping
+* CSRF protection through Flask session tokens
+
+Testing
+-------
+
+Manual Test Cases
+~~~~~~~~~~~~~~~~~
+
+1. **View Patients List**
+   
+   * Navigate to ``/doctor/patients``
+   * Expected: List of all patients displayed
+
+2. **View Patient Details**
+   
+   * Click on a patient
+   * Expected: Patient info and medical history shown
+
+3. **Add Medical Record - Valid Data**
+   
+   * Fill all fields including required diagnosis
+   * Click "Save"
+   * Expected: Record saved, success message, redirect to patient details
+
+4. **Add Medical Record - Missing Diagnosis**
+   
+   * Leave diagnosis empty
+   * Click "Save"
+   * Expected: Error message "Diagnosis is required"
+
+5. **Edit Own Record**
+   
+   * Click "Edit" on a record created by current doctor
+   * Modify diagnosis
+   * Click "Update"
+   * Expected: Record updated successfully
+
+6. **Edit Another Doctor's Record**
+   
+   * Try to edit a record created by different doctor
+   * Expected: Error message "You can only edit records created by you"
+
+Error Handling
+--------------
+
+The feature handles:
+
+* Patient not found
+* Record not found
+* Missing required fields
+* Unauthorized edit attempts
+* Database errors
+* Invalid patient/record IDs
+
+All errors are logged and user-friendly messages are displayed.
+
+Related Features
+----------------
+
+* **F3:** Doctor Login (required to access this feature)
+* **F4:** View Appointments (appointments can link to medical records)
+
+See Also
+--------
+
+* :doc:`f3_doctor_login`
+* :doc:`f4_appointments`
+* :doc:`api_reference`

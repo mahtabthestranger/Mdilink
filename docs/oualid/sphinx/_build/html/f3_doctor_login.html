@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>F3: Doctor Login &#8212; Medilink - Doctor Features 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=f6a572b4" />
+    <script src="_static/documentation_options.js?v=8d563738"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="F4: View Appointments" href="f4_appointments.html" />
+    <link rel="prev" title="Medilink Doctor Features Documentation" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Medilink - Doctor Features</a></h1>
+
+
+
+<p class="blurb">Documentation for Doctor Features (F3, F4, F5)</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=mahtabthestranger&repo=Medilink&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Feature Documentation:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">F3: Doctor Login</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#implementation">Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#database-model">Database Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#templates">Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#error-handling">Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#related-features">Related Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="f4_appointments.html">F4: View Appointments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="f5_medical_records.html">F5: Medical Records Management</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Medilink Doctor Features Documentation</a></li>
+      <li>Next: <a href="f4_appointments.html" title="next chapter">F4: View Appointments</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="f3-doctor-login">
+<h1>F3: Doctor Login<a class="headerlink" href="#f3-doctor-login" title="Link to this heading">¶</a></h1>
+<p><strong>Feature ID:</strong> F3
+<strong>Developer:</strong> Al Mamun Oualid
+<strong>Status:</strong> Complete</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
+<p>The Doctor Login feature provides secure authentication for doctors to access the Medilink system. Doctors use their unique doctor code and password to log in.</p>
+</section>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Secure authentication with doctor ID and password</p></li>
+<li><p>Password hashing for security</p></li>
+<li><p>Account status verification (active/inactive)</p></li>
+<li><p>Session management</p></li>
+<li><p>Error handling for invalid credentials</p></li>
+</ul>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">¶</a></h2>
+<section id="route">
+<h3>Route<a class="headerlink" href="#route" title="Link to this heading">¶</a></h3>
+<p><strong>Endpoint:</strong> <code class="docutils literal notranslate"><span class="pre">/doctor/login</span></code>
+<strong>Methods:</strong> <code class="docutils literal notranslate"><span class="pre">GET</span></code>, <code class="docutils literal notranslate"><span class="pre">POST</span></code>
+<strong>Location:</strong> <code class="docutils literal notranslate"><span class="pre">app.py</span></code> lines 116-150</p>
+</section>
+<section id="authentication-flow">
+<h3>Authentication Flow<a class="headerlink" href="#authentication-flow" title="Link to this heading">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Doctor enters doctor code and password</p></li>
+<li><p>System validates input fields</p></li>
+<li><p>Password is verified using secure hashing</p></li>
+<li><p>Account status is checked (must be active)</p></li>
+<li><p>Session is created with doctor information</p></li>
+<li><p>Redirect to doctor dashboard</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/doctor/login&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">doctor_login</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handle doctor login authentication.</span>
+
+<span class="sd">    GET: Display login form</span>
+<span class="sd">    POST: Process login credentials</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        On success: Redirect to doctor dashboard</span>
+<span class="sd">        On failure: Redirect to login with error message</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="n">doctor_code</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;doctor_code&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">password</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Validation</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">doctor_code</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">password</span><span class="p">:</span>
+            <span class="n">flash</span><span class="p">(</span><span class="s1">&#39;Please enter doctor ID and password&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;doctor_login&#39;</span><span class="p">))</span>
+
+        <span class="c1"># Verify credentials</span>
+        <span class="n">doctor</span> <span class="o">=</span> <span class="n">Doctor</span><span class="o">.</span><span class="n">verify_password</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">doctor_code</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">doctor</span><span class="p">:</span>
+            <span class="c1"># Check if account is active</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">doctor</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;is_active&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
+                <span class="n">flash</span><span class="p">(</span><span class="s1">&#39;Access denied. Your account has been deactivated&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;doctor_login&#39;</span><span class="p">))</span>
+
+            <span class="c1"># Set session</span>
+            <span class="n">session</span><span class="p">[</span><span class="s1">&#39;user_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;doctor&#39;</span>
+            <span class="n">session</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">doctor</span><span class="p">[</span><span class="s1">&#39;doctor_id&#39;</span><span class="p">]</span>
+            <span class="n">session</span><span class="p">[</span><span class="s1">&#39;user_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">doctor</span><span class="p">[</span><span class="s1">&#39;full_name&#39;</span><span class="p">]</span>
+            <span class="n">session</span><span class="p">[</span><span class="s1">&#39;doctor_code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">doctor</span><span class="p">[</span><span class="s1">&#39;doctor_code&#39;</span><span class="p">]</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">permanent</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="n">flash</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Welcome, Dr. </span><span class="si">{</span><span class="n">doctor</span><span class="p">[</span><span class="s2">&quot;full_name&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">!&#39;</span><span class="p">,</span> <span class="s1">&#39;success&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;doctor_dashboard&#39;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">flash</span><span class="p">(</span><span class="s1">&#39;Invalid credentials&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;doctor_login&#39;</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;doctor/login.html&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="security-features">
+<h3>Security Features<a class="headerlink" href="#security-features" title="Link to this heading">¶</a></h3>
+<section id="password-hashing">
+<h4>Password Hashing<a class="headerlink" href="#password-hashing" title="Link to this heading">¶</a></h4>
+<p>All passwords are hashed using <code class="docutils literal notranslate"><span class="pre">werkzeug.security.generate_password_hash</span></code> with PBKDF2-SHA256 algorithm.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">werkzeug.security</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_password_hash</span><span class="p">,</span> <span class="n">check_password_hash</span>
+
+<span class="c1"># Hashing password during doctor creation</span>
+<span class="n">hashed_password</span> <span class="o">=</span> <span class="n">generate_password_hash</span><span class="p">(</span><span class="n">password</span><span class="p">)</span>
+
+<span class="c1"># Verifying password during login</span>
+<span class="k">if</span> <span class="n">check_password_hash</span><span class="p">(</span><span class="n">doctor</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">],</span> <span class="n">password</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">doctor</span>
+</pre></div>
+</div>
+</section>
+<section id="sql-injection-prevention">
+<h4>SQL Injection Prevention<a class="headerlink" href="#sql-injection-prevention" title="Link to this heading">¶</a></h4>
+<p>All database queries use parameterized statements to prevent SQL injection attacks.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+    <span class="s2">&quot;SELECT * FROM doctors WHERE doctor_code = </span><span class="si">%s</span><span class="s2"> AND is_active = TRUE&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">doctor_code</span><span class="p">,)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="session-management">
+<h4>Session Management<a class="headerlink" href="#session-management" title="Link to this heading">¶</a></h4>
+<p>Sessions are configured with:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">session.permanent</span> <span class="pre">=</span> <span class="pre">True</span></code> for persistent sessions</p></li>
+<li><p>Secure session keys</p></li>
+<li><p>User type verification for access control</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="database-model">
+<h2>Database Model<a class="headerlink" href="#database-model" title="Link to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">Doctor</span></code> model provides authentication methods:</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="models.doctor.Doctor.verify_password">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">Doctor.</span></span><span class="sig-name descname"><span class="pre">verify_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mysql</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doctor_code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/doctor.html#Doctor.verify_password"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.doctor.Doctor.verify_password" title="Link to this definition">¶</a></dt>
+<dd><p>Verify doctor login credentials (F3: Doctor Login).</p>
+<p>This method is used for doctor authentication. It finds the doctor
+by code and verifies the password using secure hashing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysql</strong> – MySQL database connection object</p></li>
+<li><p><strong>doctor_code</strong> (<em>str</em>) – Doctor’s unique code</p></li>
+<li><p><strong>password</strong> (<em>str</em>) – Plain text password to verify</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Doctor record if credentials are valid, None otherwise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">doctor</span> <span class="o">=</span> <span class="n">Doctor</span><span class="o">.</span><span class="n">verify_password</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="s1">&#39;DOC001&#39;</span><span class="p">,</span> <span class="s1">&#39;password123&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">doctor</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">session</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">doctor</span><span class="p">[</span><span class="s1">&#39;doctor_id&#39;</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Login successful&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Invalid credentials&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Only active doctors can log in</p></li>
+<li><p>Password is verified using check_password_hash</p></li>
+<li><p>Used in F3: Doctor Login feature</p></li>
+</ul>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="models.doctor.Doctor.find_by_code">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">Doctor.</span></span><span class="sig-name descname"><span class="pre">find_by_code</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mysql</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doctor_code</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/doctor.html#Doctor.find_by_code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.doctor.Doctor.find_by_code" title="Link to this definition">¶</a></dt>
+<dd><p>Find an active doctor by their unique doctor code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysql</strong> – MySQL database connection object</p></li>
+<li><p><strong>doctor_code</strong> (<em>str</em>) – Unique doctor identifier</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Doctor record if found and active, None otherwise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">doctor</span> <span class="o">=</span> <span class="n">Doctor</span><span class="o">.</span><span class="n">find_by_code</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="s1">&#39;DOC001&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">doctor</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">doctor</span><span class="p">[</span><span class="s1">&#39;full_name&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Only returns active doctors (is_active = TRUE)</p>
+</div>
+</dd></dl>
+
+</section>
+<section id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Link to this heading">¶</a></h2>
+<section id="unit-tests">
+<h3>Unit Tests<a class="headerlink" href="#unit-tests" title="Link to this heading">¶</a></h3>
+<p><strong>File:</strong> <code class="docutils literal notranslate"><span class="pre">oualid_features/tests/test_doctor_login.py</span></code></p>
+<p>Test Cases:</p>
+<ol class="arabic simple">
+<li><p><strong>test_verify_password_valid_credentials</strong>: Tests successful login with correct credentials</p></li>
+<li><p><strong>test_verify_password_invalid_credentials</strong>: Tests failed login with wrong password</p></li>
+<li><p><strong>test_verify_password_nonexistent_doctor</strong>: Tests login attempt with non-existent doctor code</p></li>
+<li><p><strong>test_find_by_code_active_doctor</strong>: Tests finding active doctor by code</p></li>
+<li><p><strong>test_password_hashing</strong>: Verifies password is properly hashed</p></li>
+</ol>
+</section>
+<section id="running-tests">
+<h3>Running Tests<a class="headerlink" href="#running-tests" title="Link to this heading">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>oualid_features/tests/test_doctor_login.py
+</pre></div>
+</div>
+<p>Expected Output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.023s
+
+OK
+</pre></div>
+</div>
+</section>
+<section id="manual-testing">
+<h3>Manual Testing<a class="headerlink" href="#manual-testing" title="Link to this heading">¶</a></h3>
+<p>Test Scenarios:</p>
+<ol class="arabic simple">
+<li><p><strong>Valid Login</strong></p>
+<ul class="simple">
+<li><p>Doctor Code: <code class="docutils literal notranslate"><span class="pre">DOC001</span></code></p></li>
+<li><p>Password: <code class="docutils literal notranslate"><span class="pre">correct_password</span></code></p></li>
+<li><p>Expected: Redirect to dashboard with welcome message</p></li>
+</ul>
+</li>
+<li><p><strong>Invalid Password</strong></p>
+<ul class="simple">
+<li><p>Doctor Code: <code class="docutils literal notranslate"><span class="pre">DOC001</span></code></p></li>
+<li><p>Password: <code class="docutils literal notranslate"><span class="pre">wrong_password</span></code></p></li>
+<li><p>Expected: Error message “Invalid credentials”</p></li>
+</ul>
+</li>
+<li><p><strong>Empty Fields</strong></p>
+<ul class="simple">
+<li><p>Doctor Code: <em>(empty)</em></p></li>
+<li><p>Password: <em>(empty)</em></p></li>
+<li><p>Expected: Error message “Please enter doctor ID and password”</p></li>
+</ul>
+</li>
+<li><p><strong>Inactive Account</strong></p>
+<ul class="simple">
+<li><p>Doctor Code: <code class="docutils literal notranslate"><span class="pre">DOC002</span></code> (inactive)</p></li>
+<li><p>Password: <code class="docutils literal notranslate"><span class="pre">correct_password</span></code></p></li>
+<li><p>Expected: Error message “Access denied. Your account has been deactivated”</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="templates">
+<h2>Templates<a class="headerlink" href="#templates" title="Link to this heading">¶</a></h2>
+<p><strong>File:</strong> <code class="docutils literal notranslate"><span class="pre">templates/doctor/login.html</span></code></p>
+<p>The login template includes:</p>
+<ul class="simple">
+<li><p>Doctor code input field</p></li>
+<li><p>Password input field (masked)</p></li>
+<li><p>Login button</p></li>
+<li><p>Error message display</p></li>
+<li><p>Responsive design</p></li>
+</ul>
+</section>
+<section id="error-handling">
+<h2>Error Handling<a class="headerlink" href="#error-handling" title="Link to this heading">¶</a></h2>
+<p>The feature handles the following error cases:</p>
+<ul class="simple">
+<li><p>Empty doctor code or password</p></li>
+<li><p>Invalid credentials</p></li>
+<li><p>Non-existent doctor code</p></li>
+<li><p>Inactive doctor account</p></li>
+<li><p>Database connection errors</p></li>
+</ul>
+<p>All errors are logged and user-friendly messages are displayed.</p>
+</section>
+<section id="related-features">
+<h2>Related Features<a class="headerlink" href="#related-features" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>F4:</strong> View Appointments (requires F3 login)</p></li>
+<li><p><strong>F5:</strong> Medical Records (requires F3 login)</p></li>
+</ul>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="f4_appointments.html"><span class="doc">F4: View Appointments</span></a></p></li>
+<li><p><a class="reference internal" href="f5_medical_records.html"><span class="doc">F5: Medical Records Management</span></a></p></li>
+<li><p><a class="reference internal" href="api_reference.html"><span class="doc">API Reference</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &#169;2025, Al Mamun Oualid.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.0.1</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/f3_doctor_login.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
