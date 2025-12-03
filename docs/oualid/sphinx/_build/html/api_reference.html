@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>API Reference &#8212; Medilink - Doctor Features 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=f6a572b4" />
+    <script src="_static/documentation_options.js?v=8d563738"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="F5: Medical Records Management" href="f5_medical_records.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Medilink - Doctor Features</a></h1>
+
+
+
+<p class="blurb">Documentation for Doctor Features (F3, F4, F5)</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=mahtabthestranger&repo=Medilink&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Feature Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="f3_doctor_login.html">F3: Doctor Login</a></li>
+<li class="toctree-l1"><a class="reference internal" href="f4_appointments.html">F4: View Appointments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="f5_medical_records.html">F5: Medical Records Management</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#routes">Routes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#security-functions">Security Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#database-utilities">Database Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#constants-and-enums">Constants and Enums</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#error-messages">Error Messages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#success-messages">Success Messages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#code-examples">Code Examples</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="f5_medical_records.html" title="previous chapter">F5: Medical Records Management</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading">¶</a></h1>
+<p>This section provides detailed API documentation for all models and functions related to Al Mamun Oualid’s doctor features.</p>
+<section id="models">
+<h2>Models<a class="headerlink" href="#models" title="Link to this heading">¶</a></h2>
+<section id="module-models.doctor">
+<span id="doctor-model"></span><h3>Doctor Model<a class="headerlink" href="#module-models.doctor" title="Link to this heading">¶</a></h3>
+<section id="id1">
+<h4>Doctor Model<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h4>
+<p>Handles all database operations related to doctors including authentication,
+creation, retrieval, and management of doctor accounts.</p>
+<p>Author: Al Mamun Oualid
+Feature: F3 (Doctor Login), F4 (View Appointments), F5 (Medical Records)</p>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="models.doctor.Doctor">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">models.doctor.</span></span><span class="sig-name descname"><span class="pre">Doctor</span></span><a class="reference internal" href="_modules/models/doctor.html#Doctor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.doctor.Doctor" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Doctor model class for managing doctor accounts and authentication.</p>
+<p>This class provides static methods for CRUD operations on doctor records
+and handles password hashing for secure authentication.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="models.doctor.Doctor.None">
+<span class="sig-name descname"><span class="pre">None</span></span><a class="headerlink" href="#models.doctor.Doctor.None" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>all methods are static</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">doctor</span> <span class="o">=</span> <span class="n">Doctor</span><span class="o">.</span><span class="n">verify_password</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="s1">&#39;DOC001&#39;</span><span class="p">,</span> <span class="s1">&#39;password123&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">doctor</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Welcome, Dr. </span><span class="si">{</span><span class="n">doctor</span><span class="p">[</span><span class="s1">&#39;full_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="models.doctor.Doctor.create">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mysql</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doctor_code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">university</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phone</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">specialization</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualification</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">created_by</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/doctor.html#Doctor.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.doctor.Doctor.create" title="Link to this definition">¶</a></dt>
+<dd><p>Create a new doctor account with hashed password.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysql</strong> – MySQL database connection object</p></li>
+<li><p><strong>doctor_code</strong> (<em>str</em>) – Unique identifier for the doctor (e.g., ‘DOC001’)</p></li>
+<li><p><strong>password</strong> (<em>str</em>) – Plain text password (will be hashed)</p></li>
+<li><p><strong>full_name</strong> (<em>str</em>) – Doctor’s full name</p></li>
+<li><p><strong>university</strong> (<em>str</em>) – Medical university/institution</p></li>
+<li><p><strong>email</strong> (<em>str</em>) – Doctor’s email address</p></li>
+<li><p><strong>phone</strong> (<em>str</em>) – Doctor’s phone number</p></li>
+<li><p><strong>specialization</strong> (<em>str</em><em>, </em><em>optional</em>) – Medical specialization. Defaults to None.</p></li>
+<li><p><strong>qualification</strong> (<em>str</em><em>, </em><em>optional</em>) – Medical qualifications. Defaults to None.</p></li>
+<li><p><strong>address</strong> (<em>str</em><em>, </em><em>optional</em>) – Doctor’s address. Defaults to None.</p></li>
+<li><p><strong>created_by</strong> (<em>int</em><em>, </em><em>optional</em>) – Admin ID who created this account. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The ID of the newly created doctor</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – If database operation fails</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">doctor_id</span> <span class="o">=</span> <span class="n">Doctor</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">mysql</span><span class="o">=</span><span class="n">mysql</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">doctor_code</span><span class="o">=</span><span class="s1">&#39;DOC001&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">password</span><span class="o">=</span><span class="s1">&#39;secure_password&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;Dr. John Smith&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">university</span><span class="o">=</span><span class="s1">&#39;Harvard Medical School&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">email</span><span class="o">=</span><span class="s1">&#39;john@hospital.com&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">phone</span><span class="o">=</span><span class="s1">&#39;1234567890&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Password is automatically hashed using PBKDF2-SHA256 before storage.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="models.doctor.Doctor.find_by_code">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">find_by_code</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mysql</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doctor_code</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/doctor.html#Doctor.find_by_code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.doctor.Doctor.find_by_code" title="Link to this definition">¶</a></dt>
+<dd><p>Find an active doctor by their unique doctor code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysql</strong> – MySQL database connection object</p></li>
+<li><p><strong>doctor_code</strong> (<em>str</em>) – Unique doctor identifier</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Doctor record if found and active, None otherwise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">doctor</span> <span class="o">=</span> <span class="n">Doctor</span><span class="o">.</span><span class="n">find_by_code</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="s1">&#39;DOC001&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">doctor</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">doctor</span><span class="p">[</span><span class="s1">&#39;full_name&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Only returns active doctors (is_active = TRUE)</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="models.doctor.Doctor.find_by_id">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">find_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mysql</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doctor_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/doctor.html#Doctor.find_by_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.doctor.Doctor.find_by_id" title="Link to this definition">¶</a></dt>
+<dd><p>Find a doctor by their database ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysql</strong> – MySQL database connection object</p></li>
+<li><p><strong>doctor_id</strong> (<em>int</em>) – Doctor’s database ID</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Doctor record if found, None otherwise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">doctor</span> <span class="o">=</span> <span class="n">Doctor</span><span class="o">.</span><span class="n">find_by_id</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">doctor</span><span class="p">[</span><span class="s1">&#39;doctor_code&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="models.doctor.Doctor.get_all">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">get_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mysql</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/doctor.html#Doctor.get_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.doctor.Doctor.get_all" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieve all doctors from the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysql</strong> – MySQL database connection object</p></li>
+<li><p><strong>active_only</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, only return active doctors.
+Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of doctor records ordered by full name</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">all_doctors</span> <span class="o">=</span> <span class="n">Doctor</span><span class="o">.</span><span class="n">get_all</span><span class="p">(</span><span class="n">mysql</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">active_doctors</span> <span class="o">=</span> <span class="n">Doctor</span><span class="o">.</span><span class="n">get_all</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">active_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">doctor</span> <span class="ow">in</span> <span class="n">all_doctors</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">doctor</span><span class="p">[</span><span class="s1">&#39;full_name&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="models.doctor.Doctor.verify_password">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">verify_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mysql</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doctor_code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/doctor.html#Doctor.verify_password"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.doctor.Doctor.verify_password" title="Link to this definition">¶</a></dt>
+<dd><p>Verify doctor login credentials (F3: Doctor Login).</p>
+<p>This method is used for doctor authentication. It finds the doctor
+by code and verifies the password using secure hashing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysql</strong> – MySQL database connection object</p></li>
+<li><p><strong>doctor_code</strong> (<em>str</em>) – Doctor’s unique code</p></li>
+<li><p><strong>password</strong> (<em>str</em>) – Plain text password to verify</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Doctor record if credentials are valid, None otherwise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">doctor</span> <span class="o">=</span> <span class="n">Doctor</span><span class="o">.</span><span class="n">verify_password</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="s1">&#39;DOC001&#39;</span><span class="p">,</span> <span class="s1">&#39;password123&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">doctor</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">session</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">doctor</span><span class="p">[</span><span class="s1">&#39;doctor_id&#39;</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Login successful&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Invalid credentials&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Only active doctors can log in</p></li>
+<li><p>Password is verified using check_password_hash</p></li>
+<li><p>Used in F3: Doctor Login feature</p></li>
+</ul>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="models.doctor.Doctor.update">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mysql</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doctor_id</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/doctor.html#Doctor.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.doctor.Doctor.update" title="Link to this definition">¶</a></dt>
+<dd><p>Update doctor information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysql</strong> – MySQL database connection object</p></li>
+<li><p><strong>doctor_id</strong> (<em>int</em>) – ID of the doctor to update</p></li>
+<li><p><strong>**kwargs</strong> – Field-value pairs to update</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if update successful</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Doctor</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">mysql</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">doctor_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">full_name</span><span class="o">=</span><span class="s1">&#39;Dr. John Smith Jr.&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">email</span><span class="o">=</span><span class="s1">&#39;newmail@hospital.com&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If ‘password’ is in kwargs, it will be automatically hashed</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="models.doctor.Doctor.delete">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mysql</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doctor_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/doctor.html#Doctor.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.doctor.Doctor.delete" title="Link to this definition">¶</a></dt>
+<dd><p>Soft delete a doctor account by setting is_active to FALSE.</p>
+<p>This method does not permanently delete the doctor record,
+allowing for data retention and potential account recovery.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysql</strong> – MySQL database connection object</p></li>
+<li><p><strong>doctor_id</strong> (<em>int</em>) – ID of the doctor to deactivate</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if deactivation successful</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Doctor</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">doctor_id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Doctor account is now inactive but data is preserved</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Inactive doctors cannot log in to the system</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="models.doctor.Doctor.get_by_university">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">get_by_university</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mysql</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">university</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/doctor.html#Doctor.get_by_university"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.doctor.Doctor.get_by_university" title="Link to this definition">¶</a></dt>
+<dd><p>Get all active doctors from a specific university.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysql</strong> – MySQL database connection object</p></li>
+<li><p><strong>university</strong> (<em>str</em>) – Name of the medical university</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of doctor records from the specified university</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">doctors</span> <span class="o">=</span> <span class="n">Doctor</span><span class="o">.</span><span class="n">get_by_university</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="s1">&#39;Harvard Medical School&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">doctor</span> <span class="ow">in</span> <span class="n">doctors</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">doctor</span><span class="p">[</span><span class="s1">&#39;full_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">doctor</span><span class="p">[</span><span class="s1">&#39;specialization&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<p>The Doctor model handles all database operations related to doctor accounts including authentication, creation, and management.</p>
+<p>Key Methods:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">create()</span></code>: Create a new doctor account</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">verify_password()</span></code>: Authenticate doctor login</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">find_by_code()</span></code>: Find doctor by unique code</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">find_by_id()</span></code>: Find doctor by ID</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_all()</span></code>: Get all doctors</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">update()</span></code>: Update doctor information</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">delete()</span></code>: Soft delete doctor account</p></li>
+</ul>
+</section>
+<section id="module-models.medical_record">
+<span id="medical-record-model"></span><h3>Medical Record Model<a class="headerlink" href="#module-models.medical_record" title="Link to this heading">¶</a></h3>
+<section id="id2">
+<h4>Medical Record Model<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
+<p>Handles all database operations related to patient medical records including
+diagnosis, prescriptions, symptoms, and treatment history.</p>
+<p>Author: Al Mamun Oualid
+Feature: F5 (Medical Records Management)</p>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="models.medical_record.MedicalRecord">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">models.medical_record.</span></span><span class="sig-name descname"><span class="pre">MedicalRecord</span></span><a class="reference internal" href="_modules/models/medical_record.html#MedicalRecord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.medical_record.MedicalRecord" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Medical Record model class for managing patient medical records.</p>
+<p>This class provides static methods for creating, retrieving, and updating
+medical records created by doctors during patient visits.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="models.medical_record.MedicalRecord.None">
+<span class="sig-name descname"><span class="pre">None</span></span><a class="headerlink" href="#models.medical_record.MedicalRecord.None" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>all methods are static</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record_id</span> <span class="o">=</span> <span class="n">MedicalRecord</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">mysql</span><span class="o">=</span><span class="n">mysql</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">patient_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">doctor_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">visit_date</span><span class="o">=</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">(),</span>
+<span class="gp">... </span>    <span class="n">diagnosis</span><span class="o">=</span><span class="s1">&#39;Common Cold&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="models.medical_record.MedicalRecord.create">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mysql</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patient_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doctor_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visit_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagnosis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symptoms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prescription</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tests_recommended</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">follow_up_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">notes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appointment_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/medical_record.html#MedicalRecord.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.medical_record.MedicalRecord.create" title="Link to this definition">¶</a></dt>
+<dd><p>Create a new medical record for a patient (F5: Medical Records).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysql</strong> – MySQL database connection object</p></li>
+<li><p><strong>patient_id</strong> (<em>int</em>) – ID of the patient</p></li>
+<li><p><strong>doctor_id</strong> (<em>int</em>) – ID of the doctor creating the record</p></li>
+<li><p><strong>visit_date</strong> (<em>date</em>) – Date of the visit</p></li>
+<li><p><strong>diagnosis</strong> (<em>str</em>) – Primary diagnosis (required)</p></li>
+<li><p><strong>symptoms</strong> (<em>str</em><em>, </em><em>optional</em>) – Patient’s symptoms. Defaults to None.</p></li>
+<li><p><strong>prescription</strong> (<em>str</em><em>, </em><em>optional</em>) – Prescribed medication. Defaults to None.</p></li>
+<li><p><strong>tests_recommended</strong> (<em>str</em><em>, </em><em>optional</em>) – Recommended tests. Defaults to None.</p></li>
+<li><p><strong>follow_up_date</strong> (<em>date</em><em>, </em><em>optional</em>) – Follow-up appointment date. Defaults to None.</p></li>
+<li><p><strong>notes</strong> (<em>str</em><em>, </em><em>optional</em>) – Additional notes. Defaults to None.</p></li>
+<li><p><strong>appointment_id</strong> (<em>int</em><em>, </em><em>optional</em>) – Related appointment ID. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The ID of the newly created medical record</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – If database operation fails</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">date</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record_id</span> <span class="o">=</span> <span class="n">MedicalRecord</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">mysql</span><span class="o">=</span><span class="n">mysql</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">patient_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">doctor_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">visit_date</span><span class="o">=</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">(),</span>
+<span class="gp">... </span>    <span class="n">diagnosis</span><span class="o">=</span><span class="s1">&#39;Hypertension&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">symptoms</span><span class="o">=</span><span class="s1">&#39;Headache, dizziness&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">prescription</span><span class="o">=</span><span class="s1">&#39;Lisinopril 10mg daily&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">tests_recommended</span><span class="o">=</span><span class="s1">&#39;Blood pressure monitoring&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Diagnosis is a required field</p></li>
+<li><p>Visit date is automatically set to current date in the route</p></li>
+<li><p>Doctor ID comes from the session</p></li>
+</ul>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="models.medical_record.MedicalRecord.find_by_id">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">find_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mysql</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">record_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/medical_record.html#MedicalRecord.find_by_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.medical_record.MedicalRecord.find_by_id" title="Link to this definition">¶</a></dt>
+<dd><p>Find a medical record by its ID with patient and doctor information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysql</strong> – MySQL database connection object</p></li>
+<li><p><strong>record_id</strong> (<em>int</em>) – ID of the medical record</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Medical record with patient and doctor details, None if not found</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">MedicalRecord</span><span class="o">.</span><span class="n">find_by_id</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">record</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Diagnosis: </span><span class="si">{</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;diagnosis&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Doctor: </span><span class="si">{</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;doctor_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="models.medical_record.MedicalRecord.get_by_patient">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">get_by_patient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mysql</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patient_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/medical_record.html#MedicalRecord.get_by_patient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.medical_record.MedicalRecord.get_by_patient" title="Link to this definition">¶</a></dt>
+<dd><p>Get all medical records for a specific patient (F5: Medical Records).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysql</strong> – MySQL database connection object</p></li>
+<li><p><strong>patient_id</strong> (<em>int</em>) – ID of the patient</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of medical records ordered by visit date (newest first)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">MedicalRecord</span><span class="o">.</span><span class="n">get_by_patient</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">patient_id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;visit_date&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;diagnosis&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;By Dr. </span><span class="si">{</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;doctor_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Results include doctor information through JOIN</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="models.medical_record.MedicalRecord.get_by_doctor">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">get_by_doctor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mysql</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doctor_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/medical_record.html#MedicalRecord.get_by_doctor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.medical_record.MedicalRecord.get_by_doctor" title="Link to this definition">¶</a></dt>
+<dd><p>Get all medical records created by a specific doctor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysql</strong> – MySQL database connection object</p></li>
+<li><p><strong>doctor_id</strong> (<em>int</em>) – ID of the doctor</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of medical records created by the doctor</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">MedicalRecord</span><span class="o">.</span><span class="n">get_by_doctor</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">doctor_id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total records created: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="models.medical_record.MedicalRecord.update">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mysql</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">record_id</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/medical_record.html#MedicalRecord.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.medical_record.MedicalRecord.update" title="Link to this definition">¶</a></dt>
+<dd><p>Update an existing medical record (F5: Medical Records).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysql</strong> – MySQL database connection object</p></li>
+<li><p><strong>record_id</strong> (<em>int</em>) – ID of the record to update</p></li>
+<li><p><strong>**kwargs</strong> – Field-value pairs to update</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if update successful</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">MedicalRecord</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">mysql</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">record_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">diagnosis</span><span class="o">=</span><span class="s1">&#39;Updated diagnosis&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">prescription</span><span class="o">=</span><span class="s1">&#39;New medication&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Only the doctor who created the record should be able to update it
+(enforced in the route layer)</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="models.medical_record.MedicalRecord.get_patient_history">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">get_patient_history</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mysql</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patient_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doctor_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/medical_record.html#MedicalRecord.get_patient_history"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.medical_record.MedicalRecord.get_patient_history" title="Link to this definition">¶</a></dt>
+<dd><p>Get patient’s medical history with a specific doctor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysql</strong> – MySQL database connection object</p></li>
+<li><p><strong>patient_id</strong> (<em>int</em>) – ID of the patient</p></li>
+<li><p><strong>doctor_id</strong> (<em>int</em>) – ID of the doctor</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of medical records for this patient-doctor combination</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">history</span> <span class="o">=</span> <span class="n">MedicalRecord</span><span class="o">.</span><span class="n">get_patient_history</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">patient_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">doctor_id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">history</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;visit_date&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;diagnosis&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<p>The MedicalRecord model manages patient medical records including diagnosis, prescriptions, and treatment history.</p>
+<p>Key Methods:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">create()</span></code>: Create a new medical record</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">find_by_id()</span></code>: Find record by ID</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_by_patient()</span></code>: Get all records for a patient</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_by_doctor()</span></code>: Get all records created by a doctor</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">update()</span></code>: Update existing record</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_patient_history()</span></code>: Get patient history with specific doctor</p></li>
+</ul>
+</section>
+<section id="module-models.appointment">
+<span id="appointment-model"></span><h3>Appointment Model<a class="headerlink" href="#module-models.appointment" title="Link to this heading">¶</a></h3>
+<section id="id3">
+<h4>Appointment Model<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h4>
+<p>Handles all database operations related to appointments including scheduling,
+retrieval, and status management.</p>
+<p>Author: Multiple team members
+Feature F4 (View Appointments): Al Mamun Oualid</p>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="models.appointment.Appointment">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">models.appointment.</span></span><span class="sig-name descname"><span class="pre">Appointment</span></span><a class="reference internal" href="_modules/models/appointment.html#Appointment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.appointment.Appointment" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Appointment model class for managing patient-doctor appointments.</p>
+<p>This class provides static methods for creating, retrieving, and managing
+appointments in the hospital management system.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="models.appointment.Appointment.None">
+<span class="sig-name descname"><span class="pre">None</span></span><a class="headerlink" href="#models.appointment.Appointment.None" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>all methods are static</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="models.appointment.Appointment.create">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mysql</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patient_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doctor_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appointment_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appointment_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reason</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/appointment.html#Appointment.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.appointment.Appointment.create" title="Link to this definition">¶</a></dt>
+<dd><p>Create a new appointment</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="models.appointment.Appointment.find_by_id">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">find_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mysql</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appointment_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/appointment.html#Appointment.find_by_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.appointment.Appointment.find_by_id" title="Link to this definition">¶</a></dt>
+<dd><p>Find an appointment by its ID with patient and doctor information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysql</strong> – MySQL database connection object</p></li>
+<li><p><strong>appointment_id</strong> (<em>int</em>) – ID of the appointment</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Appointment record with patient and doctor details, None if not found</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">appointment</span> <span class="o">=</span> <span class="n">Appointment</span><span class="o">.</span><span class="n">find_by_id</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">appointment</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Patient: </span><span class="si">{</span><span class="n">appointment</span><span class="p">[</span><span class="s1">&#39;patient_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Doctor: </span><span class="si">{</span><span class="n">appointment</span><span class="p">[</span><span class="s1">&#39;doctor_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Used in F4 to verify appointment ownership before status updates</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="models.appointment.Appointment.get_by_patient">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">get_by_patient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mysql</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patient_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/appointment.html#Appointment.get_by_patient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.appointment.Appointment.get_by_patient" title="Link to this definition">¶</a></dt>
+<dd><p>Get all appointments for a patient</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="models.appointment.Appointment.get_by_doctor">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">get_by_doctor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mysql</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doctor_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/appointment.html#Appointment.get_by_doctor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.appointment.Appointment.get_by_doctor" title="Link to this definition">¶</a></dt>
+<dd><p>Get all appointments for a doctor with optional filters (F4: View Appointments).</p>
+<p>This method is the core of F4 feature, allowing doctors to view their
+appointments with filtering capabilities.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysql</strong> – MySQL database connection object</p></li>
+<li><p><strong>doctor_id</strong> (<em>int</em>) – ID of the doctor</p></li>
+<li><p><strong>date_filter</strong> (<em>str</em><em>, </em><em>optional</em>) – Filter by date (YYYY-MM-DD format). Defaults to None.</p></li>
+<li><p><strong>status_filter</strong> (<em>str</em><em>, </em><em>optional</em>) – Filter by status (Scheduled/Completed/Cancelled).
+Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of appointments with patient information, ordered by date (newest first)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get all appointments</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">appointments</span> <span class="o">=</span> <span class="n">Appointment</span><span class="o">.</span><span class="n">get_by_doctor</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">doctor_id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Filter by date</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">today_appointments</span> <span class="o">=</span> <span class="n">Appointment</span><span class="o">.</span><span class="n">get_by_doctor</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">mysql</span><span class="p">,</span> <span class="n">doctor_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">date_filter</span><span class="o">=</span><span class="s1">&#39;2025-12-01&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Filter by status</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scheduled</span> <span class="o">=</span> <span class="n">Appointment</span><span class="o">.</span><span class="n">get_by_doctor</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">mysql</span><span class="p">,</span> <span class="n">doctor_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">status_filter</span><span class="o">=</span><span class="s1">&#39;Scheduled&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Results include patient details through JOIN query</p></li>
+<li><p>Filters can be combined (date AND status)</p></li>
+<li><p>Used in F4: View Appointments feature</p></li>
+</ul>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="models.appointment.Appointment.check_availability">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">check_availability</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mysql</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doctor_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appointment_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appointment_time</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/appointment.html#Appointment.check_availability"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.appointment.Appointment.check_availability" title="Link to this definition">¶</a></dt>
+<dd><p>Check if a time slot is available</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="models.appointment.Appointment.update_status">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">update_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mysql</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">appointment_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">notes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/appointment.html#Appointment.update_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.appointment.Appointment.update_status" title="Link to this definition">¶</a></dt>
+<dd><p>Update appointment status (F4: View Appointments).</p>
+<p>Allows doctors to mark appointments as Completed or Cancelled.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mysql</strong> – MySQL database connection object</p></li>
+<li><p><strong>appointment_id</strong> (<em>int</em>) – ID of the appointment to update</p></li>
+<li><p><strong>status</strong> (<em>str</em>) – New status (‘Scheduled’, ‘Completed’, or ‘Cancelled’)</p></li>
+<li><p><strong>notes</strong> (<em>str</em><em>, </em><em>optional</em>) – Additional notes about the status change. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if update successful</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Mark appointment as completed</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Appointment</span><span class="o">.</span><span class="n">update_status</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">appointment_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="s1">&#39;Completed&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Cancel with notes</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Appointment</span><span class="o">.</span><span class="n">update_status</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">mysql</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">appointment_id</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">status</span><span class="o">=</span><span class="s1">&#39;Cancelled&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">notes</span><span class="o">=</span><span class="s1">&#39;Patient requested cancellation&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Only Scheduled appointments should be updated</p></li>
+<li><p>Used in F4: View Appointments feature</p></li>
+<li><p>Access control is enforced in the route layer</p></li>
+</ul>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="models.appointment.Appointment.get_upcoming_by_doctor">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">get_upcoming_by_doctor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mysql</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doctor_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/appointment.html#Appointment.get_upcoming_by_doctor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.appointment.Appointment.get_upcoming_by_doctor" title="Link to this definition">¶</a></dt>
+<dd><p>Get upcoming appointments for a doctor</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="models.appointment.Appointment.get_all">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">get_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mysql</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/models/appointment.html#Appointment.get_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#models.appointment.Appointment.get_all" title="Link to this definition">¶</a></dt>
+<dd><p>Get all appointments (for admin)</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>The Appointment model handles appointment scheduling and management.</p>
+<p>Key Methods (Used in F4):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">get_by_doctor()</span></code>: Get appointments for a doctor with filters</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">find_by_id()</span></code>: Find appointment by ID</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">update_status()</span></code>: Update appointment status</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">check_availability()</span></code>: Check if time slot is available</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_upcoming_by_doctor()</span></code>: Get upcoming appointments</p></li>
+</ul>
+</section>
+</section>
+<section id="routes">
+<h2>Routes<a class="headerlink" href="#routes" title="Link to this heading">¶</a></h2>
+<section id="doctor-login-routes-f3">
+<h3>Doctor Login Routes (F3)<a class="headerlink" href="#doctor-login-routes-f3" title="Link to this heading">¶</a></h3>
+<section id="doctor-login-get-post">
+<h4><code class="docutils literal notranslate"><span class="pre">/doctor/login</span></code> [GET, POST]<a class="headerlink" href="#doctor-login-get-post" title="Link to this heading">¶</a></h4>
+<p>Handles doctor authentication.</p>
+<dl class="simple">
+<dt><strong>GET Request:</strong></dt><dd><p>Returns the login form template.</p>
+</dd>
+<dt><strong>POST Request:</strong></dt><dd><p>Processes login credentials.</p>
+</dd>
+<dt><strong>Form Parameters:</strong></dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">doctor_code</span></code> (str): Doctor’s unique code</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">password</span></code> (str): Doctor’s password</p></li>
+</ul>
+</dd>
+<dt><strong>Returns:</strong></dt><dd><ul class="simple">
+<li><p>Success: Redirect to doctor dashboard</p></li>
+<li><p>Failure: Redirect to login with error message</p></li>
+</ul>
+</dd>
+<dt><strong>Session Variables Set:</strong></dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">user_type</span></code>: ‘doctor’</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_id</span></code>: Doctor’s ID</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_name</span></code>: Doctor’s full name</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">doctor_code</span></code>: Doctor’s code</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+</section>
+<section id="appointment-routes-f4">
+<h3>Appointment Routes (F4)<a class="headerlink" href="#appointment-routes-f4" title="Link to this heading">¶</a></h3>
+<section id="doctor-appointments-get">
+<h4><code class="docutils literal notranslate"><span class="pre">/doctor/appointments</span></code> [GET]<a class="headerlink" href="#doctor-appointments-get" title="Link to this heading">¶</a></h4>
+<p>Displays doctor’s appointments with optional filters.</p>
+<dl class="simple">
+<dt><strong>Query Parameters:</strong></dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">date</span></code> (str, optional): Filter by date (YYYY-MM-DD)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">status</span></code> (str, optional): Filter by status</p></li>
+</ul>
+</dd>
+<dt><strong>Returns:</strong></dt><dd><p>Rendered template with appointments list</p>
+</dd>
+</dl>
+</section>
+<section id="doctor-appointment-int-appointment-id-status-post">
+<h4><code class="docutils literal notranslate"><span class="pre">/doctor/appointment/&lt;int:appointment_id&gt;/status</span></code> [POST]<a class="headerlink" href="#doctor-appointment-int-appointment-id-status-post" title="Link to this heading">¶</a></h4>
+<p>Updates appointment status.</p>
+<dl class="simple">
+<dt><strong>URL Parameters:</strong></dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">appointment_id</span></code> (int): ID of appointment to update</p></li>
+</ul>
+</dd>
+<dt><strong>Form Parameters:</strong></dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">status</span></code> (str): New status (Completed or Cancelled)</p></li>
+</ul>
+</dd>
+<dt><strong>Returns:</strong></dt><dd><p>Redirect to appointments page</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="medical-record-routes-f5">
+<h3>Medical Record Routes (F5)<a class="headerlink" href="#medical-record-routes-f5" title="Link to this heading">¶</a></h3>
+<section id="doctor-patients-get">
+<h4><code class="docutils literal notranslate"><span class="pre">/doctor/patients</span></code> [GET]<a class="headerlink" href="#doctor-patients-get" title="Link to this heading">¶</a></h4>
+<p>Lists all patients.</p>
+<dl class="simple">
+<dt><strong>Returns:</strong></dt><dd><p>Rendered template with patients list</p>
+</dd>
+</dl>
+</section>
+<section id="doctor-patient-int-patient-id-get">
+<h4><code class="docutils literal notranslate"><span class="pre">/doctor/patient/&lt;int:patient_id&gt;</span></code> [GET]<a class="headerlink" href="#doctor-patient-int-patient-id-get" title="Link to this heading">¶</a></h4>
+<p>Views patient details and medical history.</p>
+<dl class="simple">
+<dt><strong>URL Parameters:</strong></dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">patient_id</span></code> (int): ID of patient to view</p></li>
+</ul>
+</dd>
+<dt><strong>Returns:</strong></dt><dd><p>Rendered template with patient details and records</p>
+</dd>
+</dl>
+</section>
+<section id="doctor-patient-int-patient-id-add-record-get-post">
+<h4><code class="docutils literal notranslate"><span class="pre">/doctor/patient/&lt;int:patient_id&gt;/add-record</span></code> [GET, POST]<a class="headerlink" href="#doctor-patient-int-patient-id-add-record-get-post" title="Link to this heading">¶</a></h4>
+<p>Adds new medical record for a patient.</p>
+<dl class="simple">
+<dt><strong>URL Parameters:</strong></dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">patient_id</span></code> (int): ID of patient</p></li>
+</ul>
+</dd>
+<dt><strong>Form Parameters (POST):</strong></dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">diagnosis</span></code> (str, required): Patient diagnosis</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">symptoms</span></code> (str, optional): Patient symptoms</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prescription</span></code> (str, optional): Prescribed medication</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tests_recommended</span></code> (str, optional): Recommended tests</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">notes</span></code> (str, optional): Additional notes</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">follow_up_date</span></code> (date, optional): Follow-up date</p></li>
+</ul>
+</dd>
+<dt><strong>Returns:</strong></dt><dd><ul class="simple">
+<li><p>Success: Redirect to patient details</p></li>
+<li><p>Failure: Redirect to form with error</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="doctor-record-int-record-id-edit-get-post">
+<h4><code class="docutils literal notranslate"><span class="pre">/doctor/record/&lt;int:record_id&gt;/edit</span></code> [GET, POST]<a class="headerlink" href="#doctor-record-int-record-id-edit-get-post" title="Link to this heading">¶</a></h4>
+<p>Edits existing medical record.</p>
+<dl class="simple">
+<dt><strong>URL Parameters:</strong></dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">record_id</span></code> (int): ID of record to edit</p></li>
+</ul>
+</dd>
+<dt><strong>Security:</strong></dt><dd><p>Only the doctor who created the record can edit it.</p>
+</dd>
+<dt><strong>Form Parameters (POST):</strong></dt><dd><p>Same as add-record</p>
+</dd>
+<dt><strong>Returns:</strong></dt><dd><ul class="simple">
+<li><p>Success: Redirect to patient details</p></li>
+<li><p>Failure: Redirect to form with error</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+</section>
+</section>
+<section id="security-functions">
+<h2>Security Functions<a class="headerlink" href="#security-functions" title="Link to this heading">¶</a></h2>
+<section id="password-hashing">
+<h3>Password Hashing<a class="headerlink" href="#password-hashing" title="Link to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">werkzeug.security</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_password_hash</span><span class="p">,</span> <span class="n">check_password_hash</span>
+
+<span class="c1"># Hash password</span>
+<span class="n">hashed</span> <span class="o">=</span> <span class="n">generate_password_hash</span><span class="p">(</span><span class="n">password</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;pbkdf2:sha256&#39;</span><span class="p">)</span>
+
+<span class="c1"># Verify password</span>
+<span class="n">is_valid</span> <span class="o">=</span> <span class="n">check_password_hash</span><span class="p">(</span><span class="n">hashed_password</span><span class="p">,</span> <span class="n">plain_password</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="session-management">
+<h3>Session Management<a class="headerlink" href="#session-management" title="Link to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set session</span>
+<span class="n">session</span><span class="p">[</span><span class="s1">&#39;user_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;doctor&#39;</span>
+<span class="n">session</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">doctor_id</span>
+<span class="n">session</span><span class="o">.</span><span class="n">permanent</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="c1"># Check session</span>
+<span class="k">if</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;user_type&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;doctor&#39;</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;doctor_login&#39;</span><span class="p">))</span>
+
+<span class="c1"># Clear session</span>
+<span class="n">session</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="database-utilities">
+<h2>Database Utilities<a class="headerlink" href="#database-utilities" title="Link to this heading">¶</a></h2>
+<section id="connection-management">
+<h3>Connection Management<a class="headerlink" href="#connection-management" title="Link to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get cursor</span>
+<span class="n">cursor</span> <span class="o">=</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+<span class="c1"># Execute query</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM doctors WHERE doctor_id = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">doctor_id</span><span class="p">,))</span>
+
+<span class="c1"># Fetch results</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>  <span class="c1"># Single row</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>  <span class="c1"># Multiple rows</span>
+
+<span class="c1"># Commit changes</span>
+<span class="n">mysql</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+<span class="c1"># Close cursor</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="parameterized-queries">
+<h3>Parameterized Queries<a class="headerlink" href="#parameterized-queries" title="Link to this heading">¶</a></h3>
+<p>Always use parameterized queries to prevent SQL injection:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># CORRECT - Parameterized</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+    <span class="s2">&quot;SELECT * FROM doctors WHERE doctor_code = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">doctor_code</span><span class="p">,)</span>
+<span class="p">)</span>
+
+<span class="c1"># WRONG - String concatenation (vulnerable to SQL injection)</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;SELECT * FROM doctors WHERE doctor_code = &#39;</span><span class="si">{</span><span class="n">doctor_code</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="constants-and-enums">
+<h2>Constants and Enums<a class="headerlink" href="#constants-and-enums" title="Link to this heading">¶</a></h2>
+<section id="appointment-status">
+<h3>Appointment Status<a class="headerlink" href="#appointment-status" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Scheduled</span></code>: Appointment is scheduled</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Completed</span></code>: Appointment was completed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cancelled</span></code>: Appointment was cancelled</p></li>
+</ul>
+</section>
+<section id="user-types">
+<h3>User Types<a class="headerlink" href="#user-types" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">admin</span></code>: Administrator</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">doctor</span></code>: Doctor</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">patient</span></code>: Patient</p></li>
+</ul>
+</section>
+</section>
+<section id="error-messages">
+<h2>Error Messages<a class="headerlink" href="#error-messages" title="Link to this heading">¶</a></h2>
+<section id="authentication-errors">
+<h3>Authentication Errors<a class="headerlink" href="#authentication-errors" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>“Please enter doctor ID and password”</p></li>
+<li><p>“Invalid credentials”</p></li>
+<li><p>“Access denied. Your account has been deactivated”</p></li>
+</ul>
+</section>
+<section id="validation-errors">
+<h3>Validation Errors<a class="headerlink" href="#validation-errors" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>“Diagnosis is required”</p></li>
+<li><p>“Patient not found”</p></li>
+<li><p>“Record not found”</p></li>
+<li><p>“Invalid status”</p></li>
+</ul>
+</section>
+<section id="authorization-errors">
+<h3>Authorization Errors<a class="headerlink" href="#authorization-errors" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>“Please login to access doctor dashboard”</p></li>
+<li><p>“You can only edit records created by you”</p></li>
+<li><p>“Appointment not found or access denied”</p></li>
+</ul>
+</section>
+</section>
+<section id="success-messages">
+<h2>Success Messages<a class="headerlink" href="#success-messages" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>“Welcome, Dr. {name}!”</p></li>
+<li><p>“Appointment marked as {status}”</p></li>
+<li><p>“Medical record added successfully”</p></li>
+<li><p>“Medical record updated successfully”</p></li>
+</ul>
+</section>
+<section id="code-examples">
+<h2>Code Examples<a class="headerlink" href="#code-examples" title="Link to this heading">¶</a></h2>
+<section id="complete-login-flow">
+<h3>Complete Login Flow<a class="headerlink" href="#complete-login-flow" title="Link to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. User submits login form</span>
+<span class="n">doctor_code</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;doctor_code&#39;</span><span class="p">)</span>
+<span class="n">password</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">)</span>
+
+<span class="c1"># 2. Verify credentials</span>
+<span class="n">doctor</span> <span class="o">=</span> <span class="n">Doctor</span><span class="o">.</span><span class="n">verify_password</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">doctor_code</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+
+<span class="c1"># 3. Check if account is active</span>
+<span class="k">if</span> <span class="n">doctor</span> <span class="ow">and</span> <span class="n">doctor</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;is_active&#39;</span><span class="p">):</span>
+    <span class="c1"># 4. Create session</span>
+    <span class="n">session</span><span class="p">[</span><span class="s1">&#39;user_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;doctor&#39;</span>
+    <span class="n">session</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">doctor</span><span class="p">[</span><span class="s1">&#39;doctor_id&#39;</span><span class="p">]</span>
+
+    <span class="c1"># 5. Redirect to dashboard</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;doctor_dashboard&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="complete-medical-record-creation">
+<h3>Complete Medical Record Creation<a class="headerlink" href="#complete-medical-record-creation" title="Link to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Validate required fields</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">diagnosis</span><span class="p">:</span>
+    <span class="n">flash</span><span class="p">(</span><span class="s1">&#39;Diagnosis is required&#39;</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;doctor_add_record&#39;</span><span class="p">,</span> <span class="n">patient_id</span><span class="o">=</span><span class="n">patient_id</span><span class="p">))</span>
+
+<span class="c1"># 2. Create record</span>
+<span class="n">record_id</span> <span class="o">=</span> <span class="n">MedicalRecord</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">mysql</span><span class="o">=</span><span class="n">mysql</span><span class="p">,</span>
+    <span class="n">patient_id</span><span class="o">=</span><span class="n">patient_id</span><span class="p">,</span>
+    <span class="n">doctor_id</span><span class="o">=</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">),</span>
+    <span class="n">visit_date</span><span class="o">=</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">(),</span>
+    <span class="n">diagnosis</span><span class="o">=</span><span class="n">diagnosis</span><span class="p">,</span>
+    <span class="n">symptoms</span><span class="o">=</span><span class="n">symptoms</span><span class="p">,</span>
+    <span class="n">prescription</span><span class="o">=</span><span class="n">prescription</span>
+<span class="p">)</span>
+
+<span class="c1"># 3. Show success message</span>
+<span class="n">flash</span><span class="p">(</span><span class="s1">&#39;Medical record added successfully&#39;</span><span class="p">,</span> <span class="s1">&#39;success&#39;</span><span class="p">)</span>
+
+<span class="c1"># 4. Redirect to patient details</span>
+<span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;doctor_view_patient&#39;</span><span class="p">,</span> <span class="n">patient_id</span><span class="o">=</span><span class="n">patient_id</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &#169;2025, Al Mamun Oualid.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.0.1</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/api_reference.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

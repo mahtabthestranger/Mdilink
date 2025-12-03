@@ -1,0 +1,236 @@
+F3: Doctor Login
+================
+
+**Feature ID:** F3  
+**Developer:** Al Mamun Oualid  
+**Status:** Complete
+
+Overview
+--------
+
+The Doctor Login feature provides secure authentication for doctors to access the Medilink system. Doctors use their unique doctor code and password to log in.
+
+Requirements
+------------
+
+* Secure authentication with doctor ID and password
+* Password hashing for security
+* Account status verification (active/inactive)
+* Session management
+* Error handling for invalid credentials
+
+Implementation
+--------------
+
+Route
+~~~~~
+
+**Endpoint:** ``/doctor/login``  
+**Methods:** ``GET``, ``POST``  
+**Location:** ``app.py`` lines 116-150
+
+Authentication Flow
+~~~~~~~~~~~~~~~~~~~
+
+1. Doctor enters doctor code and password
+2. System validates input fields
+3. Password is verified using secure hashing
+4. Account status is checked (must be active)
+5. Session is created with doctor information
+6. Redirect to doctor dashboard
+
+.. code-block:: python
+
+    @app.route('/doctor/login', methods=['GET', 'POST'])
+    def doctor_login():
+        """
+        Handle doctor login authentication.
+        
+        GET: Display login form
+        POST: Process login credentials
+        
+        Returns:
+            On success: Redirect to doctor dashboard
+            On failure: Redirect to login with error message
+        """
+        if request.method == 'POST':
+            doctor_code = request.form.get('doctor_code', '').strip()
+            password = request.form.get('password', '')
+            
+            # Validation
+            if not doctor_code or not password:
+                flash('Please enter doctor ID and password', 'error')
+                return redirect(url_for('doctor_login'))
+            
+            # Verify credentials
+            doctor = Doctor.verify_password(mysql, doctor_code, password)
+            
+            if doctor:
+                # Check if account is active
+                if not doctor.get('is_active', True):
+                    flash('Access denied. Your account has been deactivated', 'error')
+                    return redirect(url_for('doctor_login'))
+                
+                # Set session
+                session['user_type'] = 'doctor'
+                session['user_id'] = doctor['doctor_id']
+                session['user_name'] = doctor['full_name']
+                session['doctor_code'] = doctor['doctor_code']
+                session.permanent = True
+                
+                flash(f'Welcome, Dr. {doctor["full_name"]}!', 'success')
+                return redirect(url_for('doctor_dashboard'))
+            else:
+                flash('Invalid credentials', 'error')
+                return redirect(url_for('doctor_login'))
+        
+        return render_template('doctor/login.html')
+
+Security Features
+~~~~~~~~~~~~~~~~~
+
+Password Hashing
+^^^^^^^^^^^^^^^^
+
+All passwords are hashed using ``werkzeug.security.generate_password_hash`` with PBKDF2-SHA256 algorithm.
+
+.. code-block:: python
+
+    from werkzeug.security import generate_password_hash, check_password_hash
+    
+    # Hashing password during doctor creation
+    hashed_password = generate_password_hash(password)
+    
+    # Verifying password during login
+    if check_password_hash(doctor['password'], password):
+        return doctor
+
+SQL Injection Prevention
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+All database queries use parameterized statements to prevent SQL injection attacks.
+
+.. code-block:: python
+
+    cursor.execute(
+        "SELECT * FROM doctors WHERE doctor_code = %s AND is_active = TRUE",
+        (doctor_code,)
+    )
+
+Session Management
+^^^^^^^^^^^^^^^^^^
+
+Sessions are configured with:
+
+* ``session.permanent = True`` for persistent sessions
+* Secure session keys
+* User type verification for access control
+
+Database Model
+--------------
+
+The ``Doctor`` model provides authentication methods:
+
+.. automethod:: models.doctor.Doctor.verify_password
+.. automethod:: models.doctor.Doctor.find_by_code
+
+Testing
+-------
+
+Unit Tests
+~~~~~~~~~~
+
+**File:** ``oualid_features/tests/test_doctor_login.py``
+
+Test Cases:
+
+1. **test_verify_password_valid_credentials**: Tests successful login with correct credentials
+2. **test_verify_password_invalid_credentials**: Tests failed login with wrong password
+3. **test_verify_password_nonexistent_doctor**: Tests login attempt with non-existent doctor code
+4. **test_find_by_code_active_doctor**: Tests finding active doctor by code
+5. **test_password_hashing**: Verifies password is properly hashed
+
+Running Tests
+~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+    python oualid_features/tests/test_doctor_login.py
+
+Expected Output:
+
+.. code-block:: text
+
+    .....
+    ----------------------------------------------------------------------
+    Ran 5 tests in 0.023s
+
+    OK
+
+Manual Testing
+~~~~~~~~~~~~~~
+
+Test Scenarios:
+
+1. **Valid Login**
+   
+   * Doctor Code: ``DOC001``
+   * Password: ``correct_password``
+   * Expected: Redirect to dashboard with welcome message
+
+2. **Invalid Password**
+   
+   * Doctor Code: ``DOC001``
+   * Password: ``wrong_password``
+   * Expected: Error message "Invalid credentials"
+
+3. **Empty Fields**
+   
+   * Doctor Code: *(empty)*
+   * Password: *(empty)*
+   * Expected: Error message "Please enter doctor ID and password"
+
+4. **Inactive Account**
+   
+   * Doctor Code: ``DOC002`` (inactive)
+   * Password: ``correct_password``
+   * Expected: Error message "Access denied. Your account has been deactivated"
+
+Templates
+---------
+
+**File:** ``templates/doctor/login.html``
+
+The login template includes:
+
+* Doctor code input field
+* Password input field (masked)
+* Login button
+* Error message display
+* Responsive design
+
+Error Handling
+--------------
+
+The feature handles the following error cases:
+
+* Empty doctor code or password
+* Invalid credentials
+* Non-existent doctor code
+* Inactive doctor account
+* Database connection errors
+
+All errors are logged and user-friendly messages are displayed.
+
+Related Features
+----------------
+
+* **F4:** View Appointments (requires F3 login)
+* **F5:** Medical Records (requires F3 login)
+
+See Also
+--------
+
+* :doc:`f4_appointments`
+* :doc:`f5_medical_records`
+* :doc:`api_reference`

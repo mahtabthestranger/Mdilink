@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>models.appointment &#8212; Medilink - Doctor Features 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=f6a572b4" />
+    <script src="../../_static/documentation_options.js?v=8d563738"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Medilink - Doctor Features</a></h1>
+
+
+
+<p class="blurb">Documentation for Doctor Features (F3, F4, F5)</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=mahtabthestranger&repo=Medilink&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Feature Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../f3_doctor_login.html">F3: Doctor Login</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../f4_appointments.html">F4: View Appointments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../f5_medical_records.html">F5: Medical Records Management</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api_reference.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for models.appointment</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Appointment Model</span>
+<span class="sd">=================</span>
+
+<span class="sd">Handles all database operations related to appointments including scheduling,</span>
+<span class="sd">retrieval, and status management.</span>
+
+<span class="sd">Author: Multiple team members</span>
+<span class="sd">Feature F4 (View Appointments): Al Mamun Oualid</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Appointment">
+<a class="viewcode-back" href="../../api_reference.html#models.appointment.Appointment">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Appointment</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Appointment model class for managing patient-doctor appointments.</span>
+<span class="sd">    </span>
+<span class="sd">    This class provides static methods for creating, retrieving, and managing</span>
+<span class="sd">    appointments in the hospital management system.</span>
+<span class="sd">    </span>
+<span class="sd">    Attributes:</span>
+<span class="sd">        None (all methods are static)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="Appointment.create">
+<a class="viewcode-back" href="../../api_reference.html#models.appointment.Appointment.create">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">patient_id</span><span class="p">,</span> <span class="n">doctor_id</span><span class="p">,</span> <span class="n">appointment_date</span><span class="p">,</span> <span class="n">appointment_time</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new appointment&quot;&quot;&quot;</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            INSERT INTO appointments (patient_id, doctor_id, appointment_date, </span>
+<span class="s2">                                    appointment_time, reason, status)</span>
+<span class="s2">            VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, &#39;Scheduled&#39;)</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">patient_id</span><span class="p">,</span> <span class="n">doctor_id</span><span class="p">,</span> <span class="n">appointment_date</span><span class="p">,</span> <span class="n">appointment_time</span><span class="p">,</span> <span class="n">reason</span><span class="p">))</span>
+        
+        <span class="n">mysql</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">appointment_id</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">lastrowid</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">appointment_id</span></div>
+
+    
+<div class="viewcode-block" id="Appointment.find_by_id">
+<a class="viewcode-back" href="../../f4_appointments.html#models.appointment.Appointment.find_by_id">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_by_id</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">appointment_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find an appointment by its ID with patient and doctor information.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            mysql: MySQL database connection object</span>
+<span class="sd">            appointment_id (int): ID of the appointment</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: Appointment record with patient and doctor details, None if not found</span>
+<span class="sd">        </span>
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; appointment = Appointment.find_by_id(mysql, 1)</span>
+<span class="sd">            &gt;&gt;&gt; if appointment:</span>
+<span class="sd">            ...     print(f&quot;Patient: {appointment[&#39;patient_name&#39;]}&quot;)</span>
+<span class="sd">            ...     print(f&quot;Doctor: {appointment[&#39;doctor_name&#39;]}&quot;)</span>
+<span class="sd">        </span>
+<span class="sd">        Note:</span>
+<span class="sd">            Used in F4 to verify appointment ownership before status updates</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            SELECT a.*, p.full_name as patient_name, d.full_name as doctor_name,</span>
+<span class="s2">                   d.university, d.specialization</span>
+<span class="s2">            FROM appointments a</span>
+<span class="s2">            JOIN patients p ON a.patient_id = p.patient_id</span>
+<span class="s2">            JOIN doctors d ON a.doctor_id = d.doctor_id</span>
+<span class="s2">            WHERE a.appointment_id = </span><span class="si">%s</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">appointment_id</span><span class="p">,))</span>
+        <span class="n">appointment</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">appointment</span></div>
+
+    
+<div class="viewcode-block" id="Appointment.get_by_patient">
+<a class="viewcode-back" href="../../api_reference.html#models.appointment.Appointment.get_by_patient">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_by_patient</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">patient_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get all appointments for a patient&quot;&quot;&quot;</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            SELECT a.*, d.full_name as doctor_name, d.university, d.specialization</span>
+<span class="s2">            FROM appointments a</span>
+<span class="s2">            JOIN doctors d ON a.doctor_id = d.doctor_id</span>
+<span class="s2">            WHERE a.patient_id = </span><span class="si">%s</span>
+<span class="s2">            ORDER BY a.appointment_date DESC, a.appointment_time DESC</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">patient_id</span><span class="p">,))</span>
+        <span class="n">appointments</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">appointments</span></div>
+
+    
+<div class="viewcode-block" id="Appointment.get_by_doctor">
+<a class="viewcode-back" href="../../f4_appointments.html#models.appointment.Appointment.get_by_doctor">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_by_doctor</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">doctor_id</span><span class="p">,</span> <span class="n">date_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">status_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get all appointments for a doctor with optional filters (F4: View Appointments).</span>
+<span class="sd">        </span>
+<span class="sd">        This method is the core of F4 feature, allowing doctors to view their</span>
+<span class="sd">        appointments with filtering capabilities.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            mysql: MySQL database connection object</span>
+<span class="sd">            doctor_id (int): ID of the doctor</span>
+<span class="sd">            date_filter (str, optional): Filter by date (YYYY-MM-DD format). Defaults to None.</span>
+<span class="sd">            status_filter (str, optional): Filter by status (Scheduled/Completed/Cancelled).</span>
+<span class="sd">                                          Defaults to None.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            list: List of appointments with patient information, ordered by date (newest first)</span>
+<span class="sd">        </span>
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; # Get all appointments</span>
+<span class="sd">            &gt;&gt;&gt; appointments = Appointment.get_by_doctor(mysql, doctor_id=1)</span>
+<span class="sd">            &gt;&gt;&gt; </span>
+<span class="sd">            &gt;&gt;&gt; # Filter by date</span>
+<span class="sd">            &gt;&gt;&gt; today_appointments = Appointment.get_by_doctor(</span>
+<span class="sd">            ...     mysql, doctor_id=1, date_filter=&#39;2025-12-01&#39;</span>
+<span class="sd">            ... )</span>
+<span class="sd">            &gt;&gt;&gt; </span>
+<span class="sd">            &gt;&gt;&gt; # Filter by status</span>
+<span class="sd">            &gt;&gt;&gt; scheduled = Appointment.get_by_doctor(</span>
+<span class="sd">            ...     mysql, doctor_id=1, status_filter=&#39;Scheduled&#39;</span>
+<span class="sd">            ... )</span>
+<span class="sd">        </span>
+<span class="sd">        Note:</span>
+<span class="sd">            - Results include patient details through JOIN query</span>
+<span class="sd">            - Filters can be combined (date AND status)</span>
+<span class="sd">            - Used in F4: View Appointments feature</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        
+        <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            SELECT a.*, p.full_name as patient_name, p.age, p.gender, p.phone</span>
+<span class="s2">            FROM appointments a</span>
+<span class="s2">            JOIN patients p ON a.patient_id = p.patient_id</span>
+<span class="s2">            WHERE a.doctor_id = </span><span class="si">%s</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="n">doctor_id</span><span class="p">]</span>
+        
+        <span class="k">if</span> <span class="n">date_filter</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">+=</span> <span class="s2">&quot; AND a.appointment_date = </span><span class="si">%s</span><span class="s2">&quot;</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">date_filter</span><span class="p">)</span>
+            
+        <span class="k">if</span> <span class="n">status_filter</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">+=</span> <span class="s2">&quot; AND a.status = </span><span class="si">%s</span><span class="s2">&quot;</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">status_filter</span><span class="p">)</span>
+            
+        <span class="n">query</span> <span class="o">+=</span> <span class="s2">&quot; ORDER BY a.appointment_date DESC, a.appointment_time DESC&quot;</span>
+        
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">params</span><span class="p">))</span>
+        <span class="n">appointments</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">appointments</span></div>
+
+    
+<div class="viewcode-block" id="Appointment.check_availability">
+<a class="viewcode-back" href="../../api_reference.html#models.appointment.Appointment.check_availability">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_availability</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">doctor_id</span><span class="p">,</span> <span class="n">appointment_date</span><span class="p">,</span> <span class="n">appointment_time</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if a time slot is available&quot;&quot;&quot;</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            SELECT appointment_id FROM appointments</span>
+<span class="s2">            WHERE doctor_id = </span><span class="si">%s</span><span class="s2"> AND appointment_date = </span><span class="si">%s</span><span class="s2"> AND appointment_time = </span><span class="si">%s</span>
+<span class="s2">            AND status != &#39;Cancelled&#39;</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">doctor_id</span><span class="p">,</span> <span class="n">appointment_date</span><span class="p">,</span> <span class="n">appointment_time</span><span class="p">))</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">result</span> <span class="ow">is</span> <span class="kc">None</span></div>
+
+    
+<div class="viewcode-block" id="Appointment.update_status">
+<a class="viewcode-back" href="../../f4_appointments.html#models.appointment.Appointment.update_status">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_status</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">appointment_id</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">notes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update appointment status (F4: View Appointments).</span>
+<span class="sd">        </span>
+<span class="sd">        Allows doctors to mark appointments as Completed or Cancelled.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            mysql: MySQL database connection object</span>
+<span class="sd">            appointment_id (int): ID of the appointment to update</span>
+<span class="sd">            status (str): New status (&#39;Scheduled&#39;, &#39;Completed&#39;, or &#39;Cancelled&#39;)</span>
+<span class="sd">            notes (str, optional): Additional notes about the status change. Defaults to None.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if update successful</span>
+<span class="sd">        </span>
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; # Mark appointment as completed</span>
+<span class="sd">            &gt;&gt;&gt; Appointment.update_status(mysql, appointment_id=1, status=&#39;Completed&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; </span>
+<span class="sd">            &gt;&gt;&gt; # Cancel with notes</span>
+<span class="sd">            &gt;&gt;&gt; Appointment.update_status(</span>
+<span class="sd">            ...     mysql,</span>
+<span class="sd">            ...     appointment_id=2,</span>
+<span class="sd">            ...     status=&#39;Cancelled&#39;,</span>
+<span class="sd">            ...     notes=&#39;Patient requested cancellation&#39;</span>
+<span class="sd">            ... )</span>
+<span class="sd">        </span>
+<span class="sd">        Note:</span>
+<span class="sd">            - Only Scheduled appointments should be updated</span>
+<span class="sd">            - Used in F4: View Appointments feature</span>
+<span class="sd">            - Access control is enforced in the route layer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        
+        <span class="k">if</span> <span class="n">notes</span><span class="p">:</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                UPDATE appointments </span>
+<span class="s2">                SET status = </span><span class="si">%s</span><span class="s2">, notes = </span><span class="si">%s</span><span class="s2"> </span>
+<span class="s2">                WHERE appointment_id = </span><span class="si">%s</span>
+<span class="s2">            &quot;&quot;&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">notes</span><span class="p">,</span> <span class="n">appointment_id</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                UPDATE appointments </span>
+<span class="s2">                SET status = </span><span class="si">%s</span><span class="s2"> </span>
+<span class="s2">                WHERE appointment_id = </span><span class="si">%s</span>
+<span class="s2">            &quot;&quot;&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">appointment_id</span><span class="p">))</span>
+        
+        <span class="n">mysql</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+    
+<div class="viewcode-block" id="Appointment.get_upcoming_by_doctor">
+<a class="viewcode-back" href="../../api_reference.html#models.appointment.Appointment.get_upcoming_by_doctor">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_upcoming_by_doctor</span><span class="p">(</span><span class="n">mysql</span><span class="p">,</span> <span class="n">doctor_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get upcoming appointments for a doctor&quot;&quot;&quot;</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            SELECT a.*, p.full_name as patient_name, p.age, p.gender, p.phone</span>
+<span class="s2">            FROM appointments a</span>
+<span class="s2">            JOIN patients p ON a.patient_id = p.patient_id</span>
+<span class="s2">            WHERE a.doctor_id = </span><span class="si">%s</span><span class="s2"> </span>
+<span class="s2">            AND a.appointment_date &gt;= CURDATE()</span>
+<span class="s2">            AND a.status = &#39;Scheduled&#39;</span>
+<span class="s2">            ORDER BY a.appointment_date, a.appointment_time</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">doctor_id</span><span class="p">,))</span>
+        <span class="n">appointments</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">appointments</span></div>
+
+    
+<div class="viewcode-block" id="Appointment.get_all">
+<a class="viewcode-back" href="../../api_reference.html#models.appointment.Appointment.get_all">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_all</span><span class="p">(</span><span class="n">mysql</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get all appointments (for admin)&quot;&quot;&quot;</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            SELECT a.*, </span>
+<span class="s2">                   p.full_name as patient_name, p.phone as patient_phone,</span>
+<span class="s2">                   d.full_name as doctor_name, d.university</span>
+<span class="s2">            FROM appointments a</span>
+<span class="s2">            JOIN patients p ON a.patient_id = p.patient_id</span>
+<span class="s2">            JOIN doctors d ON a.doctor_id = d.doctor_id</span>
+<span class="s2">            ORDER BY a.appointment_date DESC, a.appointment_time DESC</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">,</span> <span class="p">())</span>
+        <span class="n">appointments</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">appointments</span></div>
+</div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &#169;2025, Al Mamun Oualid.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.0.1</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
