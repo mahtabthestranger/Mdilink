@@ -1,10 +1,24 @@
 """
 Appointment Model
-Handles all database operations related to appointments
+=================
+
+Handles all database operations related to appointments including scheduling,
+retrieval, and status management.
+
+Author: Multiple team members
+Feature F4 (View Appointments): Al Mamun Oualid
 """
 
 class Appointment:
-    """Appointment model class"""
+    """
+    Appointment model class for managing patient-doctor appointments.
+    
+    This class provides static methods for creating, retrieving, and managing
+    appointments in the hospital management system.
+    
+    Attributes:
+        None (all methods are static)
+    """
     
     @staticmethod
     def create(mysql, patient_id, doctor_id, appointment_date, appointment_time, reason=None):
@@ -24,7 +38,25 @@ class Appointment:
     
     @staticmethod
     def find_by_id(mysql, appointment_id):
-        """Find appointment by ID"""
+        """
+        Find an appointment by its ID with patient and doctor information.
+        
+        Args:
+            mysql: MySQL database connection object
+            appointment_id (int): ID of the appointment
+        
+        Returns:
+            dict: Appointment record with patient and doctor details, None if not found
+        
+        Example:
+            >>> appointment = Appointment.find_by_id(mysql, 1)
+            >>> if appointment:
+            ...     print(f"Patient: {appointment['patient_name']}")
+            ...     print(f"Doctor: {appointment['doctor_name']}")
+        
+        Note:
+            Used in F4 to verify appointment ownership before status updates
+        """
         cursor = mysql.connection.cursor()
         cursor.execute("""
             SELECT a.*, p.full_name as patient_name, d.full_name as doctor_name,
@@ -55,7 +87,41 @@ class Appointment:
     
     @staticmethod
     def get_by_doctor(mysql, doctor_id, date_filter=None, status_filter=None):
-        """Get all appointments for a doctor with optional filters"""
+        """
+        Get all appointments for a doctor with optional filters (F4: View Appointments).
+        
+        This method is the core of F4 feature, allowing doctors to view their
+        appointments with filtering capabilities.
+        
+        Args:
+            mysql: MySQL database connection object
+            doctor_id (int): ID of the doctor
+            date_filter (str, optional): Filter by date (YYYY-MM-DD format). Defaults to None.
+            status_filter (str, optional): Filter by status (Scheduled/Completed/Cancelled).
+                                          Defaults to None.
+        
+        Returns:
+            list: List of appointments with patient information, ordered by date (newest first)
+        
+        Example:
+            >>> # Get all appointments
+            >>> appointments = Appointment.get_by_doctor(mysql, doctor_id=1)
+            >>> 
+            >>> # Filter by date
+            >>> today_appointments = Appointment.get_by_doctor(
+            ...     mysql, doctor_id=1, date_filter='2025-12-01'
+            ... )
+            >>> 
+            >>> # Filter by status
+            >>> scheduled = Appointment.get_by_doctor(
+            ...     mysql, doctor_id=1, status_filter='Scheduled'
+            ... )
+        
+        Note:
+            - Results include patient details through JOIN query
+            - Filters can be combined (date AND status)
+            - Used in F4: View Appointments feature
+        """
         cursor = mysql.connection.cursor()
         
         query = """
@@ -96,7 +162,37 @@ class Appointment:
     
     @staticmethod
     def update_status(mysql, appointment_id, status, notes=None):
-        """Update appointment status"""
+        """
+        Update appointment status (F4: View Appointments).
+        
+        Allows doctors to mark appointments as Completed or Cancelled.
+        
+        Args:
+            mysql: MySQL database connection object
+            appointment_id (int): ID of the appointment to update
+            status (str): New status ('Scheduled', 'Completed', or 'Cancelled')
+            notes (str, optional): Additional notes about the status change. Defaults to None.
+        
+        Returns:
+            bool: True if update successful
+        
+        Example:
+            >>> # Mark appointment as completed
+            >>> Appointment.update_status(mysql, appointment_id=1, status='Completed')
+            >>> 
+            >>> # Cancel with notes
+            >>> Appointment.update_status(
+            ...     mysql,
+            ...     appointment_id=2,
+            ...     status='Cancelled',
+            ...     notes='Patient requested cancellation'
+            ... )
+        
+        Note:
+            - Only Scheduled appointments should be updated
+            - Used in F4: View Appointments feature
+            - Access control is enforced in the route layer
+        """
         cursor = mysql.connection.cursor()
         
         if notes:
