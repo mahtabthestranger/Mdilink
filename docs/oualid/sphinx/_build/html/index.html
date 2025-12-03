@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Medilink Doctor Features Documentation &#8212; Medilink - Doctor Features 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=f6a572b4" />
+    <script src="_static/documentation_options.js?v=8d563738"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="F3: Doctor Login" href="f3_doctor_login.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">Medilink - Doctor Features</a></h1>
+
+
+
+<p class="blurb">Documentation for Doctor Features (F3, F4, F5)</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=mahtabthestranger&repo=Medilink&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Feature Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="f3_doctor_login.html">F3: Doctor Login</a></li>
+<li class="toctree-l1"><a class="reference internal" href="f4_appointments.html">F4: View Appointments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="f5_medical_records.html">F5: Medical Records Management</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="f3_doctor_login.html" title="next chapter">F3: Doctor Login</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="medilink-doctor-features-documentation">
+<h1>Medilink Doctor Features Documentation<a class="headerlink" href="#medilink-doctor-features-documentation" title="Link to this heading">¶</a></h1>
+<p><strong>Author:</strong> Al Mamun Oualid</p>
+<p><strong>Features Implemented:</strong></p>
+<ul class="simple">
+<li><p>F3: Doctor Login</p></li>
+<li><p>F4: View Appointments</p></li>
+<li><p>F5: Medical Records Management</p></li>
+</ul>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
+<p>This documentation covers the three doctor-related features implemented for the Medilink Hospital Management System. These features provide secure authentication, appointment management, and medical record handling for doctors.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All features follow secure coding practices including password hashing, SQL injection prevention, and proper session management.</p>
+</div>
+</section>
+<section id="features">
+<h2>Features<a class="headerlink" href="#features" title="Link to this heading">¶</a></h2>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Feature Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="f3_doctor_login.html">F3: Doctor Login</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="f3_doctor_login.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f3_doctor_login.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f3_doctor_login.html#implementation">Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f3_doctor_login.html#database-model">Database Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f3_doctor_login.html#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f3_doctor_login.html#templates">Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f3_doctor_login.html#error-handling">Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f3_doctor_login.html#related-features">Related Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f3_doctor_login.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="f4_appointments.html">F4: View Appointments</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="f4_appointments.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f4_appointments.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f4_appointments.html#implementation">Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f4_appointments.html#features">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f4_appointments.html#database-model">Database Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f4_appointments.html#templates">Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f4_appointments.html#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f4_appointments.html#security">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f4_appointments.html#error-handling">Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f4_appointments.html#related-features">Related Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f4_appointments.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="f5_medical_records.html">F5: Medical Records Management</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="f5_medical_records.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f5_medical_records.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f5_medical_records.html#implementation">Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f5_medical_records.html#features">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f5_medical_records.html#database-model">Database Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f5_medical_records.html#templates">Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f5_medical_records.html#validation">Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f5_medical_records.html#security">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f5_medical_records.html#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f5_medical_records.html#error-handling">Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f5_medical_records.html#related-features">Related Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="f5_medical_records.html#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading">¶</a></h2>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api_reference.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference.html#routes">Routes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference.html#security-functions">Security Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference.html#database-utilities">Database Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference.html#constants-and-enums">Constants and Enums</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference.html#error-messages">Error Messages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference.html#success-messages">Success Messages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference.html#code-examples">Code Examples</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Link to this heading">¶</a></h2>
+<p>All features include comprehensive unit tests and have been manually tested with various scenarios.</p>
+<p>See <a class="reference internal" href="f3_doctor_login.html"><span class="doc">F3: Doctor Login</span></a> for unit test examples.</p>
+</section>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &#169;2025, Al Mamun Oualid.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.0.1</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

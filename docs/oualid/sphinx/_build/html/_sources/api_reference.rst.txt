@@ -1,0 +1,360 @@
+API Reference
+=============
+
+This section provides detailed API documentation for all models and functions related to Al Mamun Oualid's doctor features.
+
+Models
+------
+
+Doctor Model
+~~~~~~~~~~~~
+
+.. automodule:: models.doctor
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+The Doctor model handles all database operations related to doctor accounts including authentication, creation, and management.
+
+Key Methods:
+
+* ``create()``: Create a new doctor account
+* ``verify_password()``: Authenticate doctor login
+* ``find_by_code()``: Find doctor by unique code
+* ``find_by_id()``: Find doctor by ID
+* ``get_all()``: Get all doctors
+* ``update()``: Update doctor information
+* ``delete()``: Soft delete doctor account
+
+Medical Record Model
+~~~~~~~~~~~~~~~~~~~~
+
+.. automodule:: models.medical_record
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+The MedicalRecord model manages patient medical records including diagnosis, prescriptions, and treatment history.
+
+Key Methods:
+
+* ``create()``: Create a new medical record
+* ``find_by_id()``: Find record by ID
+* ``get_by_patient()``: Get all records for a patient
+* ``get_by_doctor()``: Get all records created by a doctor
+* ``update()``: Update existing record
+* ``get_patient_history()``: Get patient history with specific doctor
+
+Appointment Model
+~~~~~~~~~~~~~~~~~
+
+.. automodule:: models.appointment
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+The Appointment model handles appointment scheduling and management.
+
+Key Methods (Used in F4):
+
+* ``get_by_doctor()``: Get appointments for a doctor with filters
+* ``find_by_id()``: Find appointment by ID
+* ``update_status()``: Update appointment status
+* ``check_availability()``: Check if time slot is available
+* ``get_upcoming_by_doctor()``: Get upcoming appointments
+
+Routes
+------
+
+Doctor Login Routes (F3)
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+``/doctor/login`` [GET, POST]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Handles doctor authentication.
+
+**GET Request:**
+  Returns the login form template.
+
+**POST Request:**
+  Processes login credentials.
+
+**Form Parameters:**
+  * ``doctor_code`` (str): Doctor's unique code
+  * ``password`` (str): Doctor's password
+
+**Returns:**
+  * Success: Redirect to doctor dashboard
+  * Failure: Redirect to login with error message
+
+**Session Variables Set:**
+  * ``user_type``: 'doctor'
+  * ``user_id``: Doctor's ID
+  * ``user_name``: Doctor's full name
+  * ``doctor_code``: Doctor's code
+
+Appointment Routes (F4)
+~~~~~~~~~~~~~~~~~~~~~~~
+
+``/doctor/appointments`` [GET]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Displays doctor's appointments with optional filters.
+
+**Query Parameters:**
+  * ``date`` (str, optional): Filter by date (YYYY-MM-DD)
+  * ``status`` (str, optional): Filter by status
+
+**Returns:**
+  Rendered template with appointments list
+
+``/doctor/appointment/<int:appointment_id>/status`` [POST]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Updates appointment status.
+
+**URL Parameters:**
+  * ``appointment_id`` (int): ID of appointment to update
+
+**Form Parameters:**
+  * ``status`` (str): New status (Completed or Cancelled)
+
+**Returns:**
+  Redirect to appointments page
+
+Medical Record Routes (F5)
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``/doctor/patients`` [GET]
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Lists all patients.
+
+**Returns:**
+  Rendered template with patients list
+
+``/doctor/patient/<int:patient_id>`` [GET]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Views patient details and medical history.
+
+**URL Parameters:**
+  * ``patient_id`` (int): ID of patient to view
+
+**Returns:**
+  Rendered template with patient details and records
+
+``/doctor/patient/<int:patient_id>/add-record`` [GET, POST]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Adds new medical record for a patient.
+
+**URL Parameters:**
+  * ``patient_id`` (int): ID of patient
+
+**Form Parameters (POST):**
+  * ``diagnosis`` (str, required): Patient diagnosis
+  * ``symptoms`` (str, optional): Patient symptoms
+  * ``prescription`` (str, optional): Prescribed medication
+  * ``tests_recommended`` (str, optional): Recommended tests
+  * ``notes`` (str, optional): Additional notes
+  * ``follow_up_date`` (date, optional): Follow-up date
+
+**Returns:**
+  * Success: Redirect to patient details
+  * Failure: Redirect to form with error
+
+``/doctor/record/<int:record_id>/edit`` [GET, POST]
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Edits existing medical record.
+
+**URL Parameters:**
+  * ``record_id`` (int): ID of record to edit
+
+**Security:**
+  Only the doctor who created the record can edit it.
+
+**Form Parameters (POST):**
+  Same as add-record
+
+**Returns:**
+  * Success: Redirect to patient details
+  * Failure: Redirect to form with error
+
+Security Functions
+------------------
+
+Password Hashing
+~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    from werkzeug.security import generate_password_hash, check_password_hash
+    
+    # Hash password
+    hashed = generate_password_hash(password, method='pbkdf2:sha256')
+    
+    # Verify password
+    is_valid = check_password_hash(hashed_password, plain_password)
+
+Session Management
+~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    # Set session
+    session['user_type'] = 'doctor'
+    session['user_id'] = doctor_id
+    session.permanent = True
+    
+    # Check session
+    if session.get('user_type') != 'doctor':
+        return redirect(url_for('doctor_login'))
+    
+    # Clear session
+    session.clear()
+
+Database Utilities
+------------------
+
+Connection Management
+~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    # Get cursor
+    cursor = mysql.connection.cursor()
+    
+    # Execute query
+    cursor.execute("SELECT * FROM doctors WHERE doctor_id = %s", (doctor_id,))
+    
+    # Fetch results
+    result = cursor.fetchone()  # Single row
+    results = cursor.fetchall()  # Multiple rows
+    
+    # Commit changes
+    mysql.connection.commit()
+    
+    # Close cursor
+    cursor.close()
+
+Parameterized Queries
+~~~~~~~~~~~~~~~~~~~~~
+
+Always use parameterized queries to prevent SQL injection:
+
+.. code-block:: python
+
+    # CORRECT - Parameterized
+    cursor.execute(
+        "SELECT * FROM doctors WHERE doctor_code = %s",
+        (doctor_code,)
+    )
+    
+    # WRONG - String concatenation (vulnerable to SQL injection)
+    cursor.execute(
+        f"SELECT * FROM doctors WHERE doctor_code = '{doctor_code}'"
+    )
+
+Constants and Enums
+-------------------
+
+Appointment Status
+~~~~~~~~~~~~~~~~~~
+
+* ``Scheduled``: Appointment is scheduled
+* ``Completed``: Appointment was completed
+* ``Cancelled``: Appointment was cancelled
+
+User Types
+~~~~~~~~~~
+
+* ``admin``: Administrator
+* ``doctor``: Doctor
+* ``patient``: Patient
+
+Error Messages
+--------------
+
+Authentication Errors
+~~~~~~~~~~~~~~~~~~~~~
+
+* "Please enter doctor ID and password"
+* "Invalid credentials"
+* "Access denied. Your account has been deactivated"
+
+Validation Errors
+~~~~~~~~~~~~~~~~~
+
+* "Diagnosis is required"
+* "Patient not found"
+* "Record not found"
+* "Invalid status"
+
+Authorization Errors
+~~~~~~~~~~~~~~~~~~~~
+
+* "Please login to access doctor dashboard"
+* "You can only edit records created by you"
+* "Appointment not found or access denied"
+
+Success Messages
+----------------
+
+* "Welcome, Dr. {name}!"
+* "Appointment marked as {status}"
+* "Medical record added successfully"
+* "Medical record updated successfully"
+
+Code Examples
+-------------
+
+Complete Login Flow
+~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    # 1. User submits login form
+    doctor_code = request.form.get('doctor_code')
+    password = request.form.get('password')
+    
+    # 2. Verify credentials
+    doctor = Doctor.verify_password(mysql, doctor_code, password)
+    
+    # 3. Check if account is active
+    if doctor and doctor.get('is_active'):
+        # 4. Create session
+        session['user_type'] = 'doctor'
+        session['user_id'] = doctor['doctor_id']
+        
+        # 5. Redirect to dashboard
+        return redirect(url_for('doctor_dashboard'))
+
+Complete Medical Record Creation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    # 1. Validate required fields
+    if not diagnosis:
+        flash('Diagnosis is required', 'error')
+        return redirect(url_for('doctor_add_record', patient_id=patient_id))
+    
+    # 2. Create record
+    record_id = MedicalRecord.create(
+        mysql=mysql,
+        patient_id=patient_id,
+        doctor_id=session.get('user_id'),
+        visit_date=date.today(),
+        diagnosis=diagnosis,
+        symptoms=symptoms,
+        prescription=prescription
+    )
+    
+    # 3. Show success message
+    flash('Medical record added successfully', 'success')
+    
+    # 4. Redirect to patient details
+    return redirect(url_for('doctor_view_patient', patient_id=patient_id))

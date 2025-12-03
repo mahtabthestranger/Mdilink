@@ -1,0 +1,335 @@
+F4: View Appointments
+=====================
+
+**Feature ID:** F4  
+**Developer:** Al Mamun Oualid  
+**Status:** Complete
+
+Overview
+--------
+
+The View Appointments feature allows doctors to view, filter, and manage their scheduled appointments. Doctors can see patient details, appointment times, and update appointment statuses.
+
+Requirements
+------------
+
+* Display all scheduled appointments for the logged-in doctor
+* Filter appointments by date
+* Filter appointments by status (Scheduled, Completed, Cancelled)
+* View patient information for each appointment
+* Update appointment status
+* Responsive and user-friendly interface
+
+Implementation
+--------------
+
+Main Route
+~~~~~~~~~~
+
+**Endpoint:** ``/doctor/appointments``  
+**Method:** ``GET``  
+**Location:** ``app.py`` lines 419-437
+
+.. code-block:: python
+
+    @app.route('/doctor/appointments')
+    def doctor_appointments():
+        """
+        Display doctor's appointments with optional filters.
+        
+        Query Parameters:
+            date (str): Filter by appointment date (YYYY-MM-DD)
+            status (str): Filter by status (Scheduled/Completed/Cancelled)
+        
+        Returns:
+            Rendered template with appointments list
+        """
+        if session.get('user_type') != 'doctor':
+            flash('Please login to access doctor dashboard', 'error')
+            return redirect(url_for('doctor_login'))
+        
+        # Get filters from query parameters
+        date_filter = request.args.get('date')
+        status_filter = request.args.get('status')
+        
+        # Fetch appointments with filters
+        appointments = Appointment.get_by_doctor(
+            mysql, 
+            session.get('user_id'), 
+            date_filter, 
+            status_filter
+        )
+        
+        from datetime import date
+        return render_template('doctor/appointments.html', 
+                             appointments=appointments,
+                             today_date=date.today().strftime('%Y-%m-%d'),
+                             current_date=date_filter,
+                             current_status=status_filter)
+
+Update Status Route
+~~~~~~~~~~~~~~~~~~~
+
+**Endpoint:** ``/doctor/appointment/<int:appointment_id>/status``  
+**Method:** ``POST``  
+**Location:** ``app.py`` lines 439-465
+
+.. code-block:: python
+
+    @app.route('/doctor/appointment/<int:appointment_id>/status', methods=['POST'])
+    def doctor_update_appointment_status(appointment_id):
+        """
+        Update appointment status.
+        
+        Args:
+            appointment_id (int): ID of the appointment to update
+        
+        Form Data:
+            status (str): New status (Completed or Cancelled)
+        
+        Returns:
+            Redirect to appointments page with success/error message
+        """
+        if session.get('user_type') != 'doctor':
+            flash('Please login to access doctor dashboard', 'error')
+            return redirect(url_for('doctor_login'))
+        
+        status = request.form.get('status')
+        if status not in ['Completed', 'Cancelled']:
+            flash('Invalid status', 'error')
+            return redirect(url_for('doctor_appointments'))
+        
+        try:
+            # Verify appointment belongs to doctor
+            appointment = Appointment.find_by_id(mysql, appointment_id)
+            if not appointment or appointment['doctor_id'] != session.get('user_id'):
+                flash('Appointment not found or access denied', 'error')
+                return redirect(url_for('doctor_appointments'))
+            
+            Appointment.update_status(mysql, appointment_id, status)
+            flash(f'Appointment marked as {status}', 'success')
+            
+        except Exception as e:
+            flash('Failed to update status', 'error')
+            print(f"Error updating status: {e}")
+            
+        return redirect(url_for('doctor_appointments'))
+
+Features
+--------
+
+Appointment Listing
+~~~~~~~~~~~~~~~~~~~
+
+Displays all appointments with:
+
+* Patient name
+* Patient age and gender
+* Patient phone number
+* Appointment date and time
+* Appointment reason
+* Current status
+* Action buttons
+
+Filtering Options
+~~~~~~~~~~~~~~~~~
+
+Date Filter
+^^^^^^^^^^^
+
+Filter appointments by specific date:
+
+.. code-block:: html
+
+    <input type="date" name="date" value="{{ current_date }}">
+
+The filter uses SQL query:
+
+.. code-block:: python
+
+    if date_filter:
+        query += " AND a.appointment_date = %s"
+        params.append(date_filter)
+
+Status Filter
+^^^^^^^^^^^^^
+
+Filter by appointment status:
+
+* Scheduled
+* Completed
+* Cancelled
+
+.. code-block:: html
+
+    <select name="status">
+        <option value="">All Status</option>
+        <option value="Scheduled">Scheduled</option>
+        <option value="Completed">Completed</option>
+        <option value="Cancelled">Cancelled</option>
+    </select>
+
+Status Management
+~~~~~~~~~~~~~~~~~
+
+Doctors can update appointment status to:
+
+* **Completed**: Mark appointment as done
+* **Cancelled**: Cancel the appointment
+
+Only the doctor who owns the appointment can update its status.
+
+Database Model
+--------------
+
+The ``Appointment`` model provides methods for appointment management:
+
+.. automethod:: models.appointment.Appointment.get_by_doctor
+.. automethod:: models.appointment.Appointment.find_by_id
+.. automethod:: models.appointment.Appointment.update_status
+
+Query Details
+~~~~~~~~~~~~~
+
+The ``get_by_doctor`` method uses a JOIN query to fetch patient information:
+
+.. code-block:: sql
+
+    SELECT a.*, p.full_name as patient_name, p.age, p.gender, p.phone
+    FROM appointments a
+    JOIN patients p ON a.patient_id = p.patient_id
+    WHERE a.doctor_id = %s
+    ORDER BY a.appointment_date DESC, a.appointment_time DESC
+
+Templates
+---------
+
+**File:** ``templates/doctor/appointments.html``
+
+Template Features:
+
+* Responsive table layout
+* Date and status filter forms
+* Status update buttons
+* Empty state message when no appointments
+* Color-coded status badges
+
+UI Components
+~~~~~~~~~~~~~
+
+Status Badges
+^^^^^^^^^^^^^
+
+.. code-block:: html
+
+    {% if appointment.status == 'Scheduled' %}
+        <span class="badge badge-primary">Scheduled</span>
+    {% elif appointment.status == 'Completed' %}
+        <span class="badge badge-success">Completed</span>
+    {% elif appointment.status == 'Cancelled' %}
+        <span class="badge badge-danger">Cancelled</span>
+    {% endif %}
+
+Action Buttons
+^^^^^^^^^^^^^^
+
+.. code-block:: html
+
+    {% if appointment.status == 'Scheduled' %}
+        <form method="POST" action="{{ url_for('doctor_update_appointment_status', appointment_id=appointment.appointment_id) }}">
+            <button type="submit" name="status" value="Completed" class="btn btn-sm btn-success">
+                Mark Complete
+            </button>
+            <button type="submit" name="status" value="Cancelled" class="btn btn-sm btn-danger">
+                Cancel
+            </button>
+        </form>
+    {% endif %}
+
+Testing
+-------
+
+Manual Test Cases
+~~~~~~~~~~~~~~~~~
+
+1. **View All Appointments**
+   
+   * Navigate to ``/doctor/appointments``
+   * Expected: List of all appointments for logged-in doctor
+
+2. **Filter by Date**
+   
+   * Select a specific date
+   * Click "Filter"
+   * Expected: Only appointments on that date are shown
+
+3. **Filter by Status**
+   
+   * Select "Scheduled" status
+   * Click "Filter"
+   * Expected: Only scheduled appointments are shown
+
+4. **Mark as Completed**
+   
+   * Click "Mark Complete" on a scheduled appointment
+   * Expected: Status changes to "Completed", success message shown
+
+5. **Cancel Appointment**
+   
+   * Click "Cancel" on a scheduled appointment
+   * Expected: Status changes to "Cancelled", success message shown
+
+6. **Access Control**
+   
+   * Try to update another doctor's appointment
+   * Expected: "Access denied" error message
+
+Security
+--------
+
+Access Control
+~~~~~~~~~~~~~~
+
+* Only logged-in doctors can access appointments
+* Doctors can only view their own appointments
+* Doctors can only update their own appointments
+
+.. code-block:: python
+
+    # Verify appointment belongs to doctor
+    if appointment['doctor_id'] != session.get('user_id'):
+        flash('Appointment not found or access denied', 'error')
+        return redirect(url_for('doctor_appointments'))
+
+Input Validation
+~~~~~~~~~~~~~~~~
+
+* Status values are validated (only Completed or Cancelled allowed)
+* Appointment ID is validated to prevent unauthorized access
+* SQL injection prevention through parameterized queries
+
+Error Handling
+--------------
+
+The feature handles:
+
+* Invalid appointment ID
+* Unauthorized access attempts
+* Database errors
+* Invalid status values
+* Missing session data
+
+All errors are logged and user-friendly messages are displayed.
+
+Related Features
+----------------
+
+* **F3:** Doctor Login (required to access this feature)
+* **F5:** Medical Records (can be accessed from patient details)
+
+See Also
+--------
+
+* :doc:`f3_doctor_login`
+* :doc:`f5_medical_records`
+* :doc:`api_reference`
